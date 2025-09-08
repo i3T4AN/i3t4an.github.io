@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ethan Blair — Portfolio</title>
+  <meta name="description" content="Ethan Blair: programmer focused on enterprise technology, automation, and AI development. Practical tools, clean systems, real results." />
+  <link rel="canonical" href="https://i3t4an.github.io/" />
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Ethan Blair — Portfolio" />
+  <meta property="og:description" content="Programmer focused on enterprise technology, automation, and AI development." />
+  <meta property="og:url" content="https://i3t4an.github.io/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Ethan Blair — Portfolio" />
+  <meta name="twitter:description" content="Programmer focused on enterprise technology, automation, and AI development." />
+
+  <!-- Theme color (respects system) -->
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0b0c10" />
+
+  <!-- JSON-LD Person schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Ethan Blair",
+    "url": "https://i3t4an.github.io/",
+    "email": "mailto:i3t4an@gmail.com",
+    "affiliation": {"@type": "CollegeOrUniversity", "name": "University of Northern Colorado"},
+    "sameAs": [
+      "https://github.com/i3T4AN",
+      "https://www.linkedin.com/in/ethan-blair-99a3b72a2"
+    ],
+    "jobTitle": "Programmer",
+    "knowsAbout": [
+      "Enterprise technology", "Automation", "AI development",
+      "Microsoft Intune", "Microsoft SCCM", "Power BI",
+      "JavaScript", "TypeScript", "React", "Node.js", "Python",
+      "C#", "Objective-C", "PowerShell", "AppleScript"
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f6f7f9;
+      --text: #111417;
+      --muted: #4d5560;
+      --card: #ffffff;
+      --border: #e5e7eb;
+      --accent: #1f6feb; /* elegant blue */
+      --accent-contrast: #ffffff;
+      --focus: 2px solid #1f6feb;
+      --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .theme-dark {
+      --bg: #0b0c10;
+      --bg-soft: #12141a;
+      --text: #eaecee;
+      --muted: #a3acb9;
+      --card: #0f1116;
+      --border: #242832;
+      --accent: #6aa8ff;
+      --accent-contrast: #0b0c10;
+      --focus: 2px solid #6aa8ff;
+      --shadow: 0 2px 12px rgba(0,0,0,0.35);
+    }
+
+    /* Reset-ish */
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    a { color: var(--accent); text-decoration: none; }
+    a:focus-visible, button:focus-visible, select:focus-visible { outline: var(--focus); outline-offset: 2px; border-radius: 6px; }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 1rem; }
+    .stack { display: grid; gap: 1rem; }
+    .stack-lg { display: grid; gap: 2rem; }
+
+    /* Skip link */
+    .skip-link { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+    .skip-link:focus { left: 1rem; top: 1rem; width: auto; height: auto; background: var(--accent); color: var(--accent-contrast); padding: .5rem .75rem; border-radius: .5rem; z-index: 1000; }
+
+    header {
+      position: sticky; top: 0; z-index: 10;
+      background: color-mix(in oklab, var(--bg), transparent 0%);
+      backdrop-filter: saturate(120%) blur(6px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      padding: .75rem 0;
+    }
+    .brand { display: flex; flex-direction: column; }
+    .brand h1 { font-size: 1.125rem; margin: 0; }
+    .brand p { margin: 0; color: var(--muted); font-size: .9rem; }
+    .nav ul { list-style: none; display: flex; gap: .75rem; margin: 0; padding: 0; flex-wrap: wrap; }
+    .nav a { padding: .5rem .6rem; border-radius: .5rem; }
+    .nav a:focus-visible, .nav a:hover { background: var(--bg-soft); }
+
+    .theme-toggle { border: 1px solid var(--border); background: var(--card); color: var(--text); padding: .5rem .7rem; border-radius: .6rem; box-shadow: var(--shadow); cursor: pointer; }
+
+    main { display: block; }
+
+    .hero { padding: 3rem 0 2rem; }
+    .hero h2 { font-size: clamp(1.6rem, 3.5vw, 2.4rem); margin: 0 0 .5rem; }
+    .hero p { color: var(--muted); max-width: 70ch; }
+    .cta { display: flex; gap: .75rem; margin-top: 1rem; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; border-radius: .6rem; padding: .6rem .9rem; font-weight: 600; border: 1px solid var(--border); background: var(--card); color: var(--text); box-shadow: var(--shadow); }
+    .btn:hover { background: var(--bg-soft); }
+    .btn.primary { background: var(--accent); color: var(--accent-contrast); border-color: color-mix(in oklab, var(--accent), black 10%); }
+    .btn.primary:hover { filter: brightness(1.05); }
+
+    section { padding: 2rem 0; }
+    section h3 { font-size: 1.4rem; margin: 0 0 1rem; }
+
+    /* Projects */
+    .controls { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .filters { display: flex; gap: .5rem; flex-wrap: wrap; }
+    .chip { border: 1px solid var(--border); background: var(--card); padding: .35rem .6rem; border-radius: 999px; font-size: .9rem; cursor: pointer; }
+    .chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-contrast); border-color: color-mix(in oklab, var(--accent), black 10%); }
+    .sort { border: 1px solid var(--border); background: var(--card); color: var(--text); padding: .5rem .6rem; border-radius: .5rem; }
+
+    .group { margin-top: 1.5rem; }
+    .group h4 { margin: .5rem 0 1rem; font-size: 1.15rem; color: var(--muted); }
+    .grid { display: grid; gap: 1rem; grid-template-columns: repeat(1, minmax(0,1fr)); }
+    @media (min-width: 640px) { .grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+    @media (min-width: 960px) { .grid { grid-template-columns: repeat(3, minmax(0,1fr)); } }
+
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1rem; box-shadow: var(--shadow); display: grid; gap: .6rem; }
+    .card h5 { margin: 0; font-size: 1.05rem; }
+    .desc { color: var(--muted); min-height: 2.6em; }
+    .meta { display: flex; align-items: center; justify-content: space-between; gap: .5rem; flex-wrap: wrap; color: var(--muted); font-size: .92rem; }
+    .lang { display: inline-flex; align-items: center; gap: .4rem; border: 1px solid var(--border); background: var(--bg-soft); padding: .25rem .5rem; border-radius: 999px; color: inherit; }
+    .actions { display: flex; justify-content: space-between; align-items: center; gap: .5rem; }
+    .gh-link { margin-left: auto; }
+
+    /* About & Skills */
+    .cols { display: grid; gap: 1rem; grid-template-columns: 1fr; }
+    @media (min-width: 800px) { .cols { grid-template-columns: repeat(3, 1fr); } }
+    .col { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1rem; box-shadow: var(--shadow); }
+    .col ul { margin: .5rem 0 0; padding-left: 1.2rem; }
+
+    footer { border-top: 1px solid var(--border); padding: 2rem 0; color: var(--muted); }
+
+    /* Empty / error states */
+    .empty { border: 1px dashed var(--border); padding: 1rem; border-radius: 12px; background: var(--bg-soft); color: var(--muted); text-align: center; }
+
+    /* Visually hidden utility */
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header role="banner">
+    <div class="container nav" aria-label="Primary">
+      <div class="brand">
+        <h1>Ethan Blair</h1>
+        <p>Programmer, automation, and enterprise system development</p>
+      </div>
+      <nav aria-label="Main navigation">
+        <ul>
+            <button id="themeToggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle dark or light theme">🌗 Theme</button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <section id="contact" aria-labelledby="contact-title">
+      <div class="container stack">
+        <h3 id="contact-title">Contact</h3>
+        <div class="cta" role="group" aria-label="Contact links">
+          <a class="btn" href="https://github.com/i3T4AN" target="_blank" rel="noopener">GitHub</a>
+          <a class="btn" href="https://www.linkedin.com/in/ethan-blair-99a3b72a2" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="btn" href="mailto:i3t4an@gmail.com">Email</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero">
+      <div class="container">
+        <h2>Building practical tools for enterprise systems.</h2>
+        <p>
+          I’m Ethan Blair, a student at the University of Northern Colorado. My focus is on enterprise technology, automation, and AI development. I enjoy building practical tools that make systems work more efficiently. This site highlights some of the projects and ideas I’m working on.
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" aria-labelledby="skills-title">
+      <div class="container stack-lg">
+        <h3 id="skills-title">Skills</h3>
+        <div class="cols">
+          <div class="col" aria-labelledby="skills-dev">
+            <h4 id="skills-dev">Programming &amp; Development</h4>
+            <ul>
+              <li>JavaScript/TypeScript, React, Node.js, Python</li>
+              <li>C#, Objective-C</li>
+              <li>PowerShell, AppleScript, Xcode</li>
+            </ul>
+          </div>
+          <div class="col" aria-labelledby="skills-automation">
+            <h4 id="skills-automation">AI, QA &amp; Automation</h4>
+            <ul>
+              <li>AI Agent Development (Microsoft Copilot Studio, Power Automate)</li>
+              <li>Mabl (Automated QA Testing)</li>
+            </ul>
+          </div>
+          <div class="col" aria-labelledby="skills-cloud">
+            <h4 id="skills-cloud">Cloud, Systems &amp; Tools</h4>
+            <ul>
+              <li>Microsoft Azure, Microsoft Intune, Microsoft SCCM, Microsoft Power BI</li>
+              <li>macOS, Windows, Linux</li>
+              <li>Q-SYS (AV Integration)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" aria-labelledby="projects-title">
+      <div class="container">
+        <div class="controls" role="region" aria-label="Project controls">
+          <div class="filters" id="filters" role="toolbar" aria-label="Language filters">
+            <!-- Chips inserted by JS -->
+          </div>
+          <label for="sort" class="sr-only">Sort projects</label>
+          <select id="sort" class="sort" aria-label="Sort projects">
+            <option value="updated">Sort: Last Updated</option>
+            <option value="stars">Sort: Stars</option>
+            <option value="name">Sort: Name</option>
+          </select>
+        </div>
+
+        <h3 id="projects-title">Projects</h3>
+
+        <div class="group" aria-labelledby="group-dev">
+          <h4 id="group-dev">Programmer / Development</h4>
+          <div id="grid-dev" class="grid" role="list"></div>
+        </div>
+
+        <div class="group" aria-labelledby="group-ai">
+          <h4 id="group-ai">Automation &amp; AI</h4>
+          <div id="grid-ai" class="grid" role="list"></div>
+        </div>
+
+        <div class="group" aria-labelledby="group-enterprise">
+          <h4 id="group-enterprise">Enterprise Systems / Cloud</h4>
+          <div id="grid-enterprise" class="grid" role="list"></div>
+        </div>
+
+        <div id="projects-empty" class="empty" hidden>Couldn’t load project data right now. GitHub API limits happen. Links still work below.</div>
+        <div id="status" class="sr-only" role="status" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    <div class="container">
+      <small>© <span id="year"></span> Ethan Blair</small>
+    </div>
+  </footer>
+
+  <script>
+  (function() {
+    "use strict";
+
+    // ======== Utilities ========
+    const $ = (sel, root=document) => root.querySelector(sel);
+    const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+    const repos = [
+      // Programmer / Development
+      { group: "dev", url: "https://github.com/i3T4AN/csv-watcher" },
+      { group: "dev", url: "https://github.com/i3T4AN/applescript-device-rename" },
+      { group: "dev", url: "https://github.com/i3T4AN/sudokusolver-resume" },
+      { group: "dev", url: "https://github.com/i3T4AN/numberguesser-resume" },
+      // Automation & AI
+      { group: "ai", url: "https://github.com/i3T4AN/Agent_Example" },
+      // Enterprise Systems / Cloud
+      { group: "enterprise", url: "https://github.com/i3T4AN/SCCM-font-install-no-restart" },
+      { group: "enterprise", url: "https://github.com/i3T4AN/azuread-inactive-users-export" },
+      { group: "enterprise", url: "https://github.com/i3T4AN/SAD_Group_Proj" },
+    ];
+
+    const parseRepoPath = (fullUrl) => {
+      try {
+        const u = new URL(fullUrl);
+        const [owner, name] = u.pathname.replace(/^\//, "").split("/");
+        return { owner, name };
+      } catch { return null; }
+    };
+
+    const relativeTime = (dateString) => {
+      const date = new Date(dateString);
+      const now = new Date();
+      const diff = Math.round((date.getTime() - now.getTime()) / 1000);
+      const rtf = new Intl.RelativeTimeFormat(undefined, { numeric: "auto" });
+      const ranges = {
+        year: 3600 * 24 * 365,
+        month: 3600 * 24 * 30,
+        week: 3600 * 24 * 7,
+        day: 3600 * 24,
+        hour: 3600,
+        minute: 60,
+        second: 1
+      };
+      for (const [unit, seconds] of Object.entries(ranges)) {
+        const delta = diff / seconds;
+        if (Math.abs(delta) >= 1 || unit === 'second') {
+          return rtf.format(Math.round(delta), unit);
+        }
+      }
+    };
+
+    const synthesizeDescription = (name) => {
+      // Simple synthesis from repo name
+      return name.replace(/[-_]/g, ' ').replace(/\b\w/g, (m) => m.toUpperCase());
+    };
+
+    const status = (msg) => { const el = $("#status"); if (el) el.textContent = msg; };
+
+    // ======== Theme Toggle ========
+    const THEME_KEY = "theme";
+    const applyTheme = (val) => {
+      const html = document.documentElement;
+      if (val === "dark") html.classList.add("theme-dark"); else html.classList.remove("theme-dark");
+      const btn = $("#themeToggle");
+      if (btn) {
+        btn.setAttribute("aria-pressed", val === "dark" ? "true" : "false");
+        btn.title = val === "dark" ? "Switch to light theme" : "Switch to dark theme";
+      }
+    };
+
+    const initTheme = () => {
+      const saved = localStorage.getItem(THEME_KEY);
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      applyTheme(saved || (prefersDark ? "dark" : "light"));
+      const toggle = $("#themeToggle");
+      if (toggle) {
+        toggle.addEventListener('click', () => {
+          const isDark = document.documentElement.classList.toggle('theme-dark');
+          localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light');
+          toggle.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+        });
+        toggle.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle.click(); }
+        });
+      }
+    };
+
+    // ======== GitHub API with session cache ========
+    const cacheGet = (key) => {
+      try { return JSON.parse(sessionStorage.getItem(key)); } catch { return null; }
+    };
+    const cacheSet = (key, val) => {
+      try { sessionStorage.setItem(key, JSON.stringify(val)); } catch {}
+    };
+
+    const fetchRepo = async (owner, name) => {
+      const key = `gh:${owner}/${name}`;
+      const cached = cacheGet(key);
+      if (cached) return cached;
+      const url = `https://api.github.com/repos/${owner}/${name}`;
+      try {
+        const res = await fetch(url, { headers: { 'Accept': 'application/vnd.github+json' } });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        const mapped = {
+          full_name: data.full_name,
+          html_url: data.html_url,
+          description: data.description || synthesizeDescription(name),
+          language: data.language || 'Other',
+          stargazers_count: data.stargazers_count || 0,
+          updated_at: data.updated_at || new Date().toISOString(),
+          name
+        };
+        cacheSet(key, mapped);
+        return mapped;
+      } catch (e) {
+        return {
+          full_name: `${owner}/${name}`,
+          html_url: `https://github.com/${owner}/${name}`,
+          description: synthesizeDescription(name),
+          language: 'Other', stargazers_count: 0,
+          updated_at: new Date().toISOString(),
+          name, error: true
+        };
+      }
+    };
+
+    // ======== Rendering ========
+    const state = {
+      repos: [],
+      filter: 'All',
+      sort: 'updated',
+      languages: new Set(['All'])
+    };
+
+    const buildCard = (r) => {
+      const article = document.createElement('article');
+      article.className = 'card';
+      article.setAttribute('role', 'listitem');
+      article.innerHTML = `
+        <h5><a href="${r.html_url}" target="_blank" rel="noopener" aria-label="Open ${r.full_name} on GitHub">${r.name}</a></h5>
+        <p class="desc">${r.description}</p>
+        <div class="meta">
+          <span class="lang" aria-label="Primary language">${r.language}</span>
+          <span aria-label="Stars">★ ${r.stargazers_count}</span>
+          <span aria-label="Last updated">Updated: ${relativeTime(r.updated_at)}</span>
+        </div>
+        <div class="actions">
+          <a class="btn gh-link" href="${r.html_url}" target="_blank" rel="noopener" aria-label="View ${r.full_name} on GitHub">View on GitHub</a>
+        </div>
+      `;
+      if (r.error) {
+        article.title = 'Partial data shown (API limit or error).';
+      }
+      return article;
+    };
+
+    const sorters = {
+      updated: (a,b) => new Date(b.updated_at) - new Date(a.updated_at),
+      stars: (a,b) => (b.stargazers_count||0) - (a.stargazers_count||0),
+      name: (a,b) => a.name.localeCompare(b.name)
+    };
+
+    const render = () => {
+      const { filter, sort } = state;
+      const groups = { dev: [], ai: [], enterprise: [] };
+      for (const r of state.repos) {
+        if (filter !== 'All' && r.language !== filter) continue;
+        groups[r.__group].push(r);
+      }
+      for (const key of Object.keys(groups)) groups[key].sort(sorters[sort]);
+
+      const grids = {
+        dev: $('#grid-dev'),
+        ai: $('#grid-ai'),
+        enterprise: $('#grid-enterprise')
+      };
+      for (const [key, grid] of Object.entries(grids)) {
+        grid.innerHTML = '';
+        const list = groups[key];
+        if (!list.length) {
+          const empty = document.createElement('div');
+          empty.className = 'empty';
+          empty.textContent = 'No projects match the current filter.';
+          grid.appendChild(empty);
+        } else {
+          for (const item of list) grid.appendChild(buildCard(item));
+        }
+      }
+
+      // Build filter chips (once languages known). Rebuild to ensure "All" stays first.
+      const filters = $('#filters');
+      filters.innerHTML = '';
+      const langs = ['All', ...Array.from(state.languages).filter(l=>l!=='All').sort((a,b)=>a.localeCompare(b))];
+      for (const lang of langs) {
+        const chip = document.createElement('button');
+        chip.className = 'chip';
+        chip.type = 'button';
+        chip.setAttribute('aria-pressed', String(state.filter === lang));
+        chip.textContent = lang;
+        chip.addEventListener('click', () => { state.filter = lang; render(); });
+        filters.appendChild(chip);
+      }
+
+      status(`${groups.dev.length + groups.ai.length + groups.enterprise.length} project cards displayed`);
+    };
+
+    const loadAll = async () => {
+      status('Loading repositories…');
+      const results = [];
+      for (const item of repos) {
+        const parsed = parseRepoPath(item.url);
+        if (!parsed) continue;
+        const data = await fetchRepo(parsed.owner, parsed.name);
+        data.__group = item.group; // track section
+        results.push(data);
+        // Collect language for chips
+        if (data.language) state.languages.add(data.language);
+      }
+      state.repos = results;
+      status('Repositories loaded');
+      render();
+    };
+
+    // ======== Init ========
+    document.addEventListener('DOMContentLoaded', () => {
+      // Year in footer
+      $('#year').textContent = String(new Date().getFullYear());
+
+      // Theme
+      initTheme();
+
+      // Sort control
+      const sortSel = $('#sort');
+      sortSel.addEventListener('change', () => { state.sort = sortSel.value; render(); });
+
+      // Load data
+      loadAll().catch(() => {
+        $('#projects-empty').hidden = false;
+      });
+    });
+  })();
+  </script>
+</body>
+</html>
