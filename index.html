@@ -776,7 +776,14 @@
     const $ = (selector, root = document) => root.querySelector(selector);
     const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
 
-    // Repository configuration - organized by project type
+   // ========== PROJECT CONFIGURATION ==========
+// ADD NEW PROJECTS HERE - Just add the GitHub URL and specify the group
+// Available groups: "dev" (Programming), "ai" (Automation & AI), "enterprise" (Enterprise Systems)
+  // TO ADD A NEW PROJECT:
+  // 1. Copy this line: { group: "dev", url: "https://github.com/i3T4AN/your-repo-name" },
+  // 2. Change "dev" to "ai" or "enterprise" as appropriate
+  // 3. Change the URL to your repository
+  // 4. The language filter will automatically update based on the repo's primary language
     const repos = [
       // Programming / Development projects
       { group: "dev", url: "https://github.com/i3T4AN/csv-watcher" },
@@ -956,6 +963,9 @@
           const newTheme = isDark ? 'dark' : 'light';
           localStorage.setItem(THEME_KEY, newTheme);
           themeToggle.setAttribute('aria-pressed', String(isDark));
+          
+          // Update contributions graph for new theme
+          updateContributionsGraph(isDark);
         });
 
         // Handle keyboard interaction
