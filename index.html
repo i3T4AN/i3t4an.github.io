@@ -1,13 +1,66 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <!-- =============================
+       SINGLE EDITABLE CONFIG BLOCK
+       Update name, tagline, hero text, socials, skills, and repos here.
+       ============================= -->
+  <script>
+    window.SITE = {
+      name: "Ethan Blair",
+      tagline: "Enterprise Systems • Automation • AI Development",
+      hero: {
+        title: "Building practical tools for enterprise systems.",
+        paragraph: "I'm Ethan Blair, a student at the University of Northern Colorado. My focus is on enterprise technology, automation, and AI development. I enjoy building practical tools that make systems work more efficiently."
+      },
+      socials: {
+        github: "https://github.com/i3T4AN",
+        linkedin: "https://www.linkedin.com/in/ethan-blair-99a3b72a2",
+        email: "mailto:i3t4an@gmail.com"
+      },
+      skills: {
+        development: [
+          "JavaScript/TypeScript, React, Node.js",
+          "Python, C#, Objective-C",
+          "PowerShell, AppleScript, Xcode"
+        ],
+        automation: [
+          "Microsoft Copilot Studio",
+          "Power Automate",
+          "Mabl (Automated QA Testing)"
+        ],
+        systems: [
+          "Microsoft Azure, Intune, SCCM",
+          "Power BI",
+          "macOS, Windows, Linux",
+          "Q-SYS (AV Integration)"
+        ]
+      },
+      repos: [
+        { group: 'dev', url: 'https://github.com/i3T4AN/csv-watcher' },
+        { group: 'dev', url: 'https://github.com/i3T4AN/sudokusolver-resume' },
+        { group: 'dev', url: 'https://github.com/i3T4AN/numberguesser-resume' },
+        { group: 'dev', url: 'https://github.com/i3T4AN/weatherCLI' },
+        { group: 'ai', url: 'https://github.com/i3T4AN/Agent_Example' },
+        { group: 'enterprise', url: 'https://github.com/i3T4AN/applescript-device-rename' },
+        { group: 'enterprise', url: 'https://github.com/i3T4AN/SCCM-font-install-no-restart' },
+        { group: 'enterprise', url: 'https://github.com/i3T4AN/azuread-inactive-users-export' },
+        { group: 'enterprise', url: 'https://github.com/i3T4AN/SAD_Group_Proj' }
+      ]
+    };
+  </script>
+
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ethan Blair — Portfolio</title>
   <meta name="description" content="Ethan Blair: programmer focused on enterprise technology, automation, and AI development." />
   <link rel="canonical" href="https://i3t4an.github.io/" />
 
-  <!-- Open Graph / Twitter -->
+  <!-- Theme colors -->
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0a0a0a" />
+
+  <!-- Open Graph / Twitter (static fallbacks; optional to update) -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Ethan Blair — Portfolio" />
   <meta property="og:description" content="Programmer focused on enterprise technology, automation, and AI development." />
@@ -16,85 +69,56 @@
   <meta name="twitter:title" content="Ethan Blair — Portfolio" />
   <meta name="twitter:description" content="Programmer focused on enterprise technology, automation, and AI development." />
 
-  <!-- Theme colors -->
-  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
-  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0a0a0a" />
-
-  <!-- JSON-LD Schema -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Ethan Blair",
-    "url": "https://i3t4an.github.io/",
-    "email": "mailto:i3t4an@gmail.com",
-    "affiliation": {"@type": "CollegeOrUniversity", "name": "University of Northern Colorado"},
-    "sameAs": [
-      "https://github.com/i3T4AN",
-      "https://www.linkedin.com/in/ethan-blair-99a3b72a2"
-    ],
-    "jobTitle": "Programmer",
-    "knowsAbout": [
-      "Enterprise technology", "Automation", "AI development",
-      "Microsoft Intune", "Microsoft SCCM", "Power BI",
-      "JavaScript", "TypeScript", "React", "Node.js", "Python",
-      "C#", "Objective-C", "PowerShell", "AppleScript"
-    ]
-  }
-  </script>
+  <!-- Will be replaced at runtime with JSON-LD from config -->
+  <script id="jsonld"></script>
 
   <style>
-    /* Modern Design System */
     :root {
-      /* Light theme */
       --bg-primary: #ffffff;
       --bg-secondary: #f8fafc;
       --bg-tertiary: #f1f5f9;
       --text-primary: #0f172a;
-      --text-secondary: #64748b;
-      --text-muted: #94a3b8;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
       --border: rgba(226, 232, 240, 0.5);
       --border-hover: rgba(148, 163, 184, 0.3);
-      
-      /* Accent colors */
       --accent: #6366f1;
       --accent-hover: #4f46e5;
       --accent-light: rgba(99, 102, 241, 0.1);
       --accent-glow: rgba(99, 102, 241, 0.4);
-      
-      /* Gradients */
+      --card-text: #1f2937;
+      --card-meta: #334155;
+      --lang-pill-bg: #eef2ff;
+      --lang-pill-text: #1f2937;
       --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       --gradient-mesh: radial-gradient(at 40% 20%, hsla(237, 69%, 65%, 0.2) 0px, transparent 50%),
                        radial-gradient(at 80% 0%, hsla(189, 75%, 60%, 0.15) 0px, transparent 50%),
                        radial-gradient(at 0% 50%, hsla(343, 70%, 65%, 0.1) 0px, transparent 50%);
-      
-      /* Shadows */
       --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.04);
       --shadow: 0 10px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
       --shadow-lg: 0 20px 40px -15px rgba(0, 0, 0, 0.15);
       --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.2);
-      
-      /* Blur effects */
       --blur-bg: saturate(180%) blur(20px);
-      
-      /* Animation */
       --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
-
     .theme-dark {
       --bg-primary: #0a0a0a;
       --bg-secondary: #111111;
       --bg-tertiary: #1a1a1a;
       --text-primary: #f8fafc;
-      --text-secondary: #94a3b8;
-      --text-muted: #64748b;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
       --border: rgba(51, 65, 85, 0.4);
       --border-hover: rgba(148, 163, 184, 0.2);
       --accent: #818cf8;
       --accent-hover: #6366f1;
-      --accent-light: rgba(129, 140, 248, 0.1);
+      --accent-light: rgba(129, 140, 248, 0.15);
       --accent-glow: rgba(129, 140, 248, 0.3);
+      --card-text: var(--text-primary);
+      --card-meta: var(--text-muted);
+      --lang-pill-bg: rgba(129, 140, 248, 0.15);
+      --lang-pill-text: #c7d2fe;
       --gradient-primary: linear-gradient(135deg, #667eea 0%, #9333ea 100%);
       --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.2);
       --shadow: 0 10px 40px -10px rgb(0 0 0 / 0.5);
@@ -102,653 +126,130 @@
       --shadow-glow: 0 0 60px rgba(129, 140, 248, 0.15);
     }
 
-    /* Base Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", system-ui, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; overflow-x: hidden; position: relative; }
+    body::before { content: ''; position: fixed; inset: 0; background: var(--gradient-mesh); pointer-events: none; z-index: 0; }
+
+    h1, h2, h3, h4, h5, h6 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
+    a { color: var(--accent); text-decoration: none; transition: var(--transition-fast); }
+    a:hover { color: var(--accent-hover); }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; position: relative; z-index: 1; }
+
+    header { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(255, 255, 255, 0.7); backdrop-filter: var(--blur-bg); border-bottom: 1px solid var(--border); transition: var(--transition); }
+    .theme-dark header { background: rgba(10, 10, 10, 0.7); }
+    header.scrolled { box-shadow: var(--shadow-sm); }
+
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 0; min-height: 4.5rem; }
+    .brand h1 { font-size: 1.5rem; font-weight: 800; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .brand p { color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.25rem; }
+
+    .theme-toggle { position: relative; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid var(--border); color: var(--text-primary); padding: 0.625rem 1.25rem; border-radius: 9999px; cursor: pointer; font-size: 0.875rem; font-weight: 600; transition: var(--transition); overflow: hidden; }
+    .theme-toggle::before { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; border-radius: 50%; background: var(--accent-light); transform: translate(-50%, -50%); transition: width 0.6s, height 0.6s; }
+    .theme-toggle:hover { transform: translateY(-2px); box-shadow: var(--shadow); border-color: var(--accent); }
+    .theme-toggle:hover::before { width: 100px; height: 100px; }
+
+    main { margin-top: 4.5rem; position: relative; z-index: 1; }
+
+    .hero { padding: 6rem 0 4rem; position: relative; background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%); overflow: hidden; }
+    .hero::before { content: ''; position: absolute; top: -50%; right: -25%; width: 100%; height: 100%; background: radial-gradient(circle, var(--accent-light) 0%, transparent 70%); animation: float 20s ease-in-out infinite; }
+    @keyframes float { 0%, 100% { transform: translate(0, 0) rotate(0deg); } 33% { transform: translate(30px, -30px) rotate(120deg); } 66% { transform: translate(-20px, 20px) rotate(240deg); } }
+    .hero h2 { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 900; margin-bottom: 1.5rem; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: fadeInUp 0.8s ease-out; }
+    .hero p { color: var(--text-secondary); max-width: 700px; font-size: 1.25rem; line-height: 1.8; animation: fadeInUp 0.8s ease-out 0.2s backwards; }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+    section { padding: 5rem 0; position: relative; }
+    section h3 { font-size: 2.5rem; font-weight: 800; margin-bottom: 3rem; text-align: center; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+    .cta { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-top: 2rem; }
+    .btn { position: relative; display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.875rem 2rem; border-radius: 9999px; font-weight: 600; font-size: 0.9rem; border: 1px solid var(--border); background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); color: var(--text-primary); transition: var(--transition); overflow: hidden; }
+    .btn::before { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; border-radius: 50%; background: var(--accent-light); transform: translate(-50%, -50%); transition: width 0.6s, height 0.6s; }
+    .btn:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--accent); }
+    .btn:hover::before { width: 300px; height: 300px; }
+    .btn.primary { background: var(--gradient-primary); color: white; border: none; box-shadow: var(--shadow-glow); }
+    .btn.primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: var(--shadow-lg), var(--shadow-glow); }
+
+    .cols { display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+    .col { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 1.5rem; padding: 2rem; transition: var(--transition); position: relative; overflow: hidden; }
+    .col::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--gradient-primary); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; }
+    .col:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: var(--border-hover); background: rgba(255, 255, 255, 0.05); }
+    .col:hover::before { transform: scaleX(1); }
+    .col h4 { font-size: 1.25rem; margin-bottom: 1rem; color: var(--text-primary); }
+    .col ul { list-style: none; color: var(--text-secondary); }
+    .col li { padding: 0.5rem 0 0.5rem 1.5rem; position: relative; }
+    .col li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-weight: bold; }
+
+    .controls { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 3rem; padding: 1.5rem; background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(10px); border-radius: 1.5rem; border: 1px solid var(--border); }
+    .theme-dark .controls { background: rgba(17, 17, 17, 0.6); }
+
+    .filters { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+    .chip { padding: 0.5rem 1.25rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--text-secondary); transition: var(--transition); position: relative; overflow: hidden; }
+    .chip:hover { transform: translateY(-2px); border-color: var(--accent); color: var(--accent); }
+    .chip[aria-pressed="true"] { background: var(--gradient-primary); color: white; border: none; box-shadow: var(--shadow-sm); }
+
+    /* Dark mode: purple backgrounds for labels + dropdown */
+    .theme-dark .chip { background: var(--accent); color: var(--text-primary); border-color: transparent; }
+    .theme-dark .chip:hover { filter: brightness(1.05); }
+    .theme-dark .sort { background: var(--accent); color: var(--text-primary); border-color: transparent; }
+
+    .sort { padding: 0.625rem 1.25rem; border-radius: 0.75rem; border: 1px solid var(--border); background: rgba(255, 255, 255, 0.02); color: var(--text-primary); font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: var(--transition); }
+    .sort:hover { border-color: var(--accent); }
+
+    .group { margin-bottom: 4rem; }
+    .group h4 { font-size: 1.5rem; font-weight: 700; margin-bottom: 2rem; color: var(--text-secondary); display: flex; align-items: center; gap: 1rem; }
+    .group h4::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border) 0%, transparent 100%); }
+
+    .grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); }
+
+    .card { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 1.5rem; padding: 1.75rem; transition: var(--transition); position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 1rem; opacity: 0; transform: translateY(30px); color: var(--card-text); }
+    .card::before { content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; background: var(--gradient-primary); border-radius: 1.5rem; opacity: 0; z-index: -1; transition: opacity 0.3s ease; }
+    .card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); border-color: transparent; background: rgba(255, 255, 255, 0.05); }
+    .card:hover::before { opacity: 1; }
+    .card.animate-in { opacity: 1; transform: translateY(0); }
+
+    .card h5 { font-size: 1.25rem; font-weight: 700; }
+    .card h5 a { color: var(--card-text); }
+    .theme-dark .card h5 a { color: var(--text-primary); }
+    .theme-dark .card:hover h5 a { color: var(--text-primary); }
+
+    .desc { color: var(--card-text); line-height: 1.6; flex: 1; }
+    .meta { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; font-size: 0.875rem; color: var(--card-meta); }
+
+    .lang { padding: 0.25rem 0.75rem; border-radius: 9999px; background: var(--lang-pill-bg); color: var(--lang-pill-text); font-weight: 600; font-size: 0.75rem; }
+
+    /* Light mode: hovered card becomes white text */
+    :not(.theme-dark) .card:hover { color: #ffffff; }
+    :not(.theme-dark) .card:hover h5 a,
+    :not(.theme-dark) .card:hover .desc,
+    :not(.theme-dark) .card:hover .meta { color: #ffffff; }
+    :not(.theme-dark) .card:hover .gh-link { color: #ffffff; }
+    :not(.theme-dark) .card:hover .gh-link:hover { color: #ffffff; }
+    :not(.theme-dark) .card:hover .lang { background: rgba(255,255,255,0.2); color: #ffffff; }
 
-    html {
-      scroll-behavior: smooth;
-      font-size: 16px;
-    }
+    .actions { margin-top: auto; padding-top: 1rem; }
+    .gh-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--accent); font-weight: 600; font-size: 0.9rem; transition: var(--transition-fast); }
+    .gh-link:hover { color: var(--accent-hover); transform: translateX(3px); }
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", system-ui, sans-serif;
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      overflow-x: hidden;
-      position: relative;
-    }
+    .empty { grid-column: 1 / -1; padding: 3rem; text-align: center; border: 2px dashed var(--border); border-radius: 1.5rem; color: var(--text-muted); background: var(--bg-tertiary); }
 
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: var(--gradient-mesh);
-      pointer-events: none;
-      z-index: 0;
-    }
+    footer { padding: 3rem 0; text-align: center; color: var(--text-muted); border-top: 1px solid var(--border); background: var(--bg-secondary); }
 
-    /* Typography */
-    h1, h2, h3, h4, h5, h6 {
-      line-height: 1.2;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
+    .skip-link { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+    .skip-link:focus { left: 1rem; top: 1rem; width: auto; height: auto; background: var(--accent); color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; z-index: 10000; }
 
-    a {
-      color: var(--accent);
-      text-decoration: none;
-      transition: var(--transition-fast);
-    }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
-    a:hover {
-      color: var(--accent-hover);
-    }
+    a:focus-visible, button:focus-visible, select:focus-visible, .card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 0.25rem; }
+    .card:focus-visible { outline-offset: 4px; border-radius: 1.5rem; }
 
-    /* Container */
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* Header */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 1000;
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: var(--blur-bg);
-      border-bottom: 1px solid var(--border);
-      transition: var(--transition);
-    }
-
-    .theme-dark header {
-      background: rgba(10, 10, 10, 0.7);
-    }
-
-    header.scrolled {
-      box-shadow: var(--shadow-sm);
-    }
-
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.25rem 0;
-      min-height: 4.5rem;
-    }
-
-    .brand h1 {
-      font-size: 1.5rem;
-      font-weight: 800;
-      background: var(--gradient-primary);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .brand p {
-      color: var(--text-secondary);
-      font-size: 0.875rem;
-      margin-top: 0.25rem;
-    }
-
-    /* Theme Toggle Button */
-    .theme-toggle {
-      position: relative;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border: 1px solid var(--border);
-      color: var(--text-primary);
-      padding: 0.625rem 1.25rem;
-      border-radius: 9999px;
-      cursor: pointer;
-      font-size: 0.875rem;
-      font-weight: 600;
-      transition: var(--transition);
-      overflow: hidden;
-    }
-
-    .theme-toggle::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      border-radius: 50%;
-      background: var(--accent-light);
-      transform: translate(-50%, -50%);
-      transition: width 0.6s, height 0.6s;
-    }
-
-    .theme-toggle:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow);
-      border-color: var(--accent);
-    }
-
-    .theme-toggle:hover::before {
-      width: 100px;
-      height: 100px;
-    }
-
-    /* Main Content */
-    main {
-      margin-top: 4.5rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* Hero Section */
-    .hero {
-      padding: 6rem 0 4rem;
-      position: relative;
-      background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
-      overflow: hidden;
-    }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      right: -25%;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle, var(--accent-light) 0%, transparent 70%);
-      animation: float 20s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translate(0, 0) rotate(0deg); }
-      33% { transform: translate(30px, -30px) rotate(120deg); }
-      66% { transform: translate(-20px, 20px) rotate(240deg); }
-    }
-
-    .hero h2 {
-      font-size: clamp(2.5rem, 6vw, 4rem);
-      font-weight: 900;
-      margin-bottom: 1.5rem;
-      background: var(--gradient-primary);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: fadeInUp 0.8s ease-out;
-    }
-
-    .hero p {
-      color: var(--text-secondary);
-      max-width: 700px;
-      font-size: 1.25rem;
-      line-height: 1.8;
-      animation: fadeInUp 0.8s ease-out 0.2s backwards;
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Sections */
-    section {
-      padding: 5rem 0;
-      position: relative;
-    }
-
-    section h3 {
-      font-size: 2.5rem;
-      font-weight: 800;
-      margin-bottom: 3rem;
-      text-align: center;
-      background: var(--gradient-primary);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    /* Contact Buttons */
-    .cta {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 2rem;
-    }
-
-    .btn {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.875rem 2rem;
-      border-radius: 9999px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      color: var(--text-primary);
-      transition: var(--transition);
-      overflow: hidden;
-    }
-
-    .btn::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      border-radius: 50%;
-      background: var(--accent-light);
-      transform: translate(-50%, -50%);
-      transition: width 0.6s, height 0.6s;
-    }
-
-    .btn:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--shadow);
-      border-color: var(--accent);
-    }
-
-    .btn:hover::before {
-      width: 300px;
-      height: 300px;
-    }
-
-    .btn.primary {
-      background: var(--gradient-primary);
-      color: white;
-      border: none;
-      box-shadow: var(--shadow-glow);
-    }
-
-    .btn.primary:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: var(--shadow-lg), var(--shadow-glow);
-    }
-
-    /* Skills Grid */
-    .cols {
-      display: grid;
-      gap: 2rem;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    }
-
-    .col {
-      background: rgba(255, 255, 255, 0.02);
-      backdrop-filter: blur(10px);
-      border: 1px solid var(--border);
-      border-radius: 1.5rem;
-      padding: 2rem;
-      transition: var(--transition);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .col::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: var(--gradient-primary);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.3s ease;
-    }
-
-    .col:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--shadow-lg);
-      border-color: var(--border-hover);
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    .col:hover::before {
-      transform: scaleX(1);
-    }
-
-    .col h4 {
-      font-size: 1.25rem;
-      margin-bottom: 1rem;
-      color: var(--text-primary);
-    }
-
-    .col ul {
-      list-style: none;
-      color: var(--text-secondary);
-    }
-
-    .col li {
-      padding: 0.5rem 0;
-      padding-left: 1.5rem;
-      position: relative;
-    }
-
-    .col li::before {
-      content: '→';
-      position: absolute;
-      left: 0;
-      color: var(--accent);
-      font-weight: bold;
-    }
-
-    /* Project Controls */
-    .controls {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-      margin-bottom: 3rem;
-      padding: 1.5rem;
-      background: rgba(255, 255, 255, 0.02);
-      backdrop-filter: blur(10px);
-      border-radius: 1.5rem;
-      border: 1px solid var(--border);
-    }
-
-    .filters {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-    }
-
-    .chip {
-      padding: 0.5rem 1.25rem;
-      border-radius: 9999px;
-      font-size: 0.875rem;
-      font-weight: 600;
-      cursor: pointer;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text-secondary);
-      transition: var(--transition);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .chip:hover {
-      transform: translateY(-2px);
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    .chip[aria-pressed="true"] {
-      background: var(--gradient-primary);
-      color: white;
-      border: none;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .sort {
-      padding: 0.625rem 1.25rem;
-      border-radius: 0.75rem;
-      border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.02);
-      color: var(--text-primary);
-      font-size: 0.875rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-
-    .sort:hover {
-      border-color: var(--accent);
-    }
-
-    /* Project Groups */
-    .group {
-      margin-bottom: 4rem;
-    }
-
-    .group h4 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 2rem;
-      color: var(--text-secondary);
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .group h4::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(90deg, var(--border) 0%, transparent 100%);
-    }
-
-    /* Project Grid */
-    .grid {
-      display: grid;
-      gap: 1.5rem;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    }
-
-    /* Project Cards */
-    .card {
-      background: rgba(255, 255, 255, 0.02);
-      backdrop-filter: blur(10px);
-      border: 1px solid var(--border);
-      border-radius: 1.5rem;
-      padding: 1.75rem;
-      transition: var(--transition);
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      opacity: 0;
-      transform: translateY(30px);
-    }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      top: -2px;
-      left: -2px;
-      right: -2px;
-      bottom: -2px;
-      background: var(--gradient-primary);
-      border-radius: 1.5rem;
-      opacity: 0;
-      z-index: -1;
-      transition: opacity 0.3s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-8px);
-      box-shadow: var(--shadow-lg);
-      border-color: transparent;
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    .card:hover::before {
-      opacity: 1;
-    }
-
-    .card.animate-in {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .card h5 {
-      font-size: 1.25rem;
-      font-weight: 700;
-    }
-
-    .card h5 a {
-      color: var(--text-primary);
-      transition: var(--transition-fast);
-    }
-
-    .card h5 a:hover {
-      color: var(--accent);
-    }
-
-    .desc {
-      color: var(--text-secondary);
-      line-height: 1.6;
-      flex: 1;
-    }
-
-    .meta {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-      font-size: 0.875rem;
-      color: var(--text-muted);
-    }
-
-    .lang {
-      padding: 0.25rem 0.75rem;
-      border-radius: 9999px;
-      background: var(--accent-light);
-      color: var(--accent);
-      font-weight: 600;
-      font-size: 0.75rem;
-    }
-
-    .actions {
-      margin-top: auto;
-      padding-top: 1rem;
-    }
-
-    .gh-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--accent);
-      font-weight: 600;
-      font-size: 0.9rem;
-      transition: var(--transition-fast);
-    }
-
-    .gh-link:hover {
-      color: var(--accent-hover);
-      transform: translateX(3px);
-    }
-
-    /* Empty State */
-    .empty {
-      grid-column: 1 / -1;
-      padding: 3rem;
-      text-align: center;
-      border: 2px dashed var(--border);
-      border-radius: 1.5rem;
-      color: var(--text-muted);
-      background: var(--bg-tertiary);
-    }
-
-    /* Footer */
-    footer {
-      padding: 3rem 0;
-      text-align: center;
-      color: var(--text-muted);
-      border-top: 1px solid var(--border);
-      background: var(--bg-secondary);
-    }
-
-    /* Accessibility */
-    .skip-link {
-      position: absolute;
-      left: -9999px;
-      top: auto;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-    }
-
-    .skip-link:focus {
-      left: 1rem;
-      top: 1rem;
-      width: auto;
-      height: auto;
-      background: var(--accent);
-      color: white;
-      padding: 0.75rem 1.5rem;
-      border-radius: 0.5rem;
-      z-index: 10000;
-    }
-
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-
-    /* Focus Styles */
-    a:focus-visible,
-    button:focus-visible,
-    select:focus-visible,
-    .card:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-      border-radius: 0.25rem;
-    }
-    
-    .card:focus-visible {
-      outline-offset: 4px;
-      border-radius: 1.5rem;
-    }
-
-    /* Responsive */
     @media (max-width: 768px) {
-      .hero h2 {
-        font-size: 2.5rem;
-      }
-      
-      .grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .controls {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      
-      section {
-        padding: 3rem 0;
-      }
+      .hero h2 { font-size: 2.5rem; }
+      .grid { grid-template-columns: 1fr; }
+      .controls { flex-direction: column; align-items: stretch; }
+      section { padding: 3rem 0; }
     }
-
-    /* Animation delays */
-    .card:nth-child(1) { animation-delay: 0ms; }
-    .card:nth-child(2) { animation-delay: 100ms; }
-    .card:nth-child(3) { animation-delay: 200ms; }
-    .card:nth-child(4) { animation-delay: 300ms; }
-    .card:nth-child(5) { animation-delay: 400ms; }
-    .card:nth-child(6) { animation-delay: 500ms; }
   </style>
 </head>
 <body>
@@ -757,8 +258,8 @@
   <header role="banner">
     <div class="container nav">
       <div class="brand">
-        <h1>Ethan Blair</h1>
-        <p>Enterprise Systems • Automation • AI Development</p>
+        <h1 id="brandName">Ethan Blair</h1>
+        <p id="brandTag">Enterprise Systems • Automation • AI Development</p>
       </div>
       <nav>
         <button id="themeToggle" class="theme-toggle" aria-pressed="false">
@@ -771,11 +272,8 @@
   <main id="main">
     <section class="hero">
       <div class="container">
-        <h2>Building practical tools for enterprise systems.</h2>
-        <p>
-          I'm Ethan Blair, a student at the University of Northern Colorado. My focus is on enterprise technology, 
-          automation, and AI development. I enjoy building practical tools that make systems work more efficiently.
-        </p>
+        <h2 id="heroTitle">Building practical tools for enterprise systems.</h2>
+        <p id="heroParagraph"></p>
       </div>
     </section>
 
@@ -783,15 +281,9 @@
       <div class="container">
         <h3>Let's Connect</h3>
         <div class="cta">
-          <a class="btn primary" href="https://github.com/i3T4AN" target="_blank" rel="noopener">
-            GitHub
-          </a>
-          <a class="btn" href="https://www.linkedin.com/in/ethan-blair-99a3b72a2" target="_blank" rel="noopener">
-            LinkedIn
-          </a>
-          <a class="btn" href="mailto:i3t4an@gmail.com">
-            Email
-          </a>
+          <a id="linkGithub" class="btn primary" href="#" target="_blank" rel="noopener">GitHub</a>
+          <a id="linkLinkedIn" class="btn" href="#" target="_blank" rel="noopener">LinkedIn</a>
+          <a id="linkEmail" class="btn" href="#">Email</a>
         </div>
       </div>
     </section>
@@ -799,40 +291,14 @@
     <section id="skills">
       <div class="container">
         <h3>Technical Skills</h3>
-        <div class="cols">
-          <div class="col">
-            <h4>Programming & Development</h4>
-            <ul>
-              <li>JavaScript/TypeScript, React, Node.js</li>
-              <li>Python, C#, Objective-C</li>
-              <li>PowerShell, AppleScript, Xcode</li>
-            </ul>
-          </div>
-          <div class="col">
-            <h4>AI, QA & Automation</h4>
-            <ul>
-              <li>Microsoft Copilot Studio</li>
-              <li>Power Automate</li>
-              <li>Mabl (Automated QA Testing)</li>
-            </ul>
-          </div>
-          <div class="col">
-            <h4>Cloud, Systems & Tools</h4>
-            <ul>
-              <li>Microsoft Azure, Intune, SCCM</li>
-              <li>Power BI</li>
-              <li>macOS, Windows, Linux</li>
-              <li>Q-SYS (AV Integration)</li>
-            </ul>
-          </div>
-        </div>
+        <div id="skillsGrid" class="cols"></div>
       </div>
     </section>
 
     <section id="projects">
       <div class="container">
         <h3>Featured Projects</h3>
-        
+
         <div class="controls">
           <div class="filters" id="filters"></div>
           <select id="sort" class="sort">
@@ -867,7 +333,7 @@
 
   <footer>
     <div class="container">
-      <small>© <span id="year"></span> Ethan Blair. All rights reserved.</small>
+      <small>© <span id="year"></span> <span id="footerName">Ethan Blair</span>. All rights reserved.</small>
     </div>
   </footer>
 
@@ -875,92 +341,61 @@
   (() => {
     'use strict';
 
-    // Utils
     const $ = (s, r = document) => r.querySelector(s);
     const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
 
-    // Repository configuration
-    const repos = [
-      { group: 'dev', url: 'https://github.com/i3T4AN/csv-watcher' },
-      { group: 'dev', url: 'https://github.com/i3T4AN/sudokusolver-resume' },
-      { group: 'dev', url: 'https://github.com/i3T4AN/numberguesser-resume' },
-      { group: 'dev', url: 'https://github.com/i3T4AN/weatherCLI' },
-      { group: 'ai', url: 'https://github.com/i3T4AN/Agent_Example' },
-      { group: 'enterprise', url: 'https://github.com/i3T4AN/applescript-device-rename' },
-      { group: 'enterprise', url: 'https://github.com/i3T4AN/SCCM-font-install-no-restart' },
-      { group: 'enterprise', url: 'https://github.com/i3T4AN/azuread-inactive-users-export' },
-      { group: 'enterprise', url: 'https://github.com/i3T4AN/SAD_Group_Proj' },
-    ];
-
-    // State
-    const state = {
-      repos: [],
-      filter: 'All',
-      sort: 'updated',
-      languages: new Set(['All'])
+    // Inject JSON-LD from config to avoid duplication
+    const injectJSONLD = () => {
+      const data = {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        name: window.SITE.name,
+        url: "https://i3t4an.github.io/",
+        email: window.SITE.socials.email,
+        affiliation: {"@type":"CollegeOrUniversity","name":"University of Northern Colorado"},
+        sameAs: [window.SITE.socials.github, window.SITE.socials.linkedin],
+        jobTitle: "Programmer",
+        knowsAbout: [
+          "Enterprise technology","Automation","AI development",
+          "Microsoft Intune","Microsoft SCCM","Power BI",
+          "JavaScript","TypeScript","React","Node.js","Python",
+          "C#","Objective-C","PowerShell","AppleScript"
+        ]
+      };
+      const el = document.createElement('script');
+      el.type = 'application/ld+json';
+      el.textContent = JSON.stringify(data);
+      const holder = $('#jsonld');
+      holder.replaceWith(el);
     };
 
-    // Cache helpers
-    const cache = {
-      get: (key) => {
-        try {
-          return JSON.parse(sessionStorage.getItem(key));
-        } catch {
-          return null;
-        }
-      },
-      set: (key, value) => {
-        try {
-          sessionStorage.setItem(key, JSON.stringify(value));
-        } catch {}
-      }
-    };
-
-    // GitHub API
+    // Parse GitHub repo path
     const parseRepoPath = (url) => {
-      try {
-        const u = new URL(url);
-        const [owner, name] = u.pathname.slice(1).split('/');
-        return { owner, name };
-      } catch {
-        return null;
-      }
+      try { const u = new URL(url); const [owner, name] = u.pathname.slice(1).split('/'); return { owner, name }; } catch { return null; }
     };
 
+    // Relative time helper
     const relativeTime = (date) => {
       const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
       const diff = (new Date(date) - new Date()) / 1000;
-      const units = [
-        ['year', 31536000],
-        ['month', 2592000],
-        ['week', 604800],
-        ['day', 86400],
-        ['hour', 3600],
-        ['minute', 60],
-        ['second', 1]
-      ];
-      
-      for (const [unit, seconds] of units) {
-        const delta = diff / seconds;
-        if (Math.abs(delta) >= 1 || unit === 'second') {
-          return rtf.format(Math.round(delta), unit);
-        }
-      }
+      const units = [['year',31536000],['month',2592000],['week',604800],['day',86400],['hour',3600],['minute',60],['second',1]];
+      for (const [unit, seconds] of units) { const delta = diff / seconds; if (Math.abs(delta) >= 1 || unit === 'second') return rtf.format(Math.round(delta), unit); }
     };
 
+    // Cache
+    const cache = {
+      get: (key) => { try { return JSON.parse(sessionStorage.getItem(key)); } catch { return null; } },
+      set: (key, value) => { try { sessionStorage.setItem(key, JSON.stringify(value)); } catch {} }
+    };
+
+    // GitHub fetch
     const fetchRepo = async (owner, name) => {
       const key = `gh:${owner}/${name}`;
       const cached = cache.get(key);
-      
       if (cached) return cached;
-
       try {
-        const res = await fetch(`https://api.github.com/repos/${owner}/${name}`, {
-          headers: { 'Accept': 'application/vnd.github+json' }
-        });
-
+        const res = await fetch(`https://api.github.com/repos/${owner}/${name}`, { headers: { 'Accept': 'application/vnd.github+json' } });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
         const data = await res.json();
         const repo = {
           full_name: data.full_name,
@@ -972,32 +407,19 @@
           name,
           error: false
         };
-
         cache.set(key, repo);
         return repo;
       } catch (e) {
-        console.warn(`Failed to fetch ${owner}/${name}:`, e);
-        return {
-          full_name: `${owner}/${name}`,
-          html_url: `https://github.com/${owner}/${name}`,
-          description: name.replace(/[-_]/g, ' ').replace(/\b\w/g, m => m.toUpperCase()),
-          language: 'Other',
-          stargazers_count: 0,
-          updated_at: new Date().toISOString(),
-          name,
-          error: true
-        };
+        return { full_name: `${owner}/${name}`, html_url: `https://github.com/${owner}/${name}`, description: name.replace(/[-_]/g, ' ').replace(/\b\w/g, m => m.toUpperCase()), language: 'Other', stargazers_count: 0, updated_at: new Date().toISOString(), name, error: true };
       }
     };
 
-    // Theme
+    // Theme setup
     const initTheme = () => {
       const saved = localStorage.getItem('theme');
       const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
       const theme = saved || (prefersDark ? 'dark' : 'light');
-      
       applyTheme(theme);
-
       $('#themeToggle')?.addEventListener('click', () => {
         const isDark = document.documentElement.classList.toggle('theme-dark');
         const newTheme = isDark ? 'dark' : 'light';
@@ -1006,32 +428,24 @@
       });
     };
 
-    const applyTheme = (theme) => {
-      const isDark = theme === 'dark';
-      document.documentElement.classList.toggle('theme-dark', isDark);
-      updateThemeButton(isDark);
+    const applyTheme = (theme) => { const isDark = theme === 'dark'; document.documentElement.classList.toggle('theme-dark', isDark); updateThemeButton(isDark); };
+    const updateThemeButton = (isDark) => { const btn = $('#themeToggle'); if (btn) { $('#themeIcon').textContent = isDark ? '☀️' : '🌙'; $('#themeText').textContent = isDark ? 'Light' : 'Dark'; btn.setAttribute('aria-pressed', String(isDark)); } };
+
+    // Header scroll shadow
+    const initHeaderScroll = () => { window.addEventListener('scroll', () => { $('header').classList.toggle('scrolled', window.scrollY > 20); }); };
+
+    // Build skill column
+    const buildSkillCol = (title, items) => {
+      const col = document.createElement('div');
+      col.className = 'col';
+      col.innerHTML = `<h4>${title}</h4>`;
+      const ul = document.createElement('ul');
+      items.forEach(t => { const li = document.createElement('li'); li.textContent = t; ul.appendChild(li); });
+      col.appendChild(ul);
+      return col;
     };
 
-    const updateThemeButton = (isDark) => {
-      const btn = $('#themeToggle');
-      if (btn) {
-        $('#themeIcon').textContent = isDark ? '☀️' : '🌙';
-        $('#themeText').textContent = isDark ? 'Light' : 'Dark';
-        btn.setAttribute('aria-pressed', String(isDark));
-      }
-    };
-
-    // Header scroll effect
-    const initHeaderScroll = () => {
-      let lastScroll = 0;
-      window.addEventListener('scroll', () => {
-        const header = $('header');
-        const scrolled = window.scrollY > 20;
-        header.classList.toggle('scrolled', scrolled);
-      });
-    };
-
-    // Project rendering
+    // Build repo card
     const buildCard = (repo) => {
       const card = document.createElement('article');
       card.className = 'card';
@@ -1043,12 +457,7 @@
           <span>⭐ ${repo.stargazers_count}</span>
           <span>${relativeTime(repo.updated_at)}</span>
         </div>
-        <div class="actions">
-          <a class="gh-link" href="${repo.html_url}" target="_blank" rel="noopener">
-            View on GitHub →
-          </a>
-        </div>
-      `;
+        <div class="actions"><a class="gh-link" href="${repo.html_url}" target="_blank" rel="noopener">View on GitHub →</a></div>`;
       return card;
     };
 
@@ -1058,120 +467,104 @@
       name: (a, b) => a.name.localeCompare(b.name)
     };
 
-    const renderProjects = () => {
-      const groups = { dev: [], ai: [], enterprise: [] };
-      
-      for (const repo of state.repos) {
-        if (state.filter !== 'All' && repo.language !== state.filter) continue;
-        groups[repo.__group].push(repo);
-      }
-
-      for (const key of Object.keys(groups)) {
-        groups[key].sort(sorters[state.sort]);
-      }
-
-      const grids = {
-        dev: $('#grid-dev'),
-        ai: $('#grid-ai'),
-        enterprise: $('#grid-enterprise')
-      };
-
-      for (const [key, grid] of Object.entries(grids)) {
-        grid.innerHTML = '';
-        const projects = groups[key];
-        
-        if (!projects.length) {
-          grid.innerHTML = '<div class="empty">No projects match the current filter.</div>';
-        } else {
-          projects.forEach(p => grid.appendChild(buildCard(p)));
-        }
-      }
-
-      updateFilterChips();
-      requestAnimationFrame(animateCards);
-    };
-
-    const updateFilterChips = () => {
+    // Render filter chips (languages)
+    const updateFilterChips = (state) => {
       const container = $('#filters');
       container.innerHTML = '';
-
       const langs = ['All', ...Array.from(state.languages).filter(l => l !== 'All').sort()];
-
       langs.forEach(lang => {
         const chip = document.createElement('button');
         chip.className = 'chip';
         chip.type = 'button';
         chip.setAttribute('aria-pressed', String(state.filter === lang));
         chip.textContent = lang;
-        chip.addEventListener('click', () => {
-          state.filter = lang;
-          renderProjects();
-        });
+        chip.addEventListener('click', () => { state.filter = lang; renderProjects(state); });
         container.appendChild(chip);
       });
     };
 
-    // Scroll animations
+    // Animate cards in view
     const animateCards = () => {
       const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('animate-in');
-            observer.unobserve(entry.target);
-          }
-        });
+        entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('animate-in'); observer.unobserve(entry.target); } });
       }, { threshold: 0.1, rootMargin: '50px' });
-
-      $$('.card').forEach(card => {
-        card.classList.remove('animate-in');
-        observer.observe(card);
-      });
+      $$('.card').forEach(card => { card.classList.remove('animate-in'); observer.observe(card); });
     };
 
-    // Load repos
-    const loadRepos = async () => {
+    // Render projects
+    const renderProjects = (state) => {
+      const groups = { dev: [], ai: [], enterprise: [] };
+      for (const repo of state.repos) {
+        if (state.filter !== 'All' && repo.language !== state.filter) continue;
+        groups[repo.__group].push(repo);
+      }
+      Object.keys(groups).forEach(k => groups[k].sort(sorters[state.sort]));
+      const grids = { dev: $('#grid-dev'), ai: $('#grid-ai'), enterprise: $('#grid-enterprise') };
+      for (const [key, grid] of Object.entries(grids)) {
+        grid.innerHTML = '';
+        const projects = groups[key];
+        grid.innerHTML = projects.length ? '' : '<div class="empty">No projects match the current filter.</div>';
+        projects.forEach(p => grid.appendChild(buildCard(p)));
+      }
+      updateFilterChips(state);
+      requestAnimationFrame(animateCards);
+    };
+
+    // Load repos from SITE config
+    const loadRepos = async (state) => {
       const repoData = [];
-      
-      for (const item of repos) {
+      for (const item of window.SITE.repos) {
         const parsed = parseRepoPath(item.url);
         if (!parsed) continue;
-
         const data = await fetchRepo(parsed.owner, parsed.name);
         data.__group = item.group;
         repoData.push(data);
-
-        if (data.language) {
-          state.languages.add(data.language);
-        }
+        if (data.language) state.languages.add(data.language);
       }
-
       state.repos = repoData;
-      renderProjects();
+      renderProjects(state);
     };
+
+    // One state object
+    const state = { repos: [], filter: 'All', sort: 'updated', languages: new Set(['All']) };
 
     // Initialize
     const init = () => {
+      // Brand & hero from config
+      $('#brandName').textContent = window.SITE.name;
+      $('#footerName').textContent = window.SITE.name;
+      $('#brandTag').textContent = window.SITE.tagline;
+      $('#heroTitle').textContent = window.SITE.hero.title;
+      $('#heroParagraph').textContent = window.SITE.hero.paragraph;
+
+      // Socials
+      $('#linkGithub').href = window.SITE.socials.github;
+      $('#linkLinkedIn').href = window.SITE.socials.linkedin;
+      $('#linkEmail').href = window.SITE.socials.email;
+
+      // Skills
+      const skillsGrid = $('#skillsGrid');
+      skillsGrid.innerHTML = '';
+      skillsGrid.appendChild(buildSkillCol('Programming & Development', window.SITE.skills.development));
+      skillsGrid.appendChild(buildSkillCol('AI, QA & Automation', window.SITE.skills.automation));
+      skillsGrid.appendChild(buildSkillCol('Cloud, Systems & Tools', window.SITE.skills.systems));
+
+      // Year
       $('#year').textContent = new Date().getFullYear();
-      
+
+      // Theme, header, sorting
       initTheme();
       initHeaderScroll();
+      $('#sort')?.addEventListener('change', (e) => { state.sort = e.target.value; renderProjects(state); });
 
-      $('#sort')?.addEventListener('change', (e) => {
-        state.sort = e.target.value;
-        renderProjects();
-      });
+      // JSON-LD
+      injectJSONLD();
 
-      loadRepos().catch(e => {
-        console.error('Failed to load repos:', e);
-        $('#projects-empty').hidden = false;
-      });
+      // Repos
+      loadRepos(state).catch(e => { console.error('Failed to load repos:', e); $('#projects-empty').hidden = false; });
     };
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', init);
-    } else {
-      init();
-    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
   })();
   </script>
 </body>
