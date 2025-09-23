@@ -190,8 +190,9 @@
     .primary-col { background: rgba(99, 102, 241, 0.05); border-color: var(--accent-light); grid-column: 1 / -1; }
     .theme-dark .primary-col { background: rgba(129, 140, 248, 0.1); }
     .primary-col::before { transform: scaleX(1); }
+    .primary-col h4 { text-align: center; } /* EDITED */
     .github-stats { display: flex; justify-content: space-between; align-items: center; gap: 2%; }
-    .github-stats img { width: 48%; height: auto; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1)); transition: var(--transition); border-radius: 0.5rem; }
+    .github-stats img { width: 48%; height: 200px; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1)); transition: var(--transition); border-radius: 0.5rem; } /* EDITED */
     .theme-dark .github-stats img { filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
     .primary-col:hover .github-stats img { transform: scale(1.02); }
 
@@ -265,7 +266,7 @@
       .controls { flex-direction: column; align-items: stretch; }
       section { padding: 3rem 0; }
       .github-stats { flex-direction: column; gap: 1rem; }
-      .github-stats img { width: 100%; }
+      .github-stats img { width: 100%; height: auto; } /* keep mobile override */
     }
   </style>
 </head>
@@ -624,3 +625,4 @@
   </script>
 </body>
 </html>
+
