@@ -190,8 +190,8 @@
     .primary-col { background: rgba(99, 102, 241, 0.05); border-color: var(--accent-light); grid-column: 1 / -1; }
     .theme-dark .primary-col { background: rgba(129, 140, 248, 0.1); }
     .primary-col::before { transform: scaleX(1); }
-    .github-stats { display: flex; justify-content: center; align-items: center; }
-    .github-stats img { max-width: 100%; height: auto; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1)); transition: var(--transition); }
+    .github-stats { display: flex; justify-content: space-between; align-items: center; gap: 2%; }
+    .github-stats img { width: 48%; height: auto; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1)); transition: var(--transition); border-radius: 0.5rem; }
     .theme-dark .github-stats img { filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
     .primary-col:hover .github-stats img { transform: scale(1.02); }
 
@@ -264,6 +264,8 @@
       .grid { grid-template-columns: 1fr; }
       .controls { flex-direction: column; align-items: stretch; }
       section { padding: 3rem 0; }
+      .github-stats { flex-direction: column; gap: 1rem; }
+      .github-stats img { width: 100%; }
     }
   </style>
 </head>
@@ -453,10 +455,15 @@
     const updateThemeButton = (isDark) => { const btn = $('#themeToggle'); if (btn) { $('#themeIcon').textContent = isDark ? '☀️' : '🌙'; $('#themeText').textContent = isDark ? 'Light' : 'Dark'; btn.setAttribute('aria-pressed', String(isDark)); } };
 
     const updateGitHubStats = (isDark) => {
-      const img = $('#githubStatsImg');
-      if (img) {
+      const langImg = $('#githubStatsImg');
+      const streakImg = $('#githubStreakImg');
+      if (langImg) {
         const baseUrl = 'https://github-readme-stats.vercel.app/api/top-langs?username=i3t4an&show_icons=true&locale=en&layout=compact';
-        img.src = isDark ? baseUrl + '&theme=dark' : baseUrl;
+        langImg.src = isDark ? baseUrl + '&theme=dark' : baseUrl;
+      }
+      if (streakImg) {
+        const baseUrl = 'https://github-readme-streak-stats.herokuapp.com/?user=i3t4an';
+        streakImg.src = isDark ? baseUrl + '&theme=dark' : baseUrl;
       }
     };
 
@@ -584,8 +591,11 @@
           <img id="githubStatsImg" 
                src="https://github-readme-stats.vercel.app/api/top-langs?username=i3t4an&show_icons=true&locale=en&layout=compact" 
                alt="Ethan's GitHub Language Stats" 
-               loading="lazy"
-               style="width: 100%; height: auto; border-radius: 0.5rem;">
+               loading="lazy">
+          <img id="githubStreakImg" 
+               src="https://github-readme-streak-stats.herokuapp.com/?user=i3t4an" 
+               alt="Ethan's GitHub Streak Stats" 
+               loading="lazy">
         </div>
       `;
       skillsGrid.appendChild(statsCol);
