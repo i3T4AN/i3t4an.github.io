@@ -187,7 +187,7 @@
     .col li { padding: 0.5rem 0 0.5rem 1.5rem; position: relative; }
     .col li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-weight: bold; }
 
-    .primary-col { background: rgba(99, 102, 241, 0.05); border-color: var(--accent-light); }
+    .primary-col { background: rgba(99, 102, 241, 0.05); border-color: var(--accent-light); grid-column: 1 / -1; }
     .theme-dark .primary-col { background: rgba(129, 140, 248, 0.1); }
     .primary-col::before { transform: scaleX(1); }
     .github-stats { display: flex; justify-content: center; align-items: center; }
@@ -440,11 +440,25 @@
         const newTheme = isDark ? 'dark' : 'light';
         localStorage.setItem('theme', newTheme);
         updateThemeButton(isDark);
+        updateGitHubStats(isDark);
       });
     };
 
-    const applyTheme = (theme) => { const isDark = theme === 'dark'; document.documentElement.classList.toggle('theme-dark', isDark); updateThemeButton(isDark); };
+    const applyTheme = (theme) => { 
+      const isDark = theme === 'dark'; 
+      document.documentElement.classList.toggle('theme-dark', isDark); 
+      updateThemeButton(isDark);
+      updateGitHubStats(isDark);
+    };
     const updateThemeButton = (isDark) => { const btn = $('#themeToggle'); if (btn) { $('#themeIcon').textContent = isDark ? '☀️' : '🌙'; $('#themeText').textContent = isDark ? 'Light' : 'Dark'; btn.setAttribute('aria-pressed', String(isDark)); } };
+
+    const updateGitHubStats = (isDark) => {
+      const img = $('#githubStatsImg');
+      if (img) {
+        const baseUrl = 'https://github-readme-stats.vercel.app/api/top-langs?username=i3t4an&show_icons=true&locale=en&layout=compact';
+        img.src = isDark ? baseUrl + '&theme=dark' : baseUrl;
+      }
+    };
 
     // Header scroll shadow
     const initHeaderScroll = () => { window.addEventListener('scroll', () => { $('header').classList.toggle('scrolled', window.scrollY > 20); }); };
@@ -567,7 +581,8 @@
       statsCol.innerHTML = `
         <h4>GitHub Activity</h4>
         <div class="github-stats">
-          <img src="https://github-readme-stats.vercel.app/api/top-langs?username=i3t4an&show_icons=true&locale=en&layout=compact" 
+          <img id="githubStatsImg" 
+               src="https://github-readme-stats.vercel.app/api/top-langs?username=i3t4an&show_icons=true&locale=en&layout=compact" 
                alt="Ethan's GitHub Language Stats" 
                loading="lazy"
                style="width: 100%; height: auto; border-radius: 0.5rem;">
