@@ -63,11 +63,9 @@
   <meta name="description" content="Ethan Blair: programmer focused on enterprise technology, automation, and AI development." />
   <link rel="canonical" href="https://i3t4an.github.io/" />
 
-  <!-- Theme colors -->
   <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0a0a0a" />
 
-  <!-- Open Graph / Twitter (static fallbacks; optional to update) -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Ethan Blair — Portfolio" />
   <meta property="og:description" content="Programmer focused on enterprise technology, automation, and AI development." />
@@ -76,197 +74,116 @@
   <meta name="twitter:title" content="Ethan Blair — Portfolio" />
   <meta name="twitter:description" content="Programmer focused on enterprise technology, automation, and AI development." />
 
-  <!-- Will be replaced at runtime with JSON-LD from config -->
   <script id="jsonld"></script>
 
   <style>
     :root {
-      --bg-primary: #ffffff;
-      --bg-secondary: #f8fafc;
-      --bg-tertiary: #f1f5f9;
-      --text-primary: #0f172a;
-      --text-secondary: #475569;
-      --text-muted: #64748b;
-      --border: rgba(226, 232, 240, 0.5);
-      --border-hover: rgba(148, 163, 184, 0.3);
-      --accent: #6366f1;
-      --accent-hover: #4f46e5;
-      --accent-light: rgba(99, 102, 241, 0.1);
-      --accent-glow: rgba(99, 102, 241, 0.4);
-      --card-text: #1f2937;
-      --card-meta: #334155;
-      --lang-pill-bg: #eef2ff;
-      --lang-pill-text: #1f2937;
-      --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      --gradient-mesh: radial-gradient(at 40% 20%, hsla(237, 69%, 65%, 0.2) 0px, transparent 50%),
-                       radial-gradient(at 80% 0%, hsla(189, 75%, 60%, 0.15) 0px, transparent 50%),
-                       radial-gradient(at 0% 50%, hsla(343, 70%, 65%, 0.1) 0px, transparent 50%);
-      --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.04);
-      --shadow: 0 10px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-      --shadow-lg: 0 20px 40px -15px rgba(0, 0, 0, 0.15);
-      --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.2);
-      --blur-bg: saturate(180%) blur(20px);
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      --bg-primary:#ffffff;--bg-secondary:#f8fafc;--bg-tertiary:#f1f5f9;--text-primary:#0f172a;--text-secondary:#475569;--text-muted:#64748b;--border:rgba(226,232,240,.5);--border-hover:rgba(148,163,184,.3);--accent:#6366f1;--accent-hover:#4f46e5;--accent-light:rgba(99,102,241,.1);--accent-glow:rgba(99,102,241,.4);--card-text:#1f2937;--card-meta:#334155;--lang-pill-bg:#eef2ff;--lang-pill-text:#1f2937;--gradient-primary:linear-gradient(135deg,#667eea 0%,#764ba2 100%);--gradient-mesh:radial-gradient(at 40% 20%,hsla(237,69%,65%,.2) 0px,transparent 50%),radial-gradient(at 80% 0%,hsla(189,75%,60%,.15) 0px,transparent 50%),radial-gradient(at 0% 50%,hsla(343,70%,65%,.1) 0px,transparent 50%);--shadow-sm:0 1px 3px 0 rgb(0 0 0 / .04),0 1px 2px -1px rgb(0 0 0 / .04);--shadow:0 10px 25px -5px rgb(0 0 0 / .1),0 8px 10px -6px rgb(0 0 0 / .1);--shadow-lg:0 20px 40px -15px rgba(0,0,0,.15);--shadow-glow:0 0 40px rgba(99,102,241,.2);--blur-bg:saturate(180%) blur(20px);--transition:all .3s cubic-bezier(.4,0,.2,1);--transition-fast:all .2s cubic-bezier(.4,0,.2,1)
     }
-    .theme-dark {
-      --bg-primary: #0a0a0a;
-      --bg-secondary: #111111;
-      --bg-tertiary: #1a1a1a;
-      --text-primary: #f8fafc;
-      --text-secondary: #cbd5e1;
-      --text-muted: #94a3b8;
-      --border: rgba(51, 65, 85, 0.4);
-      --border-hover: rgba(148, 163, 184, 0.2);
-      --accent: #818cf8;
-      --accent-hover: #6366f1;
-      --accent-light: rgba(129, 140, 248, 0.15);
-      --accent-glow: rgba(129, 140, 248, 0.3);
-      --card-text: var(--text-primary);
-      --card-meta: var(--text-muted);
-      --lang-pill-bg: rgba(129, 140, 248, 0.15);
-      --lang-pill-text: #c7d2fe;
-      --gradient-primary: linear-gradient(135deg, #667eea 0%, #9333ea 100%);
-      --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.2);
-      --shadow: 0 10px 40px -10px rgb(0 0 0 / 0.5);
-      --shadow-lg: 0 20px 50px -20px rgba(0, 0, 0, 0.8);
-      --shadow-glow: 0 0 60px rgba(129, 140, 248, 0.15);
+    .theme-dark{
+      --bg-primary:#0a0a0a;--bg-secondary:#111111;--bg-tertiary:#1a1a1a;--text-primary:#f8fafc;--text-secondary:#cbd5e1;--text-muted:#94a3b8;--border:rgba(51,65,85,.4);--border-hover:rgba(148,163,184,.2);--accent:#818cf8;--accent-hover:#6366f1;--accent-light:rgba(129,140,248,.15);--accent-glow:rgba(129,140,248,.3);--card-text:var(--text-primary);--card-meta:var(--text-muted);--lang-pill-bg:rgba(129,140,248,.15);--lang-pill-text:#c7d2fe;--gradient-primary:linear-gradient(135deg,#667eea 0%,#9333ea 100%);--shadow-sm:0 1px 3px 0 rgb(0 0 0 /.2);--shadow:0 10px 40px -10px rgb(0 0 0 /.5);--shadow-lg:0 20px 50px -20px rgba(0,0,0,.8);--shadow-glow:0 0 60px rgba(129,140,248,.15)
     }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; font-size: 16px; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", system-ui, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; overflow-x: hidden; position: relative; }
-    body::before { content: ''; position: fixed; inset: 0; background: var(--gradient-mesh); pointer-events: none; z-index: 0; }
-
-    h1, h2, h3, h4, h5, h6 { line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; }
-    a { color: var(--accent); text-decoration: none; transition: var(--transition-fast); }
-    a:hover { color: var(--accent-hover); }
-
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; position: relative; z-index: 1; }
-
-    header { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(255, 255, 255, 0.7); backdrop-filter: var(--blur-bg); border-bottom: 1px solid var(--border); transition: var(--transition); }
-    .theme-dark header { background: rgba(10, 10, 10, 0.7); }
-    header.scrolled { box-shadow: var(--shadow-sm); }
-
-    .nav { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 0; min-height: 4.5rem; }
-    .brand h1 { font-size: 1.5rem; font-weight: 800; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .brand p { color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.25rem; }
-
-    .theme-toggle { position: relative; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid var(--border); color: var(--text-primary); padding: 0.625rem 1.25rem; border-radius: 9999px; cursor: pointer; font-size: 0.875rem; font-weight: 600; transition: var(--transition); overflow: hidden; }
-    .theme-toggle::before { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; border-radius: 50%; background: var(--accent-light); transform: translate(-50%, -50%); transition: width 0.6s, height 0.6s; }
-    .theme-toggle:hover { transform: translateY(-2px); box-shadow: var(--shadow); border-color: var(--accent); }
-    .theme-toggle:hover::before { width: 100px; height: 100px; }
-
-    main { margin-top: 4.5rem; position: relative; z-index: 1; }
-
-    .hero { padding: 6rem 0 4rem; position: relative; background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%); overflow: hidden; }
-    .hero::before { content: ''; position: absolute; top: -50%; right: -25%; width: 100%; height: 100%; background: radial-gradient(circle, var(--accent-light) 0%, transparent 70%); animation: float 20s ease-in-out infinite; }
-    @keyframes float { 0%, 100% { transform: translate(0, 0) rotate(0deg); } 33% { transform: translate(30px, -30px) rotate(120deg); } 66% { transform: translate(-20px, 20px) rotate(240deg); } }
-    .hero h2 { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 900; margin-bottom: 1.5rem; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: fadeInUp 0.8s ease-out; }
-    .hero p { color: var(--text-secondary); max-width: 700px; font-size: 1.25rem; line-height: 1.8; animation: fadeInUp 0.8s ease-out 0.2s backwards; }
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-    section { padding: 5rem 0; position: relative; }
-    section h3 { font-size: 2.5rem; font-weight: 800; margin-bottom: 3rem; text-align: center; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-
-    .cta { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-top: 2rem; }
-    .btn { position: relative; display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.875rem 2rem; border-radius: 9999px; font-weight: 600; font-size: 0.9rem; border: 1px solid var(--border); background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); color: var(--text-primary); transition: var(--transition); overflow: hidden; }
-    .btn::before { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; border-radius: 50%; background: var(--accent-light); transform: translate(-50%, -50%); transition: width 0.6s, height 0.6s; }
-    .btn:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--accent); }
-    .btn:hover::before { width: 300px; height: 300px; }
-    .btn.primary { background: var(--gradient-primary); color: white; border: none; box-shadow: var(--shadow-glow); }
-    .btn.primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: var(--shadow-lg), var(--shadow-glow); }
-
-    .cols { display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
-    .col { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 1.5rem; padding: 2rem; transition: var(--transition); position: relative; overflow: hidden; }
-    .col::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--gradient-primary); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; }
-    .col:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: var(--border-hover); background: rgba(255, 255, 255, 0.05); }
-    .col:hover::before { transform: scaleX(1); }
-    .col h4 { font-size: 1.25rem; margin-bottom: 1rem; color: var(--text-primary); }
-    .col ul { list-style: none; color: var(--text-secondary); }
-    .col li { padding: 0.5rem 0 0.5rem 1.5rem; position: relative; }
-    .col li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-weight: bold; }
-
-    .primary-col { background: rgba(99, 102, 241, 0.05); border-color: var(--accent-light); grid-column: 1 / -1; }
-    .theme-dark .primary-col { background: rgba(129, 140, 248, 0.1); }
-    .primary-col::before { transform: scaleX(1); }
-    .primary-col h4 { text-align: center; } /* EDITED */
-    .github-stats { display: flex; justify-content: space-between; align-items: center; gap: 2%; }
-    .github-stats img { width: 48%; height: 200px; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1)); transition: var(--transition); border-radius: 0.5rem; } /* EDITED */
-    .theme-dark .github-stats img { filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
-    .primary-col:hover .github-stats img { transform: scale(1.02); }
-
-    .controls { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 3rem; padding: 1.5rem; background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(10px); border-radius: 1.5rem; border: 1px solid var(--border); }
-    .theme-dark .controls { background: rgba(17, 17, 17, 0.6); }
-
-    .filters { display: flex; gap: 0.75rem; flex-wrap: wrap; }
-
-    .chip { padding: 0.5rem 1.25rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--text-secondary); transition: var(--transition); position: relative; overflow: hidden; }
-    .chip:hover { transform: translateY(-2px); border-color: var(--accent); color: var(--accent); }
-    .chip[aria-pressed="true"] { background: var(--gradient-primary); color: white; border: none; box-shadow: var(--shadow-sm); }
-
-    /* Dark mode: purple backgrounds for labels + dropdown */
-    .theme-dark .chip { background: var(--accent); color: var(--text-primary); border-color: transparent; }
-    .theme-dark .chip:hover { filter: brightness(1.05); }
-    .theme-dark .sort { background: var(--accent); color: var(--text-primary); border-color: transparent; }
-
-    .sort { padding: 0.625rem 1.25rem; border-radius: 0.75rem; border: 1px solid var(--border); background: rgba(255, 255, 255, 0.02); color: var(--text-primary); font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: var(--transition); }
-    .sort:hover { border-color: var(--accent); }
-
-    .group { margin-bottom: 4rem; }
-    .group h4 { font-size: 1.5rem; font-weight: 700; margin-bottom: 2rem; color: var(--text-secondary); display: flex; align-items: center; gap: 1rem; }
-    .group h4::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border) 0%, transparent 100%); }
-
-    .grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); }
-
-    .card { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 1.5rem; padding: 1.75rem; transition: var(--transition); position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 1rem; opacity: 0; transform: translateY(30px); color: var(--card-text); }
-    .card::before { content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; background: var(--gradient-primary); border-radius: 1.5rem; opacity: 0; z-index: -1; transition: opacity 0.3s ease; }
-    .card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); border-color: transparent; background: rgba(255, 255, 255, 0.05); }
-    .card:hover::before { opacity: 1; }
-    .card.animate-in { opacity: 1; transform: translateY(0); }
-
-    .card h5 { font-size: 1.25rem; font-weight: 700; }
-    .card h5 a { color: var(--card-text); }
-    .theme-dark .card h5 a { color: var(--text-primary); }
-    .theme-dark .card:hover h5 a { color: var(--text-primary); }
-
-    .desc { color: var(--card-text); line-height: 1.6; flex: 1; }
-    .meta { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; font-size: 0.875rem; color: var(--card-meta); }
-
-    .lang { padding: 0.25rem 0.75rem; border-radius: 9999px; background: var(--lang-pill-bg); color: var(--lang-pill-text); font-weight: 600; font-size: 0.75rem; }
-
-    /* Light mode: hovered card becomes white text */
-    :not(.theme-dark) .card:hover { color: #ffffff; }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth;font-size:16px}
+    body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",system-ui,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.6;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden;position:relative}
+    body::before{content:'';position:fixed;inset:0;background:var(--gradient-mesh);pointer-events:none;z-index:0}
+    h1,h2,h3,h4,h5,h6{line-height:1.2;font-weight:700;letter-spacing:-.02em}
+    a{color:var(--accent);text-decoration:none;transition:var(--transition-fast)}
+    a:hover{color:var(--accent-hover)}
+    .container{max-width:1200px;margin:0 auto;padding:0 1.5rem;position:relative;z-index:1}
+    header{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(255,255,255,.7);backdrop-filter:var(--blur-bg);border-bottom:1px solid var(--border);transition:var(--transition)}
+    .theme-dark header{background:rgba(10,10,10,.7)}
+    header.scrolled{box-shadow:var(--shadow-sm)}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 0;min-height:4.5rem}
+    .brand h1{font-size:1.5rem;font-weight:800;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .brand p{color:var(--text-secondary);font-size:.875rem;margin-top:.25rem}
+    .theme-toggle{position:relative;background:rgba(255,255,255,.1);backdrop-filter:blur(10px);border:1px solid var(--border);color:var(--text-primary);padding:.625rem 1.25rem;border-radius:9999px;cursor:pointer;font-size:.875rem;font-weight:600;transition:var(--transition);overflow:hidden}
+    .theme-toggle::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:var(--accent-light);transform:translate(-50%,-50%);transition:width .6s,height .6s}
+    .theme-toggle:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--accent)}
+    .theme-toggle:hover::before{width:100px;height:100px}
+    main{margin-top:4.5rem;position:relative;z-index:1}
+    .hero{padding:6rem 0 4rem;position:relative;background:linear-gradient(180deg,var(--bg-secondary) 0%,var(--bg-primary) 100%);overflow:hidden}
+    .hero::before{content:'';position:absolute;top:-50%;right:-25%;width:100%;height:100%;background:radial-gradient(circle,var(--accent-light) 0%,transparent 70%);animation:float 20s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translate(0,0) rotate(0)}33%{transform:translate(30px,-30px) rotate(120deg)}66%{transform:translate(-20px,20px) rotate(240deg)}}
+    .hero h2{font-size:clamp(2.5rem,6vw,4rem);font-weight:900;margin-bottom:1.5rem;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:fadeInUp .8s ease-out}
+    .hero p{color:var(--text-secondary);max-width:700px;font-size:1.25rem;line-height:1.8;animation:fadeInUp .8s ease-out .2s backwards}
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+    section{padding:5rem 0;position:relative}
+    section h3{font-size:2.5rem;font-weight:800;margin-bottom:3rem;text-align:center;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .cta{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-top:2rem}
+    .btn{position:relative;display:inline-flex;align-items:center;gap:.5rem;padding:.875rem 2rem;border-radius:9999px;font-weight:600;font-size:.9rem;border:1px solid var(--border);background:rgba(255,255,255,.05);backdrop-filter:blur(10px);color:var(--text-primary);transition:var(--transition);overflow:hidden}
+    .btn::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:var(--accent-light);transform:translate(-50%,-50%);transition:width .6s,height .6s}
+    .btn:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--accent)}
+    .btn:hover::before{width:300px;height:300px}
+    .btn.primary{background:var(--gradient-primary);color:#fff;border:none;box-shadow:var(--shadow-glow)}
+    .btn.primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:var(--shadow-lg),var(--shadow-glow)}
+    .cols{display:grid;gap:2rem;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+    .col{background:rgba(255,255,255,.02);backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:1.5rem;padding:2rem;transition:var(--transition);position:relative;overflow:hidden}
+    .col::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--gradient-primary);transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
+    .col:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:var(--border-hover);background:rgba(255,255,255,.05)}
+    .col:hover::before{transform:scaleX(1)}
+    .col h4{font-size:1.25rem;margin-bottom:1rem;color:var(--text-primary)}
+    .col ul{list-style:none;color:var(--text-secondary)}
+    .col li{padding:.5rem 0 .5rem 1.5rem;position:relative}
+    .col li::before{content:'→';position:absolute;left:0;color:var(--accent);font-weight:700}
+    .primary-col{background:rgba(99,102,241,.05);border-color:var(--accent-light);grid-column:1/-1}
+    .theme-dark .primary-col{background:rgba(129,140,248,.1)}
+    .primary-col::before{transform:scaleX(1)}
+    .primary-col h4{text-align:center}
+    .github-stats{display:flex;justify-content:space-between;align-items:center;gap:2%}
+    .github-stats img{width:48%;height:200px;object-fit:contain;filter:drop-shadow(0 4px 8px rgba(0,0,0,.1));transition:var(--transition);border-radius:.5rem}
+    .theme-dark .github-stats img{filter:drop-shadow(0 4px 8px rgba(0,0,0,.3))}
+    .primary-col:hover .github-stats img{transform:scale(1.02)}
+    .controls{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;margin-bottom:3rem;padding:1.5rem;background:rgba(255,255,255,.02);backdrop-filter:blur(10px);border-radius:1.5rem;border:1px solid var(--border)}
+    .theme-dark .controls{background:rgba(17,17,17,.6)}
+    .filters{display:flex;gap:.75rem;flex-wrap:wrap}
+    .chip{padding:.5rem 1.25rem;border-radius:9999px;font-size:.875rem;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text-secondary);transition:var(--transition);position:relative;overflow:hidden}
+    .chip:hover{transform:translateY(-2px);border-color:var(--accent);color:var(--accent)}
+    .chip[aria-pressed="true"]{background:var(--gradient-primary);color:#fff;border:none;box-shadow:var(--shadow-sm)}
+    .theme-dark .chip,.theme-dark .sort{background:var(--accent);color:var(--text-primary);border-color:transparent}
+    .theme-dark .chip:hover{filter:brightness(1.05)}
+    .sort{padding:.625rem 1.25rem;border-radius:.75rem;border:1px solid var(--border);background:rgba(255,255,255,.02);color:var(--text-primary);font-size:.875rem;font-weight:500;cursor:pointer;transition:var(--transition)}
+    .sort:hover{border-color:var(--accent)}
+    .group{margin-bottom:4rem}
+    .group h4{font-size:1.5rem;font-weight:700;margin-bottom:2rem;color:var(--text-secondary);display:flex;align-items:center;gap:1rem}
+    .group h4::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border) 0%,transparent 100%)}
+    .grid{display:grid;gap:1.5rem;grid-template-columns:repeat(auto-fill,minmax(340px,1fr))}
+    .card{background:rgba(255,255,255,.02);backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:1.5rem;padding:1.75rem;transition:var(--transition);position:relative;overflow:hidden;display:flex;flex-direction:column;gap:1rem;opacity:0;transform:translateY(30px);color:var(--card-text);text-align:center;align-items:center}
+    .card::before{content:'';position:absolute;top:-2px;left:-2px;right:-2px;bottom:-2px;background:var(--gradient-primary);border-radius:1.5rem;opacity:0;z-index:-1;transition:opacity .3s ease}
+    .card:hover{transform:translateY(-8px);box-shadow:var(--shadow-lg);border-color:transparent;background:rgba(255,255,255,.05)}
+    .card:hover::before{opacity:1}
+    .card.animate-in{opacity:1;transform:translateY(0)}
+    .card h5{font-size:1.25rem;font-weight:700}
+    .card h5 a{color:var(--card-text)}
+    .theme-dark .card h5 a{color:var(--text-primary)}
+    .theme-dark .card:hover h5 a{color:var(--text-primary)}
+    .desc{color:var(--card-text);line-height:1.6;flex:1}
+    .meta{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;font-size:.875rem;color:var(--card-meta);justify-content:center}
+    .lang{padding:.25rem .75rem;border-radius:9999px;background:var(--lang-pill-bg);color:var(--lang-pill-text);font-weight:600;font-size:.75rem}
+    :not(.theme-dark) .card:hover{color:#fff}
     :not(.theme-dark) .card:hover h5 a,
     :not(.theme-dark) .card:hover .desc,
-    :not(.theme-dark) .card:hover .meta { color: #ffffff; }
-    :not(.theme-dark) .card:hover .gh-link { color: #ffffff; }
-    :not(.theme-dark) .card:hover .gh-link:hover { color: #ffffff; }
-    :not(.theme-dark) .card:hover .lang { background: rgba(255,255,255,0.2); color: #ffffff; }
-
-    .actions { margin-top: auto; padding-top: 1rem; }
-    .gh-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--accent); font-weight: 600; font-size: 0.9rem; transition: var(--transition-fast); }
-    .gh-link:hover { color: var(--accent-hover); transform: translateX(3px); }
-
-    .empty { grid-column: 1 / -1; padding: 3rem; text-align: center; border: 2px dashed var(--border); border-radius: 1.5rem; color: var(--text-muted); background: var(--bg-tertiary); }
-
-    footer { padding: 3rem 0; text-align: center; color: var(--text-muted); border-top: 1px solid var(--border); background: var(--bg-secondary); }
-
-    .skip-link { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
-    .skip-link:focus { left: 1rem; top: 1rem; width: auto; height: auto; background: var(--accent); color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; z-index: 10000; }
-
-    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
-
-    a:focus-visible, button:focus-visible, select:focus-visible, .card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 0.25rem; }
-    .card:focus-visible { outline-offset: 4px; border-radius: 1.5rem; }
-
-    @media (max-width: 768px) {
-      .hero h2 { font-size: 2.5rem; }
-      .grid { grid-template-columns: 1fr; }
-      .controls { flex-direction: column; align-items: stretch; }
-      section { padding: 3rem 0; }
-      .github-stats { flex-direction: column; gap: 1rem; }
-      .github-stats img { width: 100%; height: auto; } /* keep mobile override */
+    :not(.theme-dark) .card:hover .meta{color:#fff}
+    :not(.theme-dark) .card:hover .gh-link{color:#fff}
+    :not(.theme-dark) .card:hover .gh-link:hover{color:#fff}
+    :not(.theme-dark) .card:hover .lang{background:rgba(255,255,255,.2);color:#fff}
+    .actions{margin-top:auto;padding-top:1rem;display:flex;justify-content:center}
+    .gh-link{display:inline-flex;align-items:center;gap:.5rem;color:var(--accent);font-weight:600;font-size:.9rem;transition:var(--transition-fast)}
+    .gh-link:hover{color:var(--accent-hover);transform:translateX(3px)}
+    .empty{grid-column:1/-1;padding:3rem;text-align:center;border:2px dashed var(--border);border-radius:1.5rem;color:var(--text-muted);background:var(--bg-tertiary)}
+    footer{padding:3rem 0;text-align:center;color:var(--text-muted);border-top:1px solid var(--border);background:var(--bg-secondary)}
+    .skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+    .skip-link:focus{left:1rem;top:1rem;width:auto;height:auto;background:var(--accent);color:#fff;padding:.75rem 1.5rem;border-radius:.5rem;z-index:10000}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    a:focus-visible,button:focus-visible,select:focus-visible,.card:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:.25rem}
+    .card:focus-visible{outline-offset:4px;border-radius:1.5rem}
+    @media (max-width:768px){
+      .hero h2{font-size:2.5rem}
+      .grid{grid-template-columns:1fr}
+      .controls{flex-direction:column;align-items:stretch}
+      section{padding:3rem 0}
+      .github-stats{flex-direction:column;gap:1rem}
+      .github-stats img{width:100%;height:auto}
     }
   </style>
 </head>
@@ -299,8 +216,8 @@
       <div class="container">
         <h3>Let's Connect</h3>
         <div class="cta">
-          <a id="linkGithub" class="btn primary" href="#" target="_blank" rel="noopener">GitHub</a>
-          <a id="linkLinkedIn" class="btn" href="#" target="_blank" rel="noopener">LinkedIn</a>
+          <a id="linkGithub" class="btn primary" href="#" target="_blank" rel="noopener me">GitHub</a>
+          <a id="linkLinkedIn" class="btn" href="#" target="_blank" rel="noopener me">LinkedIn</a>
           <a id="linkEmail" class="btn" href="#">Email</a>
         </div>
       </div>
@@ -356,137 +273,63 @@
   </footer>
 
   <script>
-  (() => {
+  (()=>{
     'use strict';
+    const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 
-    const $ = (s, r = document) => r.querySelector(s);
-    const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-
-    // Inject JSON-LD from config to avoid duplication
-    const injectJSONLD = () => {
-      const data = {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        name: window.SITE.name,
-        url: "https://i3t4an.github.io/",
-        email: window.SITE.socials.email,
-        affiliation: {"@type":"CollegeOrUniversity","name":"University of Northern Colorado"},
-        sameAs: [window.SITE.socials.github, window.SITE.socials.linkedin],
-        jobTitle: "Programmer",
-        knowsAbout: [
-          "Enterprise technology","Automation","AI development",
-          "Microsoft Intune","Microsoft SCCM","Power BI",
-          "JavaScript","TypeScript","React","Node.js","Python",
-          "C#","Objective-C","PowerShell","AppleScript"
-        ]
-      };
-      const el = document.createElement('script');
-      el.type = 'application/ld+json';
-      el.textContent = JSON.stringify(data);
-      const holder = $('#jsonld');
-      holder.replaceWith(el);
+    const els={
+      brandName:$('#brandName'),footerName:$('#footerName'),brandTag:$('#brandTag'),heroTitle:$('#heroTitle'),heroParagraph:$('#heroParagraph'),
+      linkGithub:$('#linkGithub'),linkLinkedIn:$('#linkLinkedIn'),linkEmail:$('#linkEmail'),
+      skillsGrid:$('#skillsGrid'),year:$('#year'),jsonld:$('#jsonld'),sort:$('#sort'),
+      header:$('header'),filters:$('#filters'),gridDev:$('#grid-dev'),gridAI:$('#grid-ai'),gridEnt:$('#grid-enterprise'),
+      projectsEmpty:$('#projects-empty'),themeToggle:$('#themeToggle'),themeIcon:$('#themeIcon'),themeText:$('#themeText'),
+      langImg:null,streakImg:null
     };
 
-    // Parse GitHub repo path
-    const parseRepoPath = (url) => {
-      try { const u = new URL(url); const [owner, name] = u.pathname.slice(1).split('/'); return { owner, name }; } catch { return null; }
+    // JSON-LD from config (no visual change)
+    const injectJSONLD=()=>{
+      const data={"@context":"https://schema.org","@type":"Person",name:window.SITE.name,url:"https://i3t4an.github.io/",email:window.SITE.socials.email,affiliation:{"@type":"CollegeOrUniversity",name:"University of Northern Colorado"},sameAs:[window.SITE.socials.github,window.SITE.socials.linkedin],jobTitle:"Programmer",knowsAbout:["Enterprise technology","Automation","AI development","Microsoft Intune","Microsoft SCCM","Power BI","JavaScript","TypeScript","React","Node.js","Python","C#","Objective-C","PowerShell","AppleScript"]};
+      if(els.jsonld){els.jsonld.type='application/ld+json';els.jsonld.textContent=JSON.stringify(data)}
     };
 
-    // Relative time helper
-    const relativeTime = (date) => {
-      const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
-      const diff = (new Date(date) - new Date()) / 1000;
-      const units = [['year',31536000],['month',2592000],['week',604800],['day',86400],['hour',3600],['minute',60],['second',1]];
-      for (const [unit, seconds] of units) { const delta = diff / seconds; if (Math.abs(delta) >= 1 || unit === 'second') return rtf.format(Math.round(delta), unit); }
+    const parseRepoPath=url=>{try{const u=new URL(url);const [owner,name]=u.pathname.slice(1).split('/');return{owner,name}}catch{return null}};
+
+    const relativeTime=d=>{
+      const rtf=new Intl.RelativeTimeFormat('en',{numeric:'auto'});const sec=(new Date(d)-new Date())/1e3;
+      const units=[[31536e3,'year'],[2592e3,'month'],[604800,'week'],[86400,'day'],[3600,'hour'],[60,'minute'],[1,'second']];
+      for(const [s,u] of units){const v=sec/s;if(Math.abs(v)>=1||u==='second')return rtf.format(Math.round(v),u)}
     };
 
-    // Cache
-    const cache = {
-      get: (key) => { try { return JSON.parse(sessionStorage.getItem(key)); } catch { return null; } },
-      set: (key, value) => { try { sessionStorage.setItem(key, JSON.stringify(value)); } catch {} }
-    };
+    const cache={get:k=>{try{return JSON.parse(sessionStorage.getItem(k))}catch{return null}},set:(k,v)=>{try{sessionStorage.setItem(k,JSON.stringify(v))}catch{}}};
 
-    // GitHub fetch
-    const fetchRepo = async (owner, name) => {
-      const key = `gh:${owner}/${name}`;
-      const cached = cache.get(key);
-      if (cached) return cached;
-      try {
-        const res = await fetch(`https://api.github.com/repos/${owner}/${name}`, { headers: { 'Accept': 'application/vnd.github+json' } });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
-        const repo = {
-          full_name: data.full_name,
-          html_url: data.html_url,
-          description: data.description || name.replace(/[-_]/g, ' ').replace(/\b\w/g, m => m.toUpperCase()),
-          language: data.language || 'Other',
-          stargazers_count: data.stargazers_count || 0,
-          updated_at: data.updated_at || new Date().toISOString(),
-          name,
-          error: false
-        };
-        cache.set(key, repo);
-        return repo;
-      } catch (e) {
-        return { full_name: `${owner}/${name}`, html_url: `https://github.com/${owner}/${name}`, description: name.replace(/[-_]/g, ' ').replace(/\b\w/g, m => m.toUpperCase()), language: 'Other', stargazers_count: 0, updated_at: new Date().toISOString(), name, error: true };
+    const fetchRepo=async(owner,name)=>{
+      const key=`gh:${owner}/${name}`;const cached=cache.get(key);if(cached) return cached;
+      try{
+        const res=await fetch(`https://api.github.com/repos/${owner}/${name}`,{headers:{Accept:'application/vnd.github+json'}});
+        if(!res.ok) throw new Error(res.status);
+        const d=await res.json();
+        const repo={full_name:d.full_name,html_url:d.html_url,description:d.description||name.replace(/[-_]/g,' ').replace(/\b\w/g,m=>m.toUpperCase()),language:d.language||'Other',stargazers_count:d.stargazers_count||0,updated_at:d.updated_at||new Date().toISOString(),name,error:false};
+        cache.set(key,repo);return repo;
+      }catch(e){
+        return{full_name:`${owner}/${name}`,html_url:`https://github.com/${owner}/${name}`,description:name.replace(/[-_]/g,' ').replace(/\b\w/g,m=>m.toUpperCase()),language:'Other',stargazers_count:0,updated_at:new Date().toISOString(),name,error:true}
       }
     };
 
-    // Theme setup
-    const initTheme = () => {
-      const saved = localStorage.getItem('theme');
-      const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
-      const theme = saved || (prefersDark ? 'dark' : 'light');
-      applyTheme(theme);
-      $('#themeToggle')?.addEventListener('click', () => {
-        const isDark = document.documentElement.classList.toggle('theme-dark');
-        const newTheme = isDark ? 'dark' : 'light';
-        localStorage.setItem('theme', newTheme);
-        updateThemeButton(isDark);
-        updateGitHubStats(isDark);
-      });
-    };
+    // Theme
+    const GH_LANG_BASE='https://github-readme-stats.vercel.app/api/top-langs?username=i3t4an&show_icons=true&locale=en&layout=compact';
+    const GH_STREAK_BASE='https://github-readme-streak-stats.herokuapp.com/?user=i3t4an';
+    const updateThemeButton=isDark=>{if(els.themeIcon) els.themeIcon.textContent=isDark?'☀️':'🌙'; if(els.themeText) els.themeText.textContent=isDark?'Light':'Dark'; els.themeToggle?.setAttribute('aria-pressed',String(isDark))};
+    const updateGitHubStats=isDark=>{els.langImg && (els.langImg.src=isDark?GH_LANG_BASE+'&theme=dark':GH_LANG_BASE); els.streakImg && (els.streakImg.src=isDark?GH_STREAK_BASE+'&theme=dark':GH_STREAK_BASE)};
+    const applyTheme=t=>{const isDark=t==='dark';document.documentElement.classList.toggle('theme-dark',isDark);updateThemeButton(isDark);updateGitHubStats(isDark)};
+    const initTheme=()=>{const saved=localStorage.getItem('theme');const prefersDark=window.matchMedia?.('(prefers-color-scheme: dark)').matches;applyTheme(saved|| (prefersDark?'dark':'light')); els.themeToggle?.addEventListener('click',()=>{const isDark=document.documentElement.classList.toggle('theme-dark');localStorage.setItem('theme',isDark?'dark':'light');updateThemeButton(isDark);updateGitHubStats(isDark)})};
 
-    const applyTheme = (theme) => { 
-      const isDark = theme === 'dark'; 
-      document.documentElement.classList.toggle('theme-dark', isDark); 
-      updateThemeButton(isDark);
-      updateGitHubStats(isDark);
-    };
-    const updateThemeButton = (isDark) => { const btn = $('#themeToggle'); if (btn) { $('#themeIcon').textContent = isDark ? '☀️' : '🌙'; $('#themeText').textContent = isDark ? 'Light' : 'Dark'; btn.setAttribute('aria-pressed', String(isDark)); } };
+    // Header shadow
+    const initHeaderScroll=()=>{addEventListener('scroll',()=>{els.header.classList.toggle('scrolled',scrollY>20)},{passive:true})};
 
-    const updateGitHubStats = (isDark) => {
-      const langImg = $('#githubStatsImg');
-      const streakImg = $('#githubStreakImg');
-      if (langImg) {
-        const baseUrl = 'https://github-readme-stats.vercel.app/api/top-langs?username=i3t4an&show_icons=true&locale=en&layout=compact';
-        langImg.src = isDark ? baseUrl + '&theme=dark' : baseUrl;
-      }
-      if (streakImg) {
-        const baseUrl = 'https://github-readme-streak-stats.herokuapp.com/?user=i3t4an';
-        streakImg.src = isDark ? baseUrl + '&theme=dark' : baseUrl;
-      }
-    };
+    // DOM builders
+    const buildSkillCol=(title,items)=>{const col=document.createElement('div');col.className='col';col.innerHTML=`<h4>${title}</h4>`;const ul=document.createElement('ul');const frag=document.createDocumentFragment();items.forEach(t=>{const li=document.createElement('li');li.textContent=t;frag.appendChild(li)});ul.appendChild(frag);col.appendChild(ul);return col};
 
-    // Header scroll shadow
-    const initHeaderScroll = () => { window.addEventListener('scroll', () => { $('header').classList.toggle('scrolled', window.scrollY > 20); }); };
-
-    // Build skill column
-    const buildSkillCol = (title, items) => {
-      const col = document.createElement('div');
-      col.className = 'col';
-      col.innerHTML = `<h4>${title}</h4>`;
-      const ul = document.createElement('ul');
-      items.forEach(t => { const li = document.createElement('li'); li.textContent = t; ul.appendChild(li); });
-      col.appendChild(ul);
-      return col;
-    };
-
-    // Build repo card
-    const buildCard = (repo) => {
-      const card = document.createElement('article');
-      card.className = 'card';
-      card.innerHTML = `
+    const buildCard=repo=>{const card=document.createElement('article');card.className='card';card.innerHTML=`
         <h5><a href="${repo.html_url}" target="_blank" rel="noopener">${repo.name}</a></h5>
         <p class="desc">${repo.description}</p>
         <div class="meta">
@@ -494,135 +337,59 @@
           <span>⭐ ${repo.stargazers_count}</span>
           <span>${relativeTime(repo.updated_at)}</span>
         </div>
-        <div class="actions"><a class="gh-link" href="${repo.html_url}" target="_blank" rel="noopener">View on GitHub →</a></div>`;
-      return card;
-    };
+        <div class="actions"><a class="gh-link" href="${repo.html_url}" target="_blank" rel="noopener">View on GitHub →</a></div>`;return card};
 
-    const sorters = {
-      updated: (a, b) => new Date(b.updated_at) - new Date(a.updated_at),
-      stars: (a, b) => b.stargazers_count - a.stargazers_count,
-      name: (a, b) => a.name.localeCompare(b.name)
-    };
+    const sorters={updated:(a,b)=>new Date(b.updated_at)-new Date(a.updated_at),stars:(a,b)=>b.stargazers_count-a.stargazers_count,name:(a,b)=>a.name.localeCompare(b.name)};
 
-    // Render filter chips (languages)
-    const updateFilterChips = (state) => {
-      const container = $('#filters');
-      container.innerHTML = '';
-      const langs = ['All', ...Array.from(state.languages).filter(l => l !== 'All').sort()];
-      langs.forEach(lang => {
-        const chip = document.createElement('button');
-        chip.className = 'chip';
-        chip.type = 'button';
-        chip.setAttribute('aria-pressed', String(state.filter === lang));
-        chip.textContent = lang;
-        chip.addEventListener('click', () => { state.filter = lang; renderProjects(state); });
-        container.appendChild(chip);
-      });
-    };
+    // Filter chips
+    const updateFilterChips=state=>{els.filters.innerHTML='';const langs=['All',...Array.from(state.languages).filter(l=>l!=='All').sort()];const frag=document.createDocumentFragment();langs.forEach(lang=>{const chip=document.createElement('button');chip.className='chip';chip.type='button';chip.setAttribute('aria-pressed',String(state.filter===lang));chip.textContent=lang;chip.addEventListener('click',()=>{state.filter=lang;renderProjects(state)});frag.appendChild(chip)});els.filters.appendChild(frag)};
 
-    // Animate cards in view
-    const animateCards = () => {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('animate-in'); observer.unobserve(entry.target); } });
-      }, { threshold: 0.1, rootMargin: '50px' });
-      $$('.card').forEach(card => { card.classList.remove('animate-in'); observer.observe(card); });
-    };
+    // Animate cards (single observer instance)
+    const observer=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('animate-in');observer.unobserve(e.target)}})},{threshold:.1,rootMargin:'50px'});
+    const animateCards=()=>{$$('.card').forEach(c=>{c.classList.remove('animate-in');observer.observe(c)})};
 
     // Render projects
-    const renderProjects = (state) => {
-      const groups = { dev: [], ai: [], enterprise: [] };
-      for (const repo of state.repos) {
-        if (state.filter !== 'All' && repo.language !== state.filter) continue;
-        groups[repo.__group].push(repo);
+    const renderProjects=state=>{
+      const groups={dev:[],ai:[],enterprise:[]};
+      for(const r of state.repos){if(state.filter!=='All' && r.language!==state.filter) continue;groups[r.__group].push(r)}
+      Object.keys(groups).forEach(k=>groups[k].sort(sorters[state.sort]));
+      const map={dev:els.gridDev,ai:els.gridAI,enterprise:els.gridEnt};
+      for(const [k,grid] of Object.entries(map)){
+        grid.innerHTML='';const list=groups[k];
+        if(!list.length){grid.innerHTML='<div class="empty">No projects match the current filter.</div>';continue}
+        const frag=document.createDocumentFragment();list.forEach(p=>frag.appendChild(buildCard(p)));grid.appendChild(frag)
       }
-      Object.keys(groups).forEach(k => groups[k].sort(sorters[state.sort]));
-      const grids = { dev: $('#grid-dev'), ai: $('#grid-ai'), enterprise: $('#grid-enterprise') };
-      for (const [key, grid] of Object.entries(grids)) {
-        grid.innerHTML = '';
-        const projects = groups[key];
-        grid.innerHTML = projects.length ? '' : '<div class="empty">No projects match the current filter.</div>';
-        projects.forEach(p => grid.appendChild(buildCard(p)));
-      }
-      updateFilterChips(state);
-      requestAnimationFrame(animateCards);
+      updateFilterChips(state);requestAnimationFrame(animateCards)
     };
 
-    // Load repos from SITE config
-    const loadRepos = async (state) => {
-      const repoData = [];
-      for (const item of window.SITE.repos) {
-        const parsed = parseRepoPath(item.url);
-        if (!parsed) continue;
-        const data = await fetchRepo(parsed.owner, parsed.name);
-        data.__group = item.group;
-        repoData.push(data);
-        if (data.language) state.languages.add(data.language);
-      }
-      state.repos = repoData;
-      renderProjects(state);
+    // Load repos concurrently
+    const loadRepos=async(state)=>{
+      const promises=window.SITE.repos.map(async item=>{const parsed=parseRepoPath(item.url);if(!parsed) return null;const d=await fetchRepo(parsed.owner,parsed.name);d.__group=item.group;return d});
+      const results=(await Promise.all(promises)).filter(Boolean);
+      results.forEach(d=>{if(d.language) state.languages.add(d.language)});
+      state.repos=results;renderProjects(state)
     };
 
-    // One state object
-    const state = { repos: [], filter: 'All', sort: 'updated', languages: new Set(['All']) };
+    const state={repos:[],filter:'All',sort:'updated',languages:new Set(['All'])};
 
-    // Initialize
-    const init = () => {
-      // Brand & hero from config
-      $('#brandName').textContent = window.SITE.name;
-      $('#footerName').textContent = window.SITE.name;
-      $('#brandTag').textContent = window.SITE.tagline;
-      $('#heroTitle').textContent = window.SITE.hero.title;
-      $('#heroParagraph').textContent = window.SITE.hero.paragraph;
-
-      // Socials
-      $('#linkGithub').href = window.SITE.socials.github;
-      $('#linkLinkedIn').href = window.SITE.socials.linkedin;
-      $('#linkEmail').href = window.SITE.socials.email;
-
-      // Skills
-      const skillsGrid = $('#skillsGrid');
-      skillsGrid.innerHTML = '';
-      
-      // Add GitHub stats card as the primary/first item
-      const statsCol = document.createElement('div');
-      statsCol.className = 'col primary-col';
-      statsCol.innerHTML = `
-        <h4>GitHub Activity</h4>
-        <div class="github-stats">
-          <img id="githubStatsImg" 
-               src="https://github-readme-stats.vercel.app/api/top-langs?username=i3t4an&show_icons=true&locale=en&layout=compact" 
-               alt="Ethan's GitHub Language Stats" 
-               loading="lazy">
-          <img id="githubStreakImg" 
-               src="https://github-readme-streak-stats.herokuapp.com/?user=i3t4an" 
-               alt="Ethan's GitHub Streak Stats" 
-               loading="lazy">
-        </div>
-      `;
-      skillsGrid.appendChild(statsCol);
-      
-      skillsGrid.appendChild(buildSkillCol('Programming & Development', window.SITE.skills.development));
-      skillsGrid.appendChild(buildSkillCol('AI, QA & Automation', window.SITE.skills.automation));
-      skillsGrid.appendChild(buildSkillCol('Cloud, Systems & Tools', window.SITE.skills.systems));
-
-      // Year
-      $('#year').textContent = new Date().getFullYear();
-
-      // Theme, header, sorting
-      initTheme();
-      initHeaderScroll();
-      $('#sort')?.addEventListener('change', (e) => { state.sort = e.target.value; renderProjects(state); });
-
-      // JSON-LD
+    const init=()=>{
+      els.brandName.textContent=window.SITE.name;els.footerName.textContent=window.SITE.name;els.brandTag.textContent=window.SITE.tagline;els.heroTitle.textContent=window.SITE.hero.title;els.heroParagraph.textContent=window.SITE.hero.paragraph;
+      els.linkGithub.href=window.SITE.socials.github;els.linkLinkedIn.href=window.SITE.socials.linkedin;els.linkEmail.href=window.SITE.socials.email;
+      els.skillsGrid.innerHTML='';
+      const statsCol=document.createElement('div');statsCol.className='col primary-col';statsCol.innerHTML=`<h4>GitHub Activity</h4><div class="github-stats"><img id="githubStatsImg" src="${GH_LANG_BASE}" alt="Ethan's GitHub Language Stats" loading="lazy"><img id="githubStreakImg" src="${GH_STREAK_BASE}" alt="Ethan's GitHub Streak Stats" loading="lazy"></div>`;els.skillsGrid.appendChild(statsCol);
+      els.langImg=$('#githubStatsImg');els.streakImg=$('#githubStreakImg');
+      els.skillsGrid.appendChild(buildSkillCol('Programming & Development',window.SITE.skills.development));
+      els.skillsGrid.appendChild(buildSkillCol('AI, QA & Automation',window.SITE.skills.automation));
+      els.skillsGrid.appendChild(buildSkillCol('Cloud, Systems & Tools',window.SITE.skills.systems));
+      els.year.textContent=new Date().getFullYear();
+      initTheme();initHeaderScroll();
+      els.sort?.addEventListener('change',e=>{state.sort=e.target.value;renderProjects(state)});
       injectJSONLD();
-
-      // Repos
-      loadRepos(state).catch(e => { console.error('Failed to load repos:', e); $('#projects-empty').hidden = false; });
+      loadRepos(state).catch(()=>{els.projectsEmpty.hidden=false})
     };
 
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
   })();
   </script>
 </body>
 </html>
-
