@@ -187,6 +187,14 @@
     .col li { padding: 0.5rem 0 0.5rem 1.5rem; position: relative; }
     .col li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-weight: bold; }
 
+    .primary-col { background: rgba(99, 102, 241, 0.05); border-color: var(--accent-light); }
+    .theme-dark .primary-col { background: rgba(129, 140, 248, 0.1); }
+    .primary-col::before { transform: scaleX(1); }
+    .github-stats { display: flex; justify-content: center; align-items: center; }
+    .github-stats img { max-width: 100%; height: auto; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1)); transition: var(--transition); }
+    .theme-dark .github-stats img { filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
+    .primary-col:hover .github-stats img { transform: scale(1.02); }
+
     .controls { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 3rem; padding: 1.5rem; background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(10px); border-radius: 1.5rem; border: 1px solid var(--border); }
     .theme-dark .controls { background: rgba(17, 17, 17, 0.6); }
 
@@ -552,6 +560,21 @@
       // Skills
       const skillsGrid = $('#skillsGrid');
       skillsGrid.innerHTML = '';
+      
+      // Add GitHub stats card as the primary/first item
+      const statsCol = document.createElement('div');
+      statsCol.className = 'col primary-col';
+      statsCol.innerHTML = `
+        <h4>GitHub Activity</h4>
+        <div class="github-stats">
+          <img src="https://github-readme-stats.vercel.app/api/top-langs?username=i3t4an&show_icons=true&locale=en&layout=compact" 
+               alt="Ethan's GitHub Language Stats" 
+               loading="lazy"
+               style="width: 100%; height: auto; border-radius: 0.5rem;">
+        </div>
+      `;
+      skillsGrid.appendChild(statsCol);
+      
       skillsGrid.appendChild(buildSkillCol('Programming & Development', window.SITE.skills.development));
       skillsGrid.appendChild(buildSkillCol('AI, QA & Automation', window.SITE.skills.automation));
       skillsGrid.appendChild(buildSkillCol('Cloud, Systems & Tools', window.SITE.skills.systems));
