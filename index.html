@@ -58,7 +58,7 @@
         welcomeMessage: "Welcome to Ethan's interactive terminal. Type '--help' to see available commands.",
         prompt: "visitor@i3t4an.github.io:~$ ",
         title: "terminal — bash",
-        initialCommand: "--help",
+        initialCommand: "",
         whoami: [
           "NETCOM IS THE PROBLEM",
           "Better to chase a bag then buy one",
@@ -152,10 +152,23 @@
     .nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 0;min-height:4.5rem}
     .brand h1{font-size:1.5rem;font-weight:800;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
     .brand p{color:var(--text-secondary);font-size:.875rem;margin-top:.25rem}
+    
+    /* Updated Navigation Styles */
+    .nav-links {display:flex;align-items:center;gap:1rem}
+    .social-buttons {display:flex;gap:.5rem;margin:0 2rem}
     .theme-toggle{position:relative;background:rgba(255,255,255,.1);backdrop-filter:blur(10px);border:1px solid var(--border);color:var(--text-primary);padding:.625rem 1.25rem;border-radius:9999px;cursor:pointer;font-size:.875rem;font-weight:600;transition:var(--transition);overflow:hidden}
     .theme-toggle::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:var(--accent-light);transform:translate(-50%,-50%);transition:width .6s,height .6s}
     .theme-toggle:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--accent)}
     .theme-toggle:hover::before{width:100px;height:100px}
+    
+    /* Updated Button Styles for Navigation */
+    .nav-btn{position:relative;display:inline-flex;align-items:center;gap:.5rem;padding:.5rem 1rem;border-radius:9999px;font-weight:600;font-size:.8rem;border:1px solid var(--border);background:rgba(255,255,255,.05);backdrop-filter:blur(10px);color:var(--text-primary);transition:var(--transition);overflow:hidden}
+    .nav-btn::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:var(--accent-light);transform:translate(-50%,-50%);transition:width .6s,height .6s}
+    .nav-btn:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--accent)}
+    .nav-btn:hover::before{width:200px;height:200px}
+    .nav-btn.primary{background:var(--gradient-primary);color:#fff;border:none;box-shadow:var(--shadow-glow)}
+    .nav-btn.primary:hover{transform:translateY(-2px) scale(1.02);box-shadow:var(--shadow-lg),var(--shadow-glow)}
+    
     main{margin-top:4.5rem;position:relative;z-index:1}
     .hero{padding:6rem 0 4rem;position:relative;background:linear-gradient(180deg,var(--bg-secondary) 0%,var(--bg-primary) 100%);overflow:hidden}
     .hero::before{content:'';position:absolute;top:-50%;right:-25%;width:100%;height:100%;background:radial-gradient(circle,var(--accent-light) 0%,transparent 70%);animation:float 20s ease-in-out infinite}
@@ -166,10 +179,9 @@
     section{padding:2rem 0;position:relative}
     section h3{font-size:2.5rem;font-weight:800;margin-bottom:3rem;text-align:center;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
     
-    /* Updated Connect Section Styles */
+    /* Updated Connect Section Styles - Removed header */
     .contact-section{padding:0}
     .connect-row{display:flex;align-items:center;justify-content:center;gap:1.5rem;flex-wrap:wrap;margin-bottom:2rem}
-    .connect-title{font-size:2.5rem;font-weight:800;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:0}
     
     .cta{display:flex;gap:1rem;flex-wrap:wrap}
     .btn{position:relative;display:inline-flex;align-items:center;gap:.5rem;padding:.875rem 2rem;border-radius:9999px;font-weight:600;font-size:.9rem;border:1px solid var(--border);background:rgba(255,255,255,.05);backdrop-filter:blur(10px);color:var(--text-primary);transition:var(--transition);overflow:hidden}
@@ -250,7 +262,6 @@
     .terminal-controls{display:flex;gap:.5rem}
     .terminal-control{width:12px;height:12px;border-radius:50%;cursor:pointer;transition:all .2s ease}
     .terminal-control.close{background:#ff5f56}
-    .terminal-control.minimize{background:#ffbd2e}
     .terminal-control.maximize{background:#27c93f}
     .terminal-control:hover{transform:scale(1.1)}
     .terminal-title{color:rgba(255,255,255,.8);font-size:.875rem;font-weight:600}
@@ -293,12 +304,16 @@
       .github-stats{flex-direction:column;gap:1rem}
       .github-stats img{width:100%;height:auto}
       .terminal{height:400px}
-      .connect-row{flex-direction:column;text-align:center}
-      .connect-title{margin-bottom:1rem}
+      
+      /* Responsive styles for navigation */
+      .nav{flex-direction:column;gap:1rem;padding:1rem 0}
+      .social-buttons{margin:0;justify-content:center}
+      .nav-links{flex-direction:column;width:100%}
     }
     @media(max-width:480px){
       .terminal{height:350px;font-size:.75rem}
       .terminal-input{font-size:.75rem}
+      .nav-btn{padding:.375rem .75rem;font-size:.7rem}
     }
   </style>
 </head>
@@ -311,11 +326,16 @@
         <h1 id="brandName">Ethan Blair</h1>
         <p id="brandTag">Enterprise Systems • Automation • AI Development</p>
       </div>
-      <nav>
+      <div class="nav-links">
+        <div class="social-buttons">
+          <a id="linkGithub" class="nav-btn primary" href="#" target="_blank" rel="noopener me">GitHub</a>
+          <a id="linkLinkedIn" class="nav-btn" href="#" target="_blank" rel="noopener me">LinkedIn</a>
+          <a id="linkEmail" class="nav-btn" href="#">Email</a>
+        </div>
         <button id="themeToggle" class="theme-toggle" aria-pressed="false">
           <span id="themeIcon">🌙</span> <span id="themeText">Dark</span>
         </button>
-      </nav>
+      </div>
     </div>
   </header>
 
@@ -335,18 +355,6 @@
           <div id="skillsGrid" class="cols"></div>
         </div>
       </section>
-
- <!-- Let's Connect Section -->
-      <section id="contact" class="contact-section">
-        <div class="connect-row">
-          <h3 class="connect-title">Let's Connect</h3>
-          <div class="cta">
-            <a id="linkGithub" class="btn primary" href="#" target="_blank" rel="noopener me">GitHub</a>
-            <a id="linkLinkedIn" class="btn" href="#" target="_blank" rel="noopener me">LinkedIn</a>
-            <a id="linkEmail" class="btn" href="#">Email</a>
-          </div>
-        </div>
-      </section>
       
       <!-- Terminal Section -->
       <div class="terminal-container">
@@ -354,7 +362,6 @@
           <div class="terminal-header">
             <div class="terminal-controls">
               <div class="terminal-control close" id="terminalClose"></div>
-              <div class="terminal-control minimize" id="terminalMinimize"></div>
               <div class="terminal-control maximize" id="terminalMaximize"></div>
             </div>
             <div class="terminal-title" id="terminalTitle"></div>
@@ -430,8 +437,8 @@
       projectsEmpty:$('#projects-empty'),themeToggle:$('#themeToggle'),themeIcon:$('#themeIcon'),themeText:$('#themeText'),
       langImg:null,streakImg:null,
       terminalBody:$('#terminalBody'),terminalInput:$('#terminalInput'),terminalOutput:$('#terminalOutput'),
-      terminalCursor:$('#terminalCursor'),terminalClose:$('#terminalClose'),terminalMinimize:$('#terminalMinimize'),
-      terminalMaximize:$('#terminalMaximize'),matrixCanvas:$('#matrixCanvas'),
+      terminalCursor:$('#terminalCursor'),terminalClose:$('#terminalClose'),terminalMaximize:$('#terminalMaximize'),
+      matrixCanvas:$('#matrixCanvas'),
       terminalTitle:$('#terminalTitle'),currentPrompt:$('#currentPrompt')
     };
 
@@ -451,7 +458,6 @@
         const SITE=window.SITE;
         const terminal=$('.terminal');
         els.terminalClose.onclick=()=>terminal.classList.toggle('minimized');
-        els.terminalMinimize.onclick=()=>terminal.classList.toggle('transformed');
         els.terminalMaximize.onclick=()=>terminal.classList.toggle('maximized');
         
         els.terminalInput.onkeydown=e=>{
@@ -461,11 +467,8 @@
         };
         els.terminalInput.focus();
         
-        // Initialize terminal with welcome message and optional initial command
+        // Initialize terminal with welcome message only (no initial command)
         this.outputHelp(SITE.terminal.welcomeMessage);
-        if(SITE.terminal.initialCommand){
-          this.exec(SITE.terminal.initialCommand);
-        }
       }
       exec(cmd){
         const SITE=window.SITE;
@@ -602,6 +605,18 @@
       showProjects(){
         const SITE=window.SITE;
         this.outputHelp(SITE.terminal.messages.projectsInfo);
+        
+        // Get all repos from the site configuration
+        const allRepos = SITE.repos.map(repo => {
+          const parsed = parseRepoPath(repo.url);
+          return parsed ? parsed.name : null;
+        }).filter(Boolean);
+        
+        // Display available repos for search
+        this.outputText('\nAvailable repositories:\n');
+        allRepos.forEach(repo => {
+          this.outputText(`  ${repo}\n`);
+        });
         this.outputText(`\n${SITE.terminal.messages.projectsBrowse}`, true);
       }
       
@@ -610,8 +625,21 @@
         if(!args.length){
           this.outputError(SITE.terminal.messages.projectUsage);
         }else{
-          this.outputHelp(SITE.terminal.messages.projectDetails.replace('{name}',args[0]));
-          this.outputText(`\n${SITE.terminal.messages.projectNote}`, true);
+          const repoName = args[0].toLowerCase();
+          const matchingRepo = SITE.repos.find(repo => {
+            const parsed = parseRepoPath(repo.url);
+            return parsed && parsed.name.toLowerCase() === repoName;
+          });
+          
+          if(matchingRepo){
+            const parsed = parseRepoPath(matchingRepo.url);
+            this.outputHelp(SITE.terminal.messages.projectDetails.replace('{name}',parsed.name));
+            this.outputText(`\nGroup: ${matchingRepo.group}`);
+            this.outputText(`\nURL: ${matchingRepo.url}`);
+            this.outputText(`\n${SITE.terminal.messages.projectNote}`, true);
+          }else{
+            this.outputError(`Project "${args[0]}" not found. Use "projects" to see available repositories.`);
+          }
         }
       }
       
