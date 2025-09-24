@@ -53,7 +53,62 @@
         { group: 'enterprise', url: 'https://github.com/i3T4AN/qsys-av-scheduler' },
         { group: 'enterprise', url: 'https://github.com/i3T4AN/ADSI-ComputerQuery' },
         { group: 'enterprise', url: 'https://github.com/i3T4AN/audit-AD-Computers' }
-      ]
+      ],
+      terminal: {
+        welcomeMessage: "Welcome to Ethan's interactive terminal. Type '--help' to see available commands.",
+        prompt: "visitor@i3t4an.github.io:~$ ",
+        title: "terminal — bash",
+        initialCommand: "--help",
+        whoami: [
+          "NETCOM IS THE PROBLEM",
+          "Better to chase a bag then buy one",
+          "I hate react",
+          "Updating github..."
+        ],
+        commands: {
+          '--help': 'Show list of all commands with one-line summaries',
+          'about': 'Print hero title and paragraph',
+          'skills': 'Print grouped lists of skills',
+          'projects': 'Show compact table of featured repos',
+          'project': 'Show details for single project',
+          'links': 'Print GitHub, LinkedIn, and email links',
+          'theme': 'Toggle theme',
+          'matrix': 'Enable/disable code-rain effect',
+          'clear': 'Clear the terminal screen',
+          'history': 'List last 20 commands',
+          'palette': 'Show current CSS variables',
+          'whoami': 'Return one-liner and tagline'
+        },
+        messages: {
+          commandNotFound: 'Command not found: {cmd}. Type \'--help\' for available commands.',
+          projectUsage: 'Usage: project <name>',
+          projectDetails: 'Project details for: {name}',
+          projectNote: 'Detailed project view would be implemented here.',
+          projectsInfo: 'Featured Projects (from GitHub):',
+          projectsBrowse: 'Use the visual interface above to browse projects, or type "project <name>" for details.',
+          themeUsage: 'Usage: theme <light|dark|auto>',
+          themeSet: 'Theme set to: {theme}',
+          matrixUsage: 'Usage: matrix <on|off>',
+          matrixOn: 'Matrix effect activated for 10 seconds',
+          matrixOff: 'Matrix effect deactivated',
+          skillsTitle: 'Technical Skills:',
+          connectTitle: 'Connect with me:',
+          commandsTitle: 'Available commands:',
+          historyTitle: 'Last 20 commands:',
+          paletteTitle: 'CSS Variables:',
+          taglinePrefix: 'Tagline:',
+          noProjectsFound: 'No projects match the current filter.',
+          aboutPrefix: 'About',
+          skillsPrefix: 'Skills',
+          developmentTitle: 'Programming & Development',
+          automationTitle: 'AI, QA & Automation',
+          systemsTitle: 'Cloud, Systems & Tools'
+        },
+        matrix: {
+          characters: "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン",
+          duration: 10000
+        }
+      }
     };
   </script>
 
@@ -78,10 +133,10 @@
 
   <style>
     :root {
-      --bg-primary:#ffffff;--bg-secondary:#f8fafc;--bg-tertiary:#f1f5f9;--text-primary:#0f172a;--text-secondary:#475569;--text-muted:#64748b;--border:rgba(226,232,240,.5);--border-hover:rgba(148,163,184,.3);--accent:#6366f1;--accent-hover:#4f46e5;--accent-light:rgba(99,102,241,.1);--accent-glow:rgba(99,102,241,.4);--card-text:#1f2937;--card-meta:#334155;--lang-pill-bg:#eef2ff;--lang-pill-text:#1f2937;--gradient-primary:linear-gradient(135deg,#667eea 0%,#764ba2 100%);--gradient-mesh:radial-gradient(at 40% 20%,hsla(237,69%,65%,.2) 0px,transparent 50%),radial-gradient(at 80% 0%,hsla(189,75%,60%,.15) 0px,transparent 50%),radial-gradient(at 0% 50%,hsla(343,70%,65%,.1) 0px,transparent 50%);--shadow-sm:0 1px 3px 0 rgb(0 0 0 / .04),0 1px 2px -1px rgb(0 0 0 / .04);--shadow:0 10px 25px -5px rgb(0 0 0 / .1),0 8px 10px -6px rgb(0 0 0 / .1);--shadow-lg:0 20px 40px -15px rgba(0,0,0,.15);--shadow-glow:0 0 40px rgba(99,102,241,.2);--blur-bg:saturate(180%) blur(20px);--transition:all .3s cubic-bezier(.4,0,.2,1);--transition-fast:all .2s cubic-bezier(.4,0,.2,1)
+      --bg-primary:#fff;--bg-secondary:#f8fafc;--bg-tertiary:#f1f5f9;--text-primary:#0f172a;--text-secondary:#475569;--text-muted:#64748b;--border:rgba(226,232,240,.5);--border-hover:rgba(148,163,184,.3);--accent:#6366f1;--accent-hover:#4f46e5;--accent-light:rgba(99,102,241,.1);--accent-glow:rgba(99,102,241,.4);--card-text:#1f2937;--card-meta:#334155;--lang-pill-bg:#eef2ff;--lang-pill-text:#1f2937;--gradient-primary:linear-gradient(135deg,#667eea 0%,#764ba2 100%);--gradient-mesh:radial-gradient(at 40% 20%,hsla(237,69%,65%,.2) 0,transparent 50%),radial-gradient(at 80% 0%,hsla(189,75%,60%,.15) 0,transparent 50%),radial-gradient(at 0% 50%,hsla(343,70%,65%,.1) 0,transparent 50%);--shadow-sm:0 1px 3px 0 #0000000a,0 1px 2px -1px #0000000a;--shadow:0 10px 25px -5px #0000001a,0 8px 10px -6px #0000001a;--shadow-lg:0 20px 40px -15px #00000026;--shadow-glow:0 0 40px #6366f133;--blur-bg:saturate(180%) blur(20px);--transition:all .3s cubic-bezier(.4,0,.2,1);--transition-fast:all .2s cubic-bezier(.4,0,.2,1)
     }
     .theme-dark{
-      --bg-primary:#0a0a0a;--bg-secondary:#111111;--bg-tertiary:#1a1a1a;--text-primary:#f8fafc;--text-secondary:#cbd5e1;--text-muted:#94a3b8;--border:rgba(51,65,85,.4);--border-hover:rgba(148,163,184,.2);--accent:#818cf8;--accent-hover:#6366f1;--accent-light:rgba(129,140,248,.15);--accent-glow:rgba(129,140,248,.3);--card-text:var(--text-primary);--card-meta:var(--text-muted);--lang-pill-bg:rgba(129,140,248,.15);--lang-pill-text:#c7d2fe;--gradient-primary:linear-gradient(135deg,#667eea 0%,#9333ea 100%);--shadow-sm:0 1px 3px 0 rgb(0 0 0 /.2);--shadow:0 10px 40px -10px rgb(0 0 0 /.5);--shadow-lg:0 20px 50px -20px rgba(0,0,0,.8);--shadow-glow:0 0 60px rgba(129,140,248,.15)
+      --bg-primary:#0a0a0a;--bg-secondary:#111;--bg-tertiary:#1a1a1a;--text-primary:#f8fafc;--text-secondary:#cbd5e1;--text-muted:#94a3b8;--border:rgba(51,65,85,.4);--border-hover:rgba(148,163,184,.2);--accent:#818cf8;--accent-hover:#6366f1;--accent-light:rgba(129,140,248,.15);--accent-glow:rgba(129,140,248,.3);--card-text:var(--text-primary);--card-meta:var(--text-muted);--lang-pill-bg:rgba(129,140,248,.15);--lang-pill-text:#c7d2fe;--gradient-primary:linear-gradient(135deg,#667eea 0%,#9333ea 100%);--shadow-sm:0 1px 3px 0 #0003;--shadow:0 10px 40px -10px #00000080;--shadow-lg:0 20px 50px -20px #000000cc;--shadow-glow:0 0 60px #818cf826
     }
     *{margin:0;padding:0;box-sizing:border-box}
     html{scroll-behavior:smooth;font-size:16px}
@@ -108,9 +163,15 @@
     .hero h2{font-size:clamp(2.5rem,6vw,4rem);font-weight:900;margin-bottom:1.5rem;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:fadeInUp .8s ease-out}
     .hero p{color:var(--text-secondary);max-width:700px;font-size:1.25rem;line-height:1.8;animation:fadeInUp .8s ease-out .2s backwards}
     @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-    section{padding:5rem 0;position:relative}
+    section{padding:2rem 0;position:relative}
     section h3{font-size:2.5rem;font-weight:800;margin-bottom:3rem;text-align:center;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-    .cta{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-top:2rem}
+    
+    /* Updated Connect Section Styles */
+    .contact-section{padding:0}
+    .connect-row{display:flex;align-items:center;justify-content:center;gap:1.5rem;flex-wrap:wrap;margin-bottom:2rem}
+    .connect-title{font-size:2.5rem;font-weight:800;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:0}
+    
+    .cta{display:flex;gap:1rem;flex-wrap:wrap}
     .btn{position:relative;display:inline-flex;align-items:center;gap:.5rem;padding:.875rem 2rem;border-radius:9999px;font-weight:600;font-size:.9rem;border:1px solid var(--border);background:rgba(255,255,255,.05);backdrop-filter:blur(10px);color:var(--text-primary);transition:var(--transition);overflow:hidden}
     .btn::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:var(--accent-light);transform:translate(-50%,-50%);transition:width .6s,height .6s}
     .btn:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--accent)}
@@ -131,8 +192,8 @@
     .primary-col::before{transform:scaleX(1)}
     .primary-col h4{text-align:center}
     .github-stats{display:flex;justify-content:space-between;align-items:center;gap:2%}
-    .github-stats img{width:48%;height:200px;object-fit:contain;filter:drop-shadow(0 4px 8px rgba(0,0,0,.1));transition:var(--transition);border-radius:.5rem}
-    .theme-dark .github-stats img{filter:drop-shadow(0 4px 8px rgba(0,0,0,.3))}
+    .github-stats img{width:48%;height:200px;object-fit:contain;filter:drop-shadow(0 4px 8px #0000001a);transition:var(--transition);border-radius:.5rem}
+    .theme-dark .github-stats img{filter:drop-shadow(0 4px 8px #0000004d)}
     .primary-col:hover .github-stats img{transform:scale(1.02)}
     .controls{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;margin-bottom:3rem;padding:1.5rem;background:rgba(255,255,255,.02);backdrop-filter:blur(10px);border-radius:1.5rem;border:1px solid var(--border)}
     .theme-dark .controls{background:rgba(17,17,17,.6)}
@@ -177,13 +238,67 @@
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
     a:focus-visible,button:focus-visible,select:focus-visible,.card:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:.25rem}
     .card:focus-visible{outline-offset:4px;border-radius:1.5rem}
-    @media (max-width:768px){
+
+    /* Terminal Styles */
+    .main-container{display:flex;flex-direction:column;gap:2rem}
+    .terminal-container{width:100%;margin:0 auto}
+    .terminal{background:rgba(0,0,0,.85);border-radius:12px;border:1px solid rgba(99,102,241,.3);box-shadow:0 0 40px rgba(99,102,241,.15),0 8px 32px rgba(0,0,0,.3);backdrop-filter:blur(10px);overflow:hidden;height:500px;display:flex;flex-direction:column;transition:var(--transition);position:relative}
+    .terminal.minimized{height:40px}
+    .terminal.maximized{height:90vh}
+    .terminal.transformed{transform:translateY(calc(100% - 40px))}
+    .terminal-header{background:rgba(0,0,0,.9);padding:.75rem 1rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(99,102,241,.2)}
+    .terminal-controls{display:flex;gap:.5rem}
+    .terminal-control{width:12px;height:12px;border-radius:50%;cursor:pointer;transition:all .2s ease}
+    .terminal-control.close{background:#ff5f56}
+    .terminal-control.minimize{background:#ffbd2e}
+    .terminal-control.maximize{background:#27c93f}
+    .terminal-control:hover{transform:scale(1.1)}
+    .terminal-title{color:rgba(255,255,255,.8);font-size:.875rem;font-weight:600}
+    .terminal-body{flex:1;padding:1rem;overflow-y:auto;font-family:'SF Mono','Monaco','Inconsolata','Roboto Mono',monospace;font-size:.875rem;line-height:1.5}
+    .terminal-output{color:rgba(255,255,255,.9);margin-bottom:.5rem;white-space:pre-wrap;word-break:break-word}
+    .terminal-prompt{color:#818cf8;font-weight:600}
+    .terminal-command{color:rgba(255,255,255,.9)}
+    .terminal-input-line{display:flex;align-items:center;gap:.5rem}
+    .terminal-cursor{display:inline-block;width:8px;height:16px;background:#818cf8;animation:blink 1s infinite;vertical-align:middle}
+    @media(prefers-reduced-motion:reduce){.terminal-cursor{animation:none}}
+    @keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+    .terminal-input{background:transparent;border:none;color:rgba(255,255,255,.9);font-family:inherit;font-size:inherit;outline:none;flex:1}
+    .copy-icon{opacity:0;transition:opacity .2s ease;cursor:pointer;color:#818cf8;margin-left:.5rem;font-size:.75rem}
+    .terminal-output:hover .copy-icon,.terminal-output:focus-within .copy-icon{opacity:1}
+    .command-help{color:#818cf8}
+    .command-error{color:#f87171}
+    .command-success{color:#4ade80}
+    .matrix-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2;opacity:0;transition:opacity .5s ease}
+    .matrix-canvas.active{opacity:.1}
+
+    /* Reduced motion support */
+    @media (prefers-reduced-motion: reduce) {
+      .hero::before, .btn, .col, .card, .chip, .sort, .theme-toggle, .terminal-control {
+        animation: none !important;
+        transition: none !important;
+      }
+      .btn:hover, .col:hover, .card:hover, .chip:hover, .sort:hover, .theme-toggle:hover, .terminal-control:hover {
+        transform: none !important;
+      }
+      .hero h2, .hero p {
+        animation: none !important;
+      }
+    }
+
+    @media(max-width:768px){
       .hero h2{font-size:2.5rem}
       .grid{grid-template-columns:1fr}
       .controls{flex-direction:column;align-items:stretch}
-      section{padding:3rem 0}
+      section{padding:2rem 0}
       .github-stats{flex-direction:column;gap:1rem}
       .github-stats img{width:100%;height:auto}
+      .terminal{height:400px}
+      .connect-row{flex-direction:column;text-align:center}
+      .connect-title{margin-bottom:1rem}
+    }
+    @media(max-width:480px){
+      .terminal{height:350px;font-size:.75rem}
+      .terminal-input{font-size:.75rem}
     }
   </style>
 </head>
@@ -212,58 +327,86 @@
       </div>
     </section>
 
-    <section id="contact">
-      <div class="container">
-        <h3>Let's Connect</h3>
-        <div class="cta">
-          <a id="linkGithub" class="btn primary" href="#" target="_blank" rel="noopener me">GitHub</a>
-          <a id="linkLinkedIn" class="btn" href="#" target="_blank" rel="noopener me">LinkedIn</a>
-          <a id="linkEmail" class="btn" href="#">Email</a>
+    <div class="container main-container">
+      <!-- Technical Skills Section -->
+      <section id="skills">
+        <div class="container">
+          <h3>Technical Skills</h3>
+          <div id="skillsGrid" class="cols"></div>
+        </div>
+      </section>
+
+ <!-- Let's Connect Section -->
+      <section id="contact" class="contact-section">
+        <div class="connect-row">
+          <h3 class="connect-title">Let's Connect</h3>
+          <div class="cta">
+            <a id="linkGithub" class="btn primary" href="#" target="_blank" rel="noopener me">GitHub</a>
+            <a id="linkLinkedIn" class="btn" href="#" target="_blank" rel="noopener me">LinkedIn</a>
+            <a id="linkEmail" class="btn" href="#">Email</a>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Terminal Section -->
+      <div class="terminal-container">
+        <div class="terminal">
+          <div class="terminal-header">
+            <div class="terminal-controls">
+              <div class="terminal-control close" id="terminalClose"></div>
+              <div class="terminal-control minimize" id="terminalMinimize"></div>
+              <div class="terminal-control maximize" id="terminalMaximize"></div>
+            </div>
+            <div class="terminal-title" id="terminalTitle"></div>
+            <div style="width:60px"></div>
+          </div>
+          <div class="terminal-body" id="terminalBody">
+            <div id="terminalOutput"></div>
+            <div class="terminal-input-line">
+              <span class="terminal-prompt" id="currentPrompt"></span>
+              <input type="text" class="terminal-input" id="terminalInput" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+              <span class="terminal-cursor" id="terminalCursor"></span>
+            </div>
+          </div>
         </div>
       </div>
-    </section>
 
-    <section id="skills">
-      <div class="container">
-        <h3>Technical Skills</h3>
-        <div id="skillsGrid" class="cols"></div>
-      </div>
-    </section>
+      <!-- Projects Section -->
+      <section id="projects">
+        <div class="container">
+          <h3>Featured Projects</h3>
 
-    <section id="projects">
-      <div class="container">
-        <h3>Featured Projects</h3>
+          <div class="controls">
+            <div class="filters" id="filters"></div>
+            <select id="sort" class="sort">
+              <option value="updated">Last Updated</option>
+              <option value="stars">Stars</option>
+              <option value="name">Name</option>
+            </select>
+          </div>
 
-        <div class="controls">
-          <div class="filters" id="filters"></div>
-          <select id="sort" class="sort">
-            <option value="updated">Last Updated</option>
-            <option value="stars">Stars</option>
-            <option value="name">Name</option>
-          </select>
+          <div class="group">
+            <h4>Programming / Development</h4>
+            <div id="grid-dev" class="grid"></div>
+          </div>
+
+          <div class="group">
+            <h4>Automation & AI</h4>
+            <div id="grid-ai" class="grid"></div>
+          </div>
+
+          <div class="group">
+            <h4>Enterprise Systems / Cloud</h4>
+            <div id="grid-enterprise" class="grid"></div>
+          </div>
+
+          <div id="projects-empty" class="empty" hidden>
+            Unable to load projects. Please check back later.
+          </div>
+          <div id="status" class="sr-only" role="status" aria-live="polite"></div>
         </div>
-
-        <div class="group">
-          <h4>Programming / Development</h4>
-          <div id="grid-dev" class="grid"></div>
-        </div>
-
-        <div class="group">
-          <h4>Automation & AI</h4>
-          <div id="grid-ai" class="grid"></div>
-        </div>
-
-        <div class="group">
-          <h4>Enterprise Systems / Cloud</h4>
-          <div id="grid-enterprise" class="grid"></div>
-        </div>
-
-        <div id="projects-empty" class="empty" hidden>
-          Unable to load projects. Please check back later.
-        </div>
-        <div id="status" class="sr-only" role="status" aria-live="polite"></div>
-      </div>
-    </section>
+      </section>
+    </div>
   </main>
 
   <footer>
@@ -271,6 +414,8 @@
       <small>© <span id="year"></span> <span id="footerName">Ethan Blair</span>. All rights reserved.</small>
     </div>
   </footer>
+
+  <canvas class="matrix-canvas" id="matrixCanvas"></canvas>
 
   <script>
   (()=>{
@@ -283,12 +428,311 @@
       skillsGrid:$('#skillsGrid'),year:$('#year'),jsonld:$('#jsonld'),sort:$('#sort'),
       header:$('header'),filters:$('#filters'),gridDev:$('#grid-dev'),gridAI:$('#grid-ai'),gridEnt:$('#grid-enterprise'),
       projectsEmpty:$('#projects-empty'),themeToggle:$('#themeToggle'),themeIcon:$('#themeIcon'),themeText:$('#themeText'),
-      langImg:null,streakImg:null
+      langImg:null,streakImg:null,
+      terminalBody:$('#terminalBody'),terminalInput:$('#terminalInput'),terminalOutput:$('#terminalOutput'),
+      terminalCursor:$('#terminalCursor'),terminalClose:$('#terminalClose'),terminalMinimize:$('#terminalMinimize'),
+      terminalMaximize:$('#terminalMaximize'),matrixCanvas:$('#matrixCanvas'),
+      terminalTitle:$('#terminalTitle'),currentPrompt:$('#currentPrompt')
     };
 
-    // JSON-LD from config (no visual change)
+    // Terminal functionality - fully config-driven
+    class Terminal{
+      constructor(){
+        this.history=[];this.historyIndex=-1;this.matrixActive=false;this.matrixTimeout=null;
+        this.commands={
+          '--help':()=>this.showHelp(),'about':()=>this.showAbout(),'skills':()=>this.showSkills(),
+          'projects':()=>this.showProjects(),'project':a=>this.showProject(a),'links':()=>this.showLinks(),
+          'theme':a=>this.setTheme(a),'matrix':a=>this.setMatrix(a),'clear':()=>this.clear(),
+          'history':()=>this.showHistory(),'palette':()=>this.showPalette(),'whoami':()=>this.showWhoami()
+        };
+        this.init();
+      }
+      init(){
+        const SITE=window.SITE;
+        const terminal=$('.terminal');
+        els.terminalClose.onclick=()=>terminal.classList.toggle('minimized');
+        els.terminalMinimize.onclick=()=>terminal.classList.toggle('transformed');
+        els.terminalMaximize.onclick=()=>terminal.classList.toggle('maximized');
+        
+        els.terminalInput.onkeydown=e=>{
+          if(e.key==='Enter'){this.exec(e.target.value);e.target.value=''}
+          else if(e.key==='ArrowUp'){e.preventDefault();this.navHistory(-1)}
+          else if(e.key==='ArrowDown'){e.preventDefault();this.navHistory(1)}
+        };
+        els.terminalInput.focus();
+        
+        // Initialize terminal with welcome message and optional initial command
+        this.outputHelp(SITE.terminal.welcomeMessage);
+        if(SITE.terminal.initialCommand){
+          this.exec(SITE.terminal.initialCommand);
+        }
+      }
+      exec(cmd){
+        const SITE=window.SITE;
+        if(!cmd.trim())return;
+        this.history.push(cmd);this.historyIndex=this.history.length;
+        
+        this.outputCommand(SITE.terminal.prompt, cmd);
+        
+        const[c,...args]=cmd.trim().split(' ');
+        const fn=this.commands[c.toLowerCase()];
+        fn?fn(args):this.outputError(SITE.terminal.messages.commandNotFound.replace('{cmd}',c));
+        els.terminalBody.scrollTop=els.terminalBody.scrollHeight;
+      }
+      
+      outputCommand(prompt, command){
+        const div=document.createElement('div');
+        div.className='terminal-output';
+        
+        const promptSpan=document.createElement('span');
+        promptSpan.className='terminal-prompt';
+        promptSpan.textContent=prompt;
+        
+        const commandSpan=document.createElement('span');
+        commandSpan.className='terminal-command';
+        commandSpan.textContent=command;
+        
+        div.appendChild(promptSpan);
+        div.appendChild(commandSpan);
+        els.terminalOutput.appendChild(div);
+      }
+      
+      outputText(text, copyable=false){
+        const div=document.createElement('div');
+        div.className='terminal-output';
+        
+        const textNode=document.createTextNode(text);
+        div.appendChild(textNode);
+        
+        if(copyable){
+          this.addCopyButton(div);
+        }
+        els.terminalOutput.appendChild(div);
+      }
+      
+      outputError(text){
+        const div=document.createElement('div');
+        div.className='terminal-output';
+        
+        const errorSpan=document.createElement('span');
+        errorSpan.className='command-error';
+        errorSpan.textContent=text;
+        
+        div.appendChild(errorSpan);
+        els.terminalOutput.appendChild(div);
+      }
+      
+      outputSuccess(text){
+        const div=document.createElement('div');
+        div.className='terminal-output';
+        
+        const successSpan=document.createElement('span');
+        successSpan.className='command-success';
+        successSpan.textContent=text;
+        
+        div.appendChild(successSpan);
+        els.terminalOutput.appendChild(div);
+      }
+      
+      outputHelp(text){
+        const div=document.createElement('div');
+        div.className='terminal-output';
+        
+        const helpSpan=document.createElement('span');
+        helpSpan.className='command-help';
+        helpSpan.textContent=text;
+        
+        div.appendChild(helpSpan);
+        els.terminalOutput.appendChild(div);
+      }
+      
+      addCopyButton(container){
+        const copy=document.createElement('span');
+        copy.className='copy-icon';
+        copy.textContent='📋';
+        copy.title='Copy to clipboard';
+        copy.setAttribute('tabindex', '0');
+        copy.onclick=()=>this.copyToClipboard(container, copy);
+        copy.onkeydown=(e)=>{if(e.key==='Enter'||e.key===' ')this.copyToClipboard(container, copy)};
+        container.appendChild(copy);
+        container.setAttribute('tabindex', '0');
+      }
+      
+      copyToClipboard(container, copyButton){
+        navigator.clipboard.writeText(container.textContent.replace('📋','').trim()).then(()=>{
+          copyButton.textContent='✓';
+          setTimeout(()=>copyButton.textContent='📋',2000);
+        });
+      }
+      
+      navHistory(d){
+        if(!this.history.length)return;
+        this.historyIndex=Math.max(0,Math.min(this.history.length,this.historyIndex+d));
+        els.terminalInput.value=this.historyIndex<this.history.length?this.history[this.historyIndex]:'';
+      }
+      
+      showHelp(){
+        const SITE=window.SITE;
+        this.outputHelp(SITE.terminal.messages.commandsTitle);
+        Object.entries(SITE.terminal.commands).forEach(([k,v])=>{
+          this.outputText(`  ${k.padEnd(20)} ${v}`, false);
+        });
+      }
+      
+      showAbout(){
+        const SITE=window.SITE;
+        this.outputHelp(SITE.hero.title);
+        this.outputText(`\n${SITE.hero.paragraph}`, true);
+      }
+      
+      showSkills(){
+        const SITE=window.SITE;
+        this.outputHelp(SITE.terminal.messages.skillsTitle);
+        this.outputText('\n');
+        this.outputText(`${SITE.terminal.messages.developmentTitle.toUpperCase()}:\n`);
+        SITE.skills.development.forEach(s=>this.outputText(`  • ${s}\n`));
+        this.outputText('\n');
+        this.outputText(`${SITE.terminal.messages.automationTitle.toUpperCase()}:\n`);
+        SITE.skills.automation.forEach(s=>this.outputText(`  • ${s}\n`));
+        this.outputText('\n');
+        this.outputText(`${SITE.terminal.messages.systemsTitle.toUpperCase()}:\n`);
+        SITE.skills.systems.forEach(s=>this.outputText(`  • ${s}\n`));
+      }
+      
+      showProjects(){
+        const SITE=window.SITE;
+        this.outputHelp(SITE.terminal.messages.projectsInfo);
+        this.outputText(`\n${SITE.terminal.messages.projectsBrowse}`, true);
+      }
+      
+      showProject(args){
+        const SITE=window.SITE;
+        if(!args.length){
+          this.outputError(SITE.terminal.messages.projectUsage);
+        }else{
+          this.outputHelp(SITE.terminal.messages.projectDetails.replace('{name}',args[0]));
+          this.outputText(`\n${SITE.terminal.messages.projectNote}`, true);
+        }
+      }
+      
+      showLinks(){
+        const SITE=window.SITE;
+        const s=SITE.socials;
+        this.outputHelp(SITE.terminal.messages.connectTitle);
+        this.outputText(`\nGitHub:   ${s.github}\nLinkedIn: ${s.linkedin}\nEmail:    ${s.email.replace('mailto:','')}`, true);
+      }
+      
+      setTheme(args){
+        const SITE=window.SITE;
+        const t=args[0]?.toLowerCase();
+        if(['light','dark','auto'].includes(t)){
+          if(t==='auto'){
+            localStorage.removeItem('theme');
+            applyTheme(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+          }else{
+            localStorage.setItem('theme',t);
+            applyTheme(t);
+          }
+          this.outputSuccess(SITE.terminal.messages.themeSet.replace('{theme}',t));
+        }else{
+          this.outputError(SITE.terminal.messages.themeUsage);
+        }
+      }
+      
+      setMatrix(args){
+        const SITE=window.SITE;
+        const m=args[0]?.toLowerCase();
+        if(m==='on'){
+          this.activateMatrix();
+          this.outputSuccess(SITE.terminal.messages.matrixOn);
+        }else if(m==='off'){
+          this.deactivateMatrix();
+          this.outputSuccess(SITE.terminal.messages.matrixOff);
+        }else{
+          this.outputError(SITE.terminal.messages.matrixUsage);
+        }
+      }
+      
+      activateMatrix(){
+        const SITE=window.SITE;
+        if(this.matrixActive)return;
+        this.matrixActive=true;
+        const c=els.matrixCanvas,ctx=c.getContext('2d');
+        c.classList.add('active');
+        c.width=innerWidth;c.height=innerHeight;
+        const chars=SITE.terminal.matrix.characters,size=14,cols=c.width/size,drops=Array(Math.floor(cols)).fill(1);
+        const draw=()=>{
+          if(!this.matrixActive)return;
+          ctx.fillStyle='rgba(0,0,0,0.05)';ctx.fillRect(0,0,c.width,c.height);
+          ctx.fillStyle='#818cf8';ctx.font=`${size}px monospace`;
+          drops.forEach((y,i)=>{
+            const char=chars[Math.floor(Math.random()*chars.length)];
+            ctx.fillText(char,i*size,y*size);
+            if(y*size>c.height&&Math.random()>.975)drops[i]=0;
+            drops[i]++;
+          });
+          requestAnimationFrame(draw);
+        };
+        draw();
+        this.matrixTimeout=setTimeout(()=>this.deactivateMatrix(),SITE.terminal.matrix.duration);
+      }
+      
+      deactivateMatrix(){
+        this.matrixActive=false;
+        els.matrixCanvas.classList.remove('active');
+        if(this.matrixTimeout){clearTimeout(this.matrixTimeout);this.matrixTimeout=null}
+      }
+      
+      clear(){
+        els.terminalOutput.innerHTML='';
+      }
+      
+      showHistory(){
+        const SITE=window.SITE;
+        const h=this.history.slice(-20);
+        this.outputHelp(SITE.terminal.messages.historyTitle);
+        this.outputText('\n');
+        h.forEach((c,i)=>this.outputText(`  ${(this.history.length-h.length+i+1).toString().padStart(3)}  ${c}\n`));
+      }
+      
+      showPalette(){
+        const SITE=window.SITE;
+        const vars=['--bg-primary','--bg-secondary','--text-primary','--text-secondary','--accent','--accent-hover','--border','--shadow-glow'];
+        this.outputHelp(SITE.terminal.messages.paletteTitle);
+        this.outputText('\n');
+        const style=getComputedStyle(document.documentElement);
+        vars.forEach(v=>this.outputText(`${v}: ${style.getPropertyValue(v).trim()}\n`));
+      }
+      
+      showWhoami(){
+        const SITE=window.SITE;
+        const msg=SITE.terminal.whoami[Math.floor(Math.random()*SITE.terminal.whoami.length)];
+        this.outputHelp(msg);
+        this.outputText(`\n${SITE.terminal.messages.taglinePrefix} ${SITE.tagline}`, true);
+      }
+    }
+
+    // JSON-LD from config
     const injectJSONLD=()=>{
-      const data={"@context":"https://schema.org","@type":"Person",name:window.SITE.name,url:"https://i3t4an.github.io/",email:window.SITE.socials.email,affiliation:{"@type":"CollegeOrUniversity",name:"University of Northern Colorado"},sameAs:[window.SITE.socials.github,window.SITE.socials.linkedin],jobTitle:"Programmer",knowsAbout:["Enterprise technology","Automation","AI development","Microsoft Intune","Microsoft SCCM","Power BI","JavaScript","TypeScript","React","Node.js","Python","C#","Objective-C","PowerShell","AppleScript"]};
+      const s=window.SITE;
+      const data={
+        "@context":"https://schema.org",
+        "@type":"Person",
+        name:s.name,
+        url:"https://i3t4an.github.io/",
+        email:s.socials.email,
+        affiliation:{
+          "@type":"CollegeOrUniversity",
+          name:"University of Northern Colorado"
+        },
+        sameAs:[s.socials.github,s.socials.linkedin],
+        jobTitle:"Programmer",
+        knowsAbout:[
+          ...s.skills.development.flatMap(skill=>skill.split(/\s*,\s*/)),
+          ...s.skills.automation.flatMap(skill=>skill.split(/\s*,\s*/)),
+          ...s.skills.systems.flatMap(skill=>skill.split(/\s*,\s*/))
+        ].filter((v,i,a)=>a.indexOf(v)===i).slice(0,15)
+      };
       if(els.jsonld){els.jsonld.type='application/ld+json';els.jsonld.textContent=JSON.stringify(data)}
     };
 
@@ -316,12 +760,34 @@
     };
 
     // Theme
-    const GH_LANG_BASE='https://github-readme-stats.vercel.app/api/top-langs?username=i3t4an&show_icons=true&locale=en&layout=compact';
-    const GH_STREAK_BASE='https://github-readme-streak-stats.herokuapp.com/?user=i3t4an';
-    const updateThemeButton=isDark=>{if(els.themeIcon) els.themeIcon.textContent=isDark?'☀️':'🌙'; if(els.themeText) els.themeText.textContent=isDark?'Light':'Dark'; els.themeToggle?.setAttribute('aria-pressed',String(isDark))};
+    const GH_LANG_BASE='https://github-readme-stats.vercel.app/api/top-langs?username=i3T4AN&show_icons=true&locale=en&layout=compact';
+    const GH_STREAK_BASE='https://github-readme-streak-stats.herokuapp.com/?user=i3T4AN';
+    
+    const updateThemeButton=isDark=>{
+      if(els.themeIcon) els.themeIcon.textContent=isDark?'☀️':'🌙'; 
+      if(els.themeText) els.themeText.textContent=isDark?'Light':'Dark'; 
+      els.themeToggle?.setAttribute('aria-pressed',String(isDark))
+    };
+    
     const updateGitHubStats=isDark=>{els.langImg && (els.langImg.src=isDark?GH_LANG_BASE+'&theme=dark':GH_LANG_BASE); els.streakImg && (els.streakImg.src=isDark?GH_STREAK_BASE+'&theme=dark':GH_STREAK_BASE)};
-    const applyTheme=t=>{const isDark=t==='dark';document.documentElement.classList.toggle('theme-dark',isDark);updateThemeButton(isDark);updateGitHubStats(isDark)};
-    const initTheme=()=>{const saved=localStorage.getItem('theme');const prefersDark=window.matchMedia?.('(prefers-color-scheme: dark)').matches;applyTheme(saved|| (prefersDark?'dark':'light')); els.themeToggle?.addEventListener('click',()=>{const isDark=document.documentElement.classList.toggle('theme-dark');localStorage.setItem('theme',isDark?'dark':'light');updateThemeButton(isDark);updateGitHubStats(isDark)})};
+    const applyTheme=t=>{
+      const isDark=t==='dark';
+      document.documentElement.classList.toggle('theme-dark',isDark);
+      updateThemeButton(isDark);
+      updateGitHubStats(isDark);
+    };
+    
+    const initTheme=()=>{
+      const saved=localStorage.getItem('theme');
+      const prefersDark=window.matchMedia?.('(prefers-color-scheme: dark)').matches;
+      applyTheme(saved|| (prefersDark?'dark':'light')); 
+      els.themeToggle?.addEventListener('click',()=>{
+        const isDark=document.documentElement.classList.toggle('theme-dark');
+        localStorage.setItem('theme',isDark?'dark':'light');
+        updateThemeButton(isDark);
+        updateGitHubStats(isDark);
+      })
+    };
 
     // Header shadow
     const initHeaderScroll=()=>{addEventListener('scroll',()=>{els.header.classList.toggle('scrolled',scrollY>20)},{passive:true})};
@@ -344,19 +810,20 @@
     // Filter chips
     const updateFilterChips=state=>{els.filters.innerHTML='';const langs=['All',...Array.from(state.languages).filter(l=>l!=='All').sort()];const frag=document.createDocumentFragment();langs.forEach(lang=>{const chip=document.createElement('button');chip.className='chip';chip.type='button';chip.setAttribute('aria-pressed',String(state.filter===lang));chip.textContent=lang;chip.addEventListener('click',()=>{state.filter=lang;renderProjects(state)});frag.appendChild(chip)});els.filters.appendChild(frag)};
 
-    // Animate cards (single observer instance)
+    // Animate cards
     const observer=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('animate-in');observer.unobserve(e.target)}})},{threshold:.1,rootMargin:'50px'});
     const animateCards=()=>{$$('.card').forEach(c=>{c.classList.remove('animate-in');observer.observe(c)})};
 
     // Render projects
     const renderProjects=state=>{
+      const SITE=window.SITE;
       const groups={dev:[],ai:[],enterprise:[]};
       for(const r of state.repos){if(state.filter!=='All' && r.language!==state.filter) continue;groups[r.__group].push(r)}
       Object.keys(groups).forEach(k=>groups[k].sort(sorters[state.sort]));
       const map={dev:els.gridDev,ai:els.gridAI,enterprise:els.gridEnt};
       for(const [k,grid] of Object.entries(map)){
         grid.innerHTML='';const list=groups[k];
-        if(!list.length){grid.innerHTML='<div class="empty">No projects match the current filter.</div>';continue}
+        if(!list.length){grid.innerHTML=`<div class="empty">${SITE.terminal.messages.noProjectsFound}</div>`;continue}
         const frag=document.createDocumentFragment();list.forEach(p=>frag.appendChild(buildCard(p)));grid.appendChild(frag)
       }
       updateFilterChips(state);requestAnimationFrame(animateCards)
@@ -364,7 +831,8 @@
 
     // Load repos concurrently
     const loadRepos=async(state)=>{
-      const promises=window.SITE.repos.map(async item=>{const parsed=parseRepoPath(item.url);if(!parsed) return null;const d=await fetchRepo(parsed.owner,parsed.name);d.__group=item.group;return d});
+      const SITE=window.SITE;
+      const promises=SITE.repos.map(async item=>{const parsed=parseRepoPath(item.url);if(!parsed) return null;const d=await fetchRepo(parsed.owner,parsed.name);d.__group=item.group;return d});
       const results=(await Promise.all(promises)).filter(Boolean);
       results.forEach(d=>{if(d.language) state.languages.add(d.language)});
       state.repos=results;renderProjects(state)
@@ -373,18 +841,28 @@
     const state={repos:[],filter:'All',sort:'updated',languages:new Set(['All'])};
 
     const init=()=>{
-      els.brandName.textContent=window.SITE.name;els.footerName.textContent=window.SITE.name;els.brandTag.textContent=window.SITE.tagline;els.heroTitle.textContent=window.SITE.hero.title;els.heroParagraph.textContent=window.SITE.hero.paragraph;
-      els.linkGithub.href=window.SITE.socials.github;els.linkLinkedIn.href=window.SITE.socials.linkedin;els.linkEmail.href=window.SITE.socials.email;
+      const SITE=window.SITE;
+      
+      els.brandName.textContent=SITE.name;els.footerName.textContent=SITE.name;els.brandTag.textContent=SITE.tagline;els.heroTitle.textContent=SITE.hero.title;els.heroParagraph.textContent=SITE.hero.paragraph;
+      els.linkGithub.href=SITE.socials.github;els.linkLinkedIn.href=SITE.socials.linkedin;els.linkEmail.href=SITE.socials.email;
       els.skillsGrid.innerHTML='';
-      const statsCol=document.createElement('div');statsCol.className='col primary-col';statsCol.innerHTML=`<h4>GitHub Activity</h4><div class="github-stats"><img id="githubStatsImg" src="${GH_LANG_BASE}" alt="Ethan's GitHub Language Stats" loading="lazy"><img id="githubStreakImg" src="${GH_STREAK_BASE}" alt="Ethan's GitHub Streak Stats" loading="lazy"></div>`;els.skillsGrid.appendChild(statsCol);
+      const statsCol=document.createElement('div');statsCol.className='col primary-col';statsCol.innerHTML=`<h4>GitHub Activity</h4><div class="github-stats"><img id="githubStatsImg" src="${GH_LANG_BASE}" alt="${SITE.name.split(' ')[0]}'s GitHub Language Stats" loading="lazy"><img id="githubStreakImg" src="${GH_STREAK_BASE}" alt="${SITE.name.split(' ')[0]}'s GitHub Streak Stats" loading="lazy"></div>`;els.skillsGrid.appendChild(statsCol);
       els.langImg=$('#githubStatsImg');els.streakImg=$('#githubStreakImg');
-      els.skillsGrid.appendChild(buildSkillCol('Programming & Development',window.SITE.skills.development));
-      els.skillsGrid.appendChild(buildSkillCol('AI, QA & Automation',window.SITE.skills.automation));
-      els.skillsGrid.appendChild(buildSkillCol('Cloud, Systems & Tools',window.SITE.skills.systems));
+      els.skillsGrid.appendChild(buildSkillCol(SITE.terminal.messages.developmentTitle,SITE.skills.development));
+      els.skillsGrid.appendChild(buildSkillCol(SITE.terminal.messages.automationTitle,SITE.skills.automation));
+      els.skillsGrid.appendChild(buildSkillCol(SITE.terminal.messages.systemsTitle,SITE.skills.systems));
       els.year.textContent=new Date().getFullYear();
       initTheme();initHeaderScroll();
       els.sort?.addEventListener('change',e=>{state.sort=e.target.value;renderProjects(state)});
       injectJSONLD();
+      
+      // Initialize terminal with config values
+      if (els.terminalTitle) els.terminalTitle.textContent = SITE.terminal.title;
+      if (els.currentPrompt) els.currentPrompt.textContent = SITE.terminal.prompt;
+      
+      // Initialize terminal functionality
+      new Terminal();
+      
       loadRepos(state).catch(()=>{els.projectsEmpty.hidden=false})
     };
 
