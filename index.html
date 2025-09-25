@@ -506,17 +506,23 @@
         const terminal=$('.terminal');
         els.terminalClose.onclick=()=>terminal.classList.toggle('minimized');
         els.terminalMaximize.onclick=()=>terminal.classList.toggle('maximized');
-        
+  
         els.terminalInput.onkeydown=e=>{
-          if(e.key==='Enter'){this.exec(e.target.value);e.target.value=''}
-          else if(e.key==='ArrowUp'){e.preventDefault();this.navHistory(-1)}
-          else if(e.key==='ArrowDown'){e.preventDefault();this.navHistory(1)}
+            if(e.key==='Enter'){this.exec(e.target.value);e.target.value=''}
+            else if(e.key==='ArrowUp'){e.preventDefault();this.navHistory(-1)}
+            else if(e.key==='ArrowDown'){e.preventDefault();this.navHistory(1)}
         };
-        els.terminalInput.focus();
-        
-        // Initialize terminal with welcome message only (no initial command)
+  
+        // Add click handler to focus input when terminal body is clicked
+        els.terminalBody.onclick=(e)=>{
+            if(e.target===els.terminalBody || e.target===els.terminalOutput){
+              els.terminalInput.focus();
+            }
+        };
+  
+        // Initialize terminal with welcome message only (no initial focus)
         this.outputHelp(SITE.terminal.welcomeMessage);
-      }
+        }
       exec(cmd){
         const SITE=window.SITE;
         if(!cmd.trim())return;
