@@ -330,7 +330,7 @@
     .command-error{color:#f87171}
     .command-success{color:#4ade80}
     .matrix-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2;opacity:0;transition:opacity .5s ease}
-    .matrix-canvas.active{opacity:.1}
+    .matrix-canvas.active{opacity:.9}
 
     /* Modal Styles */
     .modal {
@@ -463,7 +463,7 @@
 
     .modal-footer {
       padding: 1.5rem 2rem;
-      border-top: 1px solid var(--border);
+curs      border-top: 1px solid var(--border);
       display: flex;
       justify-content: flex-end;
     }
@@ -523,43 +523,7 @@
       .terminal-input{font-size:.75rem}
       .nav-btn{padding:.375rem .75rem;font-size:.7rem}
     }
-    /* Custom Cursor */
-    body, body * {
-      cursor: none !important;
-    }
     
-    .custom-cursor {
-      position: fixed;
-      width: 20px;
-      height: 20px;
-      pointer-events: none;
-      z-index: 9999;
-      mix-blend-mode: difference;
-      transition: transform 0.15s ease-out, opacity 0.3s ease;
-    }
-    
-    .custom-cursor svg {
-      width: 100%;
-      height: 100%;
-      filter: drop-shadow(0 0 3px rgba(129, 140, 248, 0.5));
-    }
-    
-    .custom-cursor.clicking {
-      transform: scale(0.85);
-    }
-    
-    .custom-cursor.hovering {
-      transform: scale(1.3);
-    }
-    
-    @media (pointer: coarse) {
-      body, body * {
-        cursor: auto !important;
-      }
-      .custom-cursor {
-        display: none;
-      }
-    }
   </style>
 </head>
 <body>
