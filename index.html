@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -1299,57 +1300,7 @@ curs      border-top: 1px solid var(--border);
       
       loadRepos(state).catch(()=>{els.projectsEmpty.hidden=false})
     };
-            // Custom Cursor
-      const createCursor = () => {
-        const cursor = document.createElement('div');
-        cursor.className = 'custom-cursor';
-        cursor.innerHTML = `<svg viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 3L3 19L8.5 14L12 21L14.5 20L11 13L17 12L3 3Z" fill="white" stroke="rgba(129, 140, 248, 0.8)" stroke-width="1.5"/>
-        </svg>`;
-        document.body.appendChild(cursor);
-        
-        let mouseX = 0, mouseY = 0;
-        let cursorX = 0, cursorY = 0;
-        
-        document.addEventListener('mousemove', (e) => {
-          mouseX = e.clientX;
-          mouseY = e.clientY;
-          cursor.style.left = mouseX + 'px';
-          cursor.style.top = mouseY + 'px';
-        });
-        
-        document.addEventListener('mousedown', () => cursor.classList.add('clicking'));
-        document.addEventListener('mouseup', () => cursor.classList.remove('clicking'));
-        
-        document.querySelectorAll('a, button, .card, .chip, input, select').forEach(el => {
-          el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
-          el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
-        });
 
-        // Force cursor to stay visible - remove any hiding styles
-        cursor.style.display = 'block !important';
-        cursor.style.visibility = 'visible !important';
-        cursor.style.opacity = '1 !important';
-        cursor.style.pointerEvents = 'none !important';
-        
-        // Override any modal styles that might hide cursor
-        const style = document.createElement('style');
-        style.textContent = `
-          .modal .custom-cursor,
-          .modal-content .custom-cursor,
-          .modal * .custom-cursor {
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-            pointer-events: none !important;
-          }
-        `;
-        document.head.appendChild(style);
-      };
-      
-      if (window.matchMedia('(pointer: fine)').matches) {
-        createCursor();
-      }
 
     if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
   })();
