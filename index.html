@@ -338,7 +338,7 @@
     .featured-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--gradient-primary);transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
     .featured-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:var(--border-hover);background:rgba(255,255,255,.05)}
     .featured-card:hover::before{transform:scaleX(1)}
-    .featured-card h4{font-size:1.25rem;margin-bottom:1rem;color:var(--text-primary);padding-bottom:1rem;border-bottom:1px solid var(--border)}
+    .featured-card h4{font-size:1.25rem;margin-bottom:1rem;color:var(--text-primary);padding-bottom:1rem;border-bottom:1px solid var(--border);text-align:center}
     .file-tree{flex:1;overflow-y:auto;font-family:'SF Mono','Monaco','Inconsolata','Roboto Mono',monospace;font-size:.7rem;line-height:1.6;scrollbar-width:none;-ms-overflow-style:none}
     .file-tree::-webkit-scrollbar{display:none}
     .file-item{padding:.25rem .5rem;cursor:pointer;transition:var(--transition-fast);border-radius:.5rem;color:var(--text-secondary);text-decoration:none;display:block;word-break:break-all}
@@ -351,6 +351,8 @@
     .readme-content h2{font-size:1.25rem}
     .readme-content h3{font-size:1.1rem}
     .readme-content p{margin-bottom:1rem}
+    .readme-content strong{font-weight:700;color:var(--text-primary)}
+    .readme-content em{font-style:italic}
     .readme-content code{background:rgba(99,102,241,.1);padding:.125rem .375rem;border-radius:.25rem;font-family:inherit}
     .readme-content pre{background:rgba(0,0,0,.3);padding:1rem;border-radius:.5rem;overflow-x:auto;margin:1rem 0}
     .readme-content ul,.readme-content ol{margin-left:1.5rem;margin-bottom:1rem}
@@ -1364,7 +1366,12 @@ curs      border-top: 1px solid var(--border);
               }
               html+=`<pre><code>${code}</code></pre>`
             }else if(line.trim()){
-              html+=`<p>${line.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank">$1</a>').replace(/`([^`]+)`/g,'<code>$1</code>')}</p>`
+              let processedLine=line;
+              processedLine=processedLine.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+              processedLine=processedLine.replace(/\*([^*]+)\*/g,'<em>$1</em>');
+              processedLine=processedLine.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank">$1</a>');
+              processedLine=processedLine.replace(/`([^`]+)`/g,'<code>$1</code>');
+              html+=`<p>${processedLine}</p>`
             }
           }
           readmeEl.innerHTML=html||'<div class="loading-placeholder">No README content</div>'
