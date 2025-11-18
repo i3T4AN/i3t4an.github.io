@@ -12,7 +12,7 @@
       tagline: "Enterprise Systems • Automation • AI Development",
       hero: {
         title: "Building Practical Tools for Enterprise Systems.",
-        paragraph: "I'm Ethan Blair, a student at the University of Northern Colorado. My focus is on enterprise technology, automation, and AI development. I enjoy building practical tools that make systems work more efficiently."
+        paragraph: "I'm Ethan Blair, I studied at the University of Northern Colorado. My focus is on enterprise technology, automation, and AI development. I enjoy building practical tools that make systems work more efficiently."
       },
       socials: {
         github: "https://github.com/i3T4AN",
@@ -37,7 +37,6 @@
           "Q-SYS (AV Integration)"
         ]
       },
-      featuredProject: "https://github.com/i3T4AN/babel",
       repos: [
         { group: 'dev', url: 'https://github.com/i3T4AN/csv-watcher' },
         { group: 'dev', url: 'https://github.com/i3T4AN/sudokusolver-resume' },
@@ -49,7 +48,6 @@
         { group: 'ai', url: 'https://github.com/i3T4AN/Claude-Gemini-MCP-Integration-Server' },
         { group: 'ai', url: 'https://github.com/i3T4AN/Claude_MCP_Bridge' },
         { group: 'ai', url: 'https://github.com/i3T4AN/evillimiter-mcp-server' },
-        { group: 'ai', url: 'https://github.com/i3T4AN/babel' },
         { group: 'enterprise', url: 'https://github.com/i3T4AN/applescript-device-rename' },
         { group: 'enterprise', url: 'https://github.com/i3T4AN/SCCM-font-install-no-restart' },
         { group: 'enterprise', url: 'https://github.com/i3T4AN/azuread-inactive-users-export' },
@@ -140,7 +138,7 @@
           projectUsage: 'Usage: project <name>',
           projectDetails: 'Project details for: {name}',
           projectNote: 'Detailed project view would be implemented here.',
-          projectsInfo: 'Projects (from GitHub):',
+          projectsInfo: 'Featured Projects (from GitHub):',
           projectsBrowse: 'Use the visual interface above to browse projects, or type "project <name>" for details.',
           themeUsage: 'Usage: theme <light|dark|auto>',
           themeSet: 'Theme set to: {theme}',
@@ -209,19 +207,23 @@
     .nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 0;min-height:4.5rem}
     .brand h1{font-size:1.5rem;font-weight:800;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
     .brand p{color:var(--text-secondary);font-size:.875rem;margin-top:.25rem}
-    .nav-links{display:flex;align-items:center;gap:1rem}
-    .social-buttons{display:flex;gap:.5rem;margin:0 2rem}
+    
+    /* Updated Navigation Styles */
+    .nav-links {display:flex;align-items:center;gap:1rem}
+    .social-buttons {display:flex;gap:.5rem;margin:0 2rem}
     .theme-toggle{position:relative;background:rgba(255,255,255,.1);backdrop-filter:blur(10px);border:1px solid var(--border);color:var(--text-primary);padding:.625rem 1.25rem;border-radius:9999px;cursor:pointer;font-size:.875rem;font-weight:600;transition:var(--transition);overflow:hidden}
     .theme-toggle::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:var(--accent-light);transform:translate(-50%,-50%);transition:width .6s,height .6s}
     .theme-toggle:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--accent)}
     .theme-toggle:hover::before{width:100px;height:100px}
+    
+    /* Updated Button Styles for Navigation */
     .nav-btn{position:relative;display:inline-flex;align-items:center;gap:.5rem;padding:.5rem 1rem;border-radius:9999px;font-weight:600;font-size:.8rem;border:1px solid var(--border);background:rgba(255,255,255,.05);backdrop-filter:blur(10px);color:var(--text-primary);transition:var(--transition);overflow:hidden}
     .nav-btn::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:var(--accent-light);transform:translate(-50%,-50%);transition:width .6s,height .6s}
     .nav-btn:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--accent)}
     .nav-btn:hover::before{width:200px;height:200px}
     .nav-btn.primary{background:var(--gradient-primary);color:#fff;border:none;box-shadow:var(--shadow-glow)}
     .nav-btn.primary:hover{transform:translateY(-2px) scale(1.02);box-shadow:var(--shadow-lg),var(--shadow-glow)}
-
+    
     main{margin-top:4.5rem;position:relative;z-index:1}
     .hero{padding:6rem 0 4rem;position:relative;background:linear-gradient(180deg,var(--bg-secondary) 0%,var(--bg-primary) 100%);overflow:hidden}
     .hero::before{content:'';position:absolute;top:-50%;right:-25%;width:100%;height:100%;background:radial-gradient(circle,var(--accent-light) 0%,transparent 70%);animation:float 20s ease-in-out infinite}
@@ -231,8 +233,11 @@
     @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
     section{padding:2rem 0;position:relative}
     section h3{font-size:2.5rem;font-weight:800;margin-bottom:3rem;text-align:center;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    
+    /* Updated Connect Section Styles - Removed header */
     .contact-section{padding:0}
     .connect-row{display:flex;align-items:center;justify-content:center;gap:1.5rem;flex-wrap:wrap;margin-bottom:2rem}
+    
     .cta{display:flex;gap:1rem;flex-wrap:wrap}
     .btn{position:relative;display:inline-flex;align-items:center;gap:.5rem;padding:.875rem 2rem;border-radius:9999px;font-weight:600;font-size:.9rem;border:1px solid var(--border);background:rgba(255,255,255,.05);backdrop-filter:blur(10px);color:var(--text-primary);transition:var(--transition);overflow:hidden}
     .btn::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:var(--accent-light);transform:translate(-50%,-50%);transition:width .6s,height .6s}
@@ -331,34 +336,6 @@
     .command-success{color:#4ade80}
     .matrix-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2;opacity:0;transition:opacity .5s ease}
     .matrix-canvas.active{opacity:.9}
-
-    /* Featured Project Styles */
-    .featured-grid{display:grid;grid-template-columns:2fr 1fr;gap:2rem;margin-top:2rem;align-items:start}
-    .featured-card{background:rgba(255,255,255,.02);backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:1.5rem;padding:2rem;transition:var(--transition);position:relative;overflow:hidden;display:flex;flex-direction:column;height:600px}
-    .featured-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--gradient-primary);transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
-    .featured-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:var(--border-hover);background:rgba(255,255,255,.05)}
-    .featured-card:hover::before{transform:scaleX(1)}
-    .featured-card h4{font-size:1.25rem;margin-bottom:1rem;color:var(--text-primary);padding-bottom:1rem;border-bottom:1px solid var(--border);text-align:center}
-    .file-tree{flex:1;overflow-y:auto;font-family:'SF Mono','Monaco','Inconsolata','Roboto Mono',monospace;font-size:.7rem;line-height:1.6;scrollbar-width:none;-ms-overflow-style:none}
-    .file-tree::-webkit-scrollbar{display:none}
-    .file-item{padding:.25rem .5rem;cursor:pointer;transition:var(--transition-fast);border-radius:.5rem;color:var(--text-secondary);text-decoration:none;display:block;word-break:break-all}
-    .file-item:hover{background:var(--accent-light);color:var(--accent)}
-    .file-item.folder{font-weight:600;color:var(--text-primary)}
-    .readme-content{flex:1;overflow-y:auto;padding:1rem;background:rgba(0,0,0,.1);border-radius:.75rem;font-size:.875rem;line-height:1.6;color:var(--text-secondary);scrollbar-width:none;-ms-overflow-style:none}
-    .readme-content::-webkit-scrollbar{display:none}
-    .readme-content h1,.readme-content h2,.readme-content h3{color:var(--text-primary);margin-top:1rem;margin-bottom:.5rem}
-    .readme-content h1{font-size:1.5rem}
-    .readme-content h2{font-size:1.25rem}
-    .readme-content h3{font-size:1.1rem}
-    .readme-content p{margin-bottom:1rem}
-    .readme-content strong{font-weight:700;color:var(--text-primary)}
-    .readme-content em{font-style:italic}
-    .readme-content code{background:rgba(99,102,241,.1);padding:.125rem .375rem;border-radius:.25rem;font-family:inherit}
-    .readme-content pre{background:rgba(0,0,0,.3);padding:1rem;border-radius:.5rem;overflow-x:auto;margin:1rem 0}
-    .readme-content ul,.readme-content ol{margin-left:1.5rem;margin-bottom:1rem}
-    .readme-content a{color:var(--accent);text-decoration:underline}
-    .loading-placeholder{color:var(--text-muted);text-align:center;padding:2rem}
-    @media(max-width:768px){.featured-grid{grid-template-columns:1fr}.featured-card{min-height:400px}}
 
     /* Modal Styles */
     .modal {
@@ -524,11 +501,14 @@ curs      border-top: 1px solid var(--border);
       .github-stats{flex-direction:column;gap:1rem}
       .github-stats img{width:100%;height:auto}
       .terminal{height:400px}
-
+      
+      /* Responsive styles for navigation */
       .nav{flex-direction:column;gap:1rem;padding:1rem 0}
       .social-buttons{margin:0;justify-content:center}
       .nav-links{flex-direction:column;width:100%}
-      .modal-content{
+
+      /* Modal responsive styles */
+      .modal-content {
         width: 95%;
         margin: 10% auto;
         max-height: 85vh;
@@ -548,7 +528,7 @@ curs      border-top: 1px solid var(--border);
       .terminal-input{font-size:.75rem}
       .nav-btn{padding:.375rem .75rem;font-size:.7rem}
     }
-
+    
   </style>
 </head>
 <body>
@@ -582,13 +562,14 @@ curs      border-top: 1px solid var(--border);
     </section>
 
     <div class="container main-container">
+      <!-- Technical Skills Section -->
       <section id="skills">
         <div class="container">
           <h3>Technical Skills</h3>
           <div id="skillsGrid" class="cols"></div>
         </div>
       </section>
-
+      
       <!-- Terminal Section -->
       <div class="terminal-container">
         <div class="terminal">
@@ -611,29 +592,10 @@ curs      border-top: 1px solid var(--border);
         </div>
       </div>
 
-      <section id="featured-project">
-        <div class="container">
-          <h3 id="featured-project-title">Featured Project</h3>
-          <div class="featured-grid">
-            <div class="featured-card featured-readme">
-              <h4>README</h4>
-              <div id="featured-project-readme" class="readme-content">
-                <div class="loading-placeholder">Loading README...</div>
-              </div>
-            </div>
-            <div class="featured-card featured-files">
-              <h4>Project Files</h4>
-              <div id="featured-project-files" class="file-tree">
-                <div class="loading-placeholder">Loading files...</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
+      <!-- Projects Section -->
       <section id="projects">
         <div class="container">
-          <h3>Projects</h3>
+          <h3>Featured Projects</h3>
 
           <div class="controls">
             <div class="filters" id="filters"></div>
@@ -738,15 +700,15 @@ curs      border-top: 1px solid var(--border);
   try {
     // Use the raw content URL to get the README directly
     const response = await fetch(`https://raw.githubusercontent.com/${owner}/${repo}/main/README.md`);
-
+    
     if (!response.ok) {
       throw new Error(`Failed to fetch README: ${response.status}`);
     }
-
+    
     // Get the response as text instead of JSON
     const readmeText = await response.text();
     return readmeText;
-
+    
   } catch (error) {
     console.error('Error fetching README:', error);
     throw error;
@@ -769,7 +731,7 @@ curs      border-top: 1px solid var(--border);
 
       try {
         const readmeContent = await fetchReadme(parsed.owner, parsed.name);
-
+        
         // Basic Markdown to HTML conversion (simple implementation)
         const htmlContent = convertMarkdownToHTML(readmeContent);
         els.modalBody.innerHTML = `<div class="readme-content">${htmlContent}</div>`;
@@ -827,20 +789,20 @@ curs      border-top: 1px solid var(--border);
         const terminal=$('.terminal');
         els.terminalClose.onclick=()=>terminal.classList.toggle('minimized');
         els.terminalMaximize.onclick=()=>terminal.classList.toggle('maximized');
-
+  
         els.terminalInput.onkeydown=e=>{
             if(e.key==='Enter'){this.exec(e.target.value);e.target.value=''}
             else if(e.key==='ArrowUp'){e.preventDefault();this.navHistory(-1)}
             else if(e.key==='ArrowDown'){e.preventDefault();this.navHistory(1)}
         };
-
+  
         // Add click handler to focus input when terminal body is clicked
         els.terminalBody.onclick=(e)=>{
             if(e.target===els.terminalBody || e.target===els.terminalOutput){
               els.terminalInput.focus();
             }
         };
-
+  
         // Initialize terminal with welcome message only (no initial focus)
         this.outputHelp(SITE.terminal.welcomeMessage);
         }
@@ -848,81 +810,81 @@ curs      border-top: 1px solid var(--border);
         const SITE=window.SITE;
         if(!cmd.trim())return;
         this.history.push(cmd);this.historyIndex=this.history.length;
-
+        
         this.outputCommand(SITE.terminal.prompt, cmd);
-
+        
         const[c,...args]=cmd.trim().split(' ');
         const fn=this.commands[c.toLowerCase()];
         fn?fn(args):this.outputError(SITE.terminal.messages.commandNotFound.replace('{cmd}',c));
         els.terminalBody.scrollTop=els.terminalBody.scrollHeight;
       }
-
+      
       outputCommand(prompt, command){
         const div=document.createElement('div');
         div.className='terminal-output';
-
+        
         const promptSpan=document.createElement('span');
         promptSpan.className='terminal-prompt';
         promptSpan.textContent=prompt;
-
+        
         const commandSpan=document.createElement('span');
         commandSpan.className='terminal-command';
         commandSpan.textContent=command;
-
+        
         div.appendChild(promptSpan);
         div.appendChild(commandSpan);
         els.terminalOutput.appendChild(div);
       }
-
+      
       outputText(text, copyable=false){
         const div=document.createElement('div');
         div.className='terminal-output';
-
+        
         const textNode=document.createTextNode(text);
         div.appendChild(textNode);
-
+        
         if(copyable){
           this.addCopyButton(div);
         }
         els.terminalOutput.appendChild(div);
       }
-
+      
       outputError(text){
         const div=document.createElement('div');
         div.className='terminal-output';
-
+        
         const errorSpan=document.createElement('span');
         errorSpan.className='command-error';
         errorSpan.textContent=text;
-
+        
         div.appendChild(errorSpan);
         els.terminalOutput.appendChild(div);
       }
-
+      
       outputSuccess(text){
         const div=document.createElement('div');
         div.className='terminal-output';
-
+        
         const successSpan=document.createElement('span');
         successSpan.className='command-success';
         successSpan.textContent=text;
-
+        
         div.appendChild(successSpan);
         els.terminalOutput.appendChild(div);
       }
-
+      
       outputHelp(text){
         const div=document.createElement('div');
         div.className='terminal-output';
-
+        
         const helpSpan=document.createElement('span');
         helpSpan.className='command-help';
         helpSpan.textContent=text;
-
+        
         div.appendChild(helpSpan);
         els.terminalOutput.appendChild(div);
       }
-
+      
       addCopyButton(container){
         const copy=document.createElement('span');
         copy.className='copy-icon';
@@ -934,20 +896,20 @@ curs      border-top: 1px solid var(--border);
         container.appendChild(copy);
         container.setAttribute('tabindex', '0');
       }
-
+      
       copyToClipboard(container, copyButton){
         navigator.clipboard.writeText(container.textContent.replace('📋','').trim()).then(()=>{
           copyButton.textContent='✓';
           setTimeout(()=>copyButton.textContent='📋',2000);
         });
       }
-
+      
       navHistory(d){
         if(!this.history.length)return;
         this.historyIndex=Math.max(0,Math.min(this.history.length,this.historyIndex+d));
         els.terminalInput.value=this.historyIndex<this.history.length?this.history[this.historyIndex]:'';
       }
-
+      
       showHelp(){
         const SITE=window.SITE;
         this.outputHelp(SITE.terminal.messages.commandsTitle);
@@ -955,13 +917,13 @@ curs      border-top: 1px solid var(--border);
           this.outputText(`  ${k.padEnd(20)} ${v}`, false);
         });
       }
-
+      
       showAbout(){
         const SITE=window.SITE;
         this.outputHelp(SITE.hero.title);
         this.outputText(`\n${SITE.hero.paragraph}`, true);
       }
-
+      
       showSkills(){
         const SITE=window.SITE;
         this.outputHelp(SITE.terminal.messages.skillsTitle);
@@ -975,17 +937,17 @@ curs      border-top: 1px solid var(--border);
         this.outputText(`${SITE.terminal.messages.systemsTitle.toUpperCase()}:\n`);
         SITE.skills.systems.forEach(s=>this.outputText(`  • ${s}\n`));
       }
-
+      
       showProjects(){
         const SITE=window.SITE;
         this.outputHelp(SITE.terminal.messages.projectsInfo);
-
+        
         // Get all repos from the site configuration
         const allRepos = SITE.repos.map(repo => {
           const parsed = parseRepoPath(repo.url);
           return parsed ? parsed.name : null;
         }).filter(Boolean);
-
+        
         // Display available repos for search
         this.outputText('\nAvailable repositories:\n');
         allRepos.forEach(repo => {
@@ -993,7 +955,7 @@ curs      border-top: 1px solid var(--border);
         });
         this.outputText(`\n${SITE.terminal.messages.projectsBrowse}`, true);
       }
-
+      
       showProject(args){
         const SITE=window.SITE;
         if(!args.length){
@@ -1004,7 +966,7 @@ curs      border-top: 1px solid var(--border);
             const parsed = parseRepoPath(repo.url);
             return parsed && parsed.name.toLowerCase() === repoName;
           });
-
+          
           if(matchingRepo){
             const parsed = parseRepoPath(matchingRepo.url);
             this.outputHelp(SITE.terminal.messages.projectDetails.replace('{name}',parsed.name));
@@ -1016,14 +978,14 @@ curs      border-top: 1px solid var(--border);
           }
         }
       }
-
+      
       showLinks(){
         const SITE=window.SITE;
         const s=SITE.socials;
         this.outputHelp(SITE.terminal.messages.connectTitle);
         this.outputText(`\nGitHub:   ${s.github}\nLinkedIn: ${s.linkedin}\nEmail:    ${s.email.replace('mailto:','')}`, true);
       }
-
+      
       setTheme(args){
         const SITE=window.SITE;
         const t=args[0]?.toLowerCase();
@@ -1040,7 +1002,7 @@ curs      border-top: 1px solid var(--border);
           this.outputError(SITE.terminal.messages.themeUsage);
         }
       }
-
+      
       setMatrix(args){
         const SITE=window.SITE;
         const m=args[0]?.toLowerCase();
@@ -1054,7 +1016,7 @@ curs      border-top: 1px solid var(--border);
           this.outputError(SITE.terminal.messages.matrixUsage);
         }
       }
-
+      
       activateMatrix(){
         const SITE=window.SITE;
         if(this.matrixActive)return;
@@ -1078,17 +1040,17 @@ curs      border-top: 1px solid var(--border);
         draw();
         this.matrixTimeout=setTimeout(()=>this.deactivateMatrix(),SITE.terminal.matrix.duration);
       }
-
+      
       deactivateMatrix(){
         this.matrixActive=false;
         els.matrixCanvas.classList.remove('active');
         if(this.matrixTimeout){clearTimeout(this.matrixTimeout);this.matrixTimeout=null}
       }
-
+      
       clear(){
         els.terminalOutput.innerHTML='';
       }
-
+      
       showHistory(){
         const SITE=window.SITE;
         const h=this.history.slice(-20);
@@ -1096,7 +1058,7 @@ curs      border-top: 1px solid var(--border);
         this.outputText('\n');
         h.forEach((c,i)=>this.outputText(`  ${(this.history.length-h.length+i+1).toString().padStart(3)}  ${c}\n`));
       }
-
+      
       showPalette(){
         const SITE=window.SITE;
         const vars=['--bg-primary','--bg-secondary','--text-primary','--text-secondary','--accent','--accent-hover','--border','--shadow-glow'];
@@ -1221,13 +1183,13 @@ curs      border-top: 1px solid var(--border);
     // Theme
     const GH_LANG_BASE='https://github-readme-stats.vercel.app/api/top-langs?username=i3T4AN&show_icons=true&locale=en&layout=compact';
     const GH_STREAK_BASE='https://github-readme-streak-stats.herokuapp.com/?user=i3T4AN';
-
+    
     const updateThemeButton=isDark=>{
       if(els.themeIcon) els.themeIcon.textContent=isDark?'☀️':'🌙'; 
       if(els.themeText) els.themeText.textContent=isDark?'Light':'Dark'; 
       els.themeToggle?.setAttribute('aria-pressed',String(isDark))
     };
-
+    
     const updateGitHubStats=isDark=>{els.langImg && (els.langImg.src=isDark?GH_LANG_BASE+'&theme=dark':GH_LANG_BASE); els.streakImg && (els.streakImg.src=isDark?GH_STREAK_BASE+'&theme=dark':GH_STREAK_BASE)};
     const applyTheme=t=>{
       const isDark=t==='dark';
@@ -1235,7 +1197,7 @@ curs      border-top: 1px solid var(--border);
       updateThemeButton(isDark);
       updateGitHubStats(isDark);
     };
-
+    
     const initTheme=()=>{
       const saved=localStorage.getItem('theme');
       const prefersDark=window.matchMedia?.('(prefers-color-scheme: dark)').matches;
@@ -1266,7 +1228,7 @@ curs      border-top: 1px solid var(--border);
           <span>${relativeTime(repo.updated_at)}</span>
         </div>
         <div class="actions"><a class="gh-link" href="${repo.html_url}" target="_blank" rel="noopener">View on GitHub →</a></div>`;
-
+      
       // Add click event to show README modal (clicking anywhere on card except the GitHub link)
       card.addEventListener('click', (e) => {
         // Don't trigger if clicking on the GitHub link
@@ -1275,7 +1237,7 @@ curs      border-top: 1px solid var(--border);
           showReadmeModal(repo.name, repo.html_url);
         }
       });
-
+      
       return card;
     };
 
@@ -1314,79 +1276,9 @@ curs      border-top: 1px solid var(--border);
 
     const state={repos:[],filter:'All',sort:'updated',languages:new Set(['All'])};
 
-    const loadFeaturedProject=async()=>{
-      const SITE=window.SITE;
-      if(!SITE.featuredProject)return;
-      const match=SITE.featuredProject.match(/github\.com\/([^\/]+)\/([^\/]+)/);
-      if(!match)return;
-      const[,owner,repo]=match;
-      const titleEl=$('#featured-project-title');
-      const filesEl=$('#featured-project-files');
-      const readmeEl=$('#featured-project-readme');
-      try{
-        titleEl.textContent=`Featured Project: ${repo}`;
-        const[treeRes,readmeRes]=await Promise.all([
-          fetch(`https://api.github.com/repos/${owner}/${repo}/git/trees/main?recursive=1`),
-          fetch(`https://api.github.com/repos/${owner}/${repo}/readme`,{headers:{Accept:'application/vnd.github.v3.raw'}})
-        ]);
-        if(treeRes.ok){
-          const treeData=await treeRes.json();
-          filesEl.innerHTML='';
-          const files=treeData.tree.filter(f=>f.type==='blob');
-          files.forEach(file=>{
-            const a=document.createElement('a');
-            a.className='file-item file';
-            a.textContent=file.path;
-            a.href=`https://github.com/${owner}/${repo}/blob/main/${file.path}`;
-            a.target='_blank';
-            a.rel='noopener noreferrer';
-            filesEl.appendChild(a)
-          })
-        }else{
-          filesEl.innerHTML='<div class="loading-placeholder">Unable to load files</div>'
-        }
-        if(readmeRes.ok){
-          const readmeText=await readmeRes.text();
-          const lines=readmeText.split('\n');
-          let html='';
-          for(let i=0;i<lines.length;i++){
-            const line=lines[i];
-            if(line.startsWith('# ')){
-              html+=`<h1>${line.slice(2)}</h1>`
-            }else if(line.startsWith('## ')){
-              html+=`<h2>${line.slice(3)}</h2>`
-            }else if(line.startsWith('### ')){
-              html+=`<h3>${line.slice(4)}</h3>`
-            }else if(line.startsWith('```')){
-              let code='';
-              i++;
-              while(i<lines.length&&!lines[i].startsWith('```')){
-                code+=lines[i]+'\n';
-                i++
-              }
-              html+=`<pre><code>${code}</code></pre>`
-            }else if(line.trim()){
-              let processedLine=line;
-              processedLine=processedLine.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
-              processedLine=processedLine.replace(/\*([^*]+)\*/g,'<em>$1</em>');
-              processedLine=processedLine.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank">$1</a>');
-              processedLine=processedLine.replace(/`([^`]+)`/g,'<code>$1</code>');
-              html+=`<p>${processedLine}</p>`
-            }
-          }
-          readmeEl.innerHTML=html||'<div class="loading-placeholder">No README content</div>'
-        }else{
-          readmeEl.innerHTML='<div class="loading-placeholder">Unable to load README</div>'
-        }
-      }catch(e){
-        filesEl.innerHTML='<div class="loading-placeholder">Error loading files</div>';
-        readmeEl.innerHTML='<div class="loading-placeholder">Error loading README</div>'
-      }
-    };
-
     const init=()=>{
       const SITE=window.SITE;
-
+      
       els.brandName.textContent=SITE.name;els.footerName.textContent=SITE.name;els.brandTag.textContent=SITE.tagline;els.heroTitle.textContent=SITE.hero.title;els.heroParagraph.textContent=SITE.hero.paragraph;
       els.linkGithub.href=SITE.socials.github;els.linkLinkedIn.href=SITE.socials.linkedin;els.linkEmail.href=SITE.socials.email;
       els.skillsGrid.innerHTML='';
@@ -1399,25 +1291,24 @@ curs      border-top: 1px solid var(--border);
       initTheme();initHeaderScroll();
       els.sort?.addEventListener('change',e=>{state.sort=e.target.value;renderProjects(state)});
       injectJSONLD();
-
+      
       // Initialize modal functionality
       initModal();
-
+      
       // Initialize terminal with config values
       if (els.terminalTitle) els.terminalTitle.textContent = SITE.terminal.title;
       if (els.currentPrompt) els.currentPrompt.textContent = SITE.terminal.prompt;
-
+      
       // Initialize terminal functionality
       new Terminal();
-
-      loadFeaturedProject().catch(()=>{});
+      
       loadRepos(state).catch(()=>{els.projectsEmpty.hidden=false})
     };
 
 
     if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
   })();
-
+  
   </script>
 </body>
 </html>
