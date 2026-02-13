@@ -54,7 +54,9 @@ window.SITE = {
         { group: 'enterprise', url: 'https://github.com/i3T4AN/LanSchoolRegRemove' },
         { group: 'enterprise', url: 'https://github.com/i3T4AN/Get-ADDeviceList' },
         { group: 'enterprise', url: 'https://github.com/i3T4AN/Rename-ADComputerClient' },
-        { group: 'enterprise', url: 'https://github.com/i3T4AN/Syspulse' }
+        { group: 'enterprise', url: 'https://github.com/i3T4AN/Syspulse' },
+        { group: 'enterprise', url: 'https://github.com/i3T4AN/Repair-AD-Trust-for-DC' }
+        
     ],
     terminal: {
         welcomeMessage: "Welcome to Ethan's interactive terminal. Type '--help' to see available commands.",
