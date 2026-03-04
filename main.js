@@ -1,4 +1,4 @@
-/* Portfolio Main Script - Ethan Blair */
+/* Portfolio Main Script */
 (() => {
     'use strict';
     const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
@@ -7,21 +7,36 @@
         brandName: $('#brandName'), footerName: $('#footerName'), brandTag: $('#brandTag'), heroTitle: $('#heroTitle'), heroParagraph: $('#heroParagraph'),
         linkGithub: $('#linkGithub'), linkLinkedIn: $('#linkLinkedIn'), linkEmail: $('#linkEmail'),
         skillsGrid: $('#skillsGrid'), year: $('#year'), jsonld: $('#jsonld'), sort: $('#sort'),
+        publishedTitle: $('#publishedTitle'), publishedGrid: $('#publishedGrid'), publishedEmpty: $('#published-empty'),
+        metaDescription: $('meta[name="description"]'), canonical: $('link[rel="canonical"]'),
+        ogType: $('meta[property="og:type"]'), ogTitle: $('meta[property="og:title"]'), ogDescription: $('meta[property="og:description"]'), ogUrl: $('meta[property="og:url"]'),
+        twitterCard: $('meta[name="twitter:card"]'), twitterTitle: $('meta[name="twitter:title"]'), twitterDescription: $('meta[name="twitter:description"]'),
+        googleSiteVerification: $('meta[name="google-site-verification"]'),
         header: $('header'), filters: $('#filters'), gridDev: $('#grid-dev'), gridAI: $('#grid-ai'), gridEnt: $('#grid-enterprise'),
         projectsEmpty: $('#projects-empty'), themeToggle: $('#themeToggle'), themeIcon: $('#themeIcon'), themeText: $('#themeText'),
         langImg: null, streakImg: null,
         terminalBody: $('#terminalBody'), terminalInput: $('#terminalInput'), terminalOutput: $('#terminalOutput'),
         terminalClose: $('#terminalClose'), terminalMaximize: $('#terminalMaximize'), matrixCanvas: $('#matrixCanvas'),
         terminalTitle: $('#terminalTitle'), currentPrompt: $('#currentPrompt'),
-        readmeModal: $('#readmeModal'), modalTitle: $('#modalTitle'), modalBody: $('#modalBody'), modalClose: $('#modalClose'), modalGitHubLink: $('#modalGitHubLink')
+        readmeModal: $('#readmeModal'), modalTitle: $('#modalTitle'), modalBody: $('#modalBody'), modalClose: $('#modalClose'), modalGitHubLink: $('#modalGitHubLink'),
+        paperModal: $('#paperModal'), paperModalBody: $('#paperModalBody'), paperModalClose: $('#paperModalClose'),
+        sidebarToggle: $('#sidebarToggle'), sectionSidebar: $('#sectionSidebar'), sidebarBackdrop: $('#sidebarBackdrop'), sidebarClose: $('#sidebarClose'),
+        sidebarNav: $('#sidebarNav'), sectionSidebarTitle: $('#sectionSidebarTitle')
     };
 
-    // Modal - simplified with single hide function
-    const hideModal = () => els.readmeModal.style.display = 'none';
+    const hideReadmeModal = () => { if (els.readmeModal) els.readmeModal.style.display = 'none' };
+    const hidePaperModal = () => { if (els.paperModal) els.paperModal.style.display = 'none' };
     const initModal = () => {
-        els.modalClose.addEventListener('click', hideModal);
-        els.readmeModal.addEventListener('click', e => { if (e.target === els.readmeModal) hideModal() });
-        document.addEventListener('keydown', e => { if (e.key === 'Escape' && els.readmeModal.style.display === 'block') hideModal() });
+        els.modalClose?.addEventListener('click', hideReadmeModal);
+        els.readmeModal?.addEventListener('click', e => { if (e.target === els.readmeModal) hideReadmeModal() });
+        els.paperModalClose?.addEventListener('click', hidePaperModal);
+        els.paperModal?.addEventListener('click', e => { if (e.target === els.paperModal) hidePaperModal() });
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                if (els.readmeModal?.style.display === 'block') hideReadmeModal();
+                if (els.paperModal?.style.display === 'block') hidePaperModal();
+            }
+        });
     };
 
     const fetchReadme = async (owner, repo) => {
@@ -93,6 +108,11 @@
                 cmd.textContent = text.cmd;
                 div.appendChild(prompt);
                 div.appendChild(cmd);
+            } else if (type === 'ascii') {
+                const pre = document.createElement('pre');
+                pre.className = 'terminal-ascii';
+                pre.textContent = String(text);
+                div.appendChild(pre);
             } else {
                 const span = document.createElement('span');
                 if (type !== 'text') span.className = `command-${type}`;
@@ -348,7 +368,17 @@
 
         showWhoami() {
             const SITE = window.SITE;
-            this.output(SITE.terminal.asciiArt.trimStart());
+            const rawArt = String(SITE.terminal.asciiArt || '').replace(/\r/g, '');
+            const lines = rawArt.split('\n');
+            while (lines.length && !lines[0].trim()) lines.shift();
+            while (lines.length && !lines[lines.length - 1].trim()) lines.pop();
+            const minIndent = lines.reduce((min, line) => {
+                if (!line.trim()) return min;
+                const indent = (line.match(/^[ \t]*/) || [''])[0].length;
+                return Math.min(min, indent);
+            }, Infinity);
+            const art = minIndent === Infinity ? '' : lines.map(line => line.slice(minIndent)).join('\n');
+            this.output(art, 'ascii');
             this.output('\n');
             this.output(SITE.terminal.whoami[Math.floor(Math.random() * SITE.terminal.whoami.length)], 'help');
             this.output(`\n${SITE.terminal.messages.taglinePrefix} ${SITE.tagline}`, 'text', true);
@@ -357,18 +387,78 @@
 
     // JSON-LD
     const injectJSONLD = () => {
-        const s = window.SITE, data = {
-            "@context": "https://schema.org", "@type": "Person", name: s.name, url: "https://i3t4an.github.io/", email: s.socials.email,
-            affiliation: { "@type": "CollegeOrUniversity", name: "University of Northern Colorado" },
-            sameAs: [s.socials.github, s.socials.linkedin], jobTitle: "Programmer",
-            knowsAbout: [...s.skills.development, ...s.skills.automation, ...s.skills.systems].flatMap(x => x.split(/\s*,\s*/)).filter((v, i, a) => a.indexOf(v) === i).slice(0, 15)
+        const s = window.SITE;
+        const profile = s.profile || {};
+        const data = {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            name: s.name,
+            url: s.url || location.href,
+            email: s.socials.email,
+            sameAs: [s.socials.github, s.socials.linkedin],
+            knowsAbout: [...s.skills.development, ...s.skills.automation, ...s.skills.systems]
+                .flatMap(x => x.split(/\s*,\s*/))
+                .filter((v, i, a) => a.indexOf(v) === i)
+                .slice(0, 15)
         };
+        if (profile.affiliation) data.affiliation = { "@type": "CollegeOrUniversity", name: profile.affiliation };
+        if (profile.jobTitle) data.jobTitle = profile.jobTitle;
         if (els.jsonld) { els.jsonld.type = 'application/ld+json'; els.jsonld.textContent = JSON.stringify(data) }
     };
 
     const parseRepoPath = url => { try { const u = new URL(url); const [owner, name] = u.pathname.slice(1).split('/'); return { owner, name } } catch { return null } };
     const relativeTime = d => { const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' }); const sec = (new Date(d) - new Date()) / 1e3; const units = [[31536e3, 'year'], [2592e3, 'month'], [604800, 'week'], [86400, 'day'], [3600, 'hour'], [60, 'minute'], [1, 'second']]; for (const [s, u] of units) { const v = sec / s; if (Math.abs(v) >= 1 || u === 'second') return rtf.format(Math.round(v), u) } };
     const cache = { get: k => { try { return JSON.parse(sessionStorage.getItem(k)) } catch { return null } }, set: (k, v) => { try { sessionStorage.setItem(k, JSON.stringify(v)) } catch { } } };
+
+    const applyPageMeta = () => {
+        const s = window.SITE;
+        const seo = s.seo || {};
+        const title = seo.title || s.name || document.title;
+        const description = seo.description || '';
+        const canonicalUrl = s.url || '';
+        document.title = title;
+        els.metaDescription?.setAttribute('content', description);
+        els.canonical?.setAttribute('href', canonicalUrl);
+        if (seo.ogType) els.ogType?.setAttribute('content', seo.ogType);
+        els.ogTitle?.setAttribute('content', seo.ogTitle || title);
+        els.ogDescription?.setAttribute('content', seo.ogDescription || description);
+        els.ogUrl?.setAttribute('content', seo.ogUrl || canonicalUrl);
+        if (seo.twitterCard) els.twitterCard?.setAttribute('content', seo.twitterCard);
+        els.twitterTitle?.setAttribute('content', seo.twitterTitle || seo.ogTitle || title);
+        els.twitterDescription?.setAttribute('content', seo.twitterDescription || seo.ogDescription || description);
+        els.googleSiteVerification?.setAttribute('content', seo.googleSiteVerification || '');
+    };
+
+    const getGitHubUsername = site => {
+        const explicit = site.profile?.githubUsername?.trim();
+        if (explicit) return explicit;
+        const parsed = parseRepoPath(site.socials?.github || '');
+        return parsed?.owner || '';
+    };
+    const buildGitHubLangSources = username => {
+        if (!username) return { light: [], dark: [] };
+        const encoded = encodeURIComponent(username);
+        return {
+            light: [
+                `https://github-readme-stats-sigma-five.vercel.app/api/top-langs?username=${encoded}&show_icons=true&locale=en&layout=compact&theme=default&hide_border=true&custom_title=Top%20Languages&v=5`
+            ],
+            dark: [
+                `https://github-readme-stats-sigma-five.vercel.app/api/top-langs?username=${encoded}&show_icons=true&locale=en&layout=compact&hide_border=true&bg_color=1a1b27&title_color=A855F7&text_color=CFD6E2&icon_color=00D4FF&custom_title=Top%20Languages&v=4`
+            ]
+        };
+    };
+    const buildGitHubStreakSources = username => {
+        if (!username) return { light: [], dark: [] };
+        const encoded = encodeURIComponent(username);
+        return {
+            light: [
+                `https://streak-stats.demolab.com?user=${encoded}&theme=default&hide_border=true`
+            ],
+            dark: [
+                `https://streak-stats.demolab.com?user=${encoded}&theme=tokyonight&hide_border=true`
+            ]
+        };
+    };
 
     const fetchRepo = async (owner, name) => {
         const key = `gh:${owner}/${name}`, cached = cache.get(key); if (cached) return cached;
@@ -381,23 +471,151 @@
         } catch { return { full_name: `${owner}/${name}`, html_url: `https://github.com/${owner}/${name}`, description: name.replace(/[-_]/g, ' ').replace(/\b\w/g, m => m.toUpperCase()), language: 'Other', stargazers_count: 0, updated_at: new Date().toISOString(), name, error: true } }
     };
 
+    const normalizeDoi = v => String(v || '')
+        .trim()
+        .replace(/^https?:\/\/(dx\.)?doi\.org\//i, '')
+        .replace(/^doi:\s*/i, '');
+    const extractZenodoRecordId = doi => {
+        const m = String(doi || '').match(/(?:^|\/)zenodo\.(\d+)$/i);
+        return m?.[1] || '';
+    };
+    const decodeHTML = html => { const d = document.createElement('div'); d.innerHTML = html; return d.textContent || '' };
+    const cleanAbstractText = abstract => decodeHTML(String(abstract || '')
+        .replace(/<br\s*\/?>/gi, '\n')
+        .replace(/<li[^>]*>/gi, '\n- ')
+        .replace(/<\/li>/gi, '')
+        .replace(/<\/(jats:p|p|jats:title|title|jats:sec|sec|ul|ol|div)>/gi, '\n')
+        .replace(/<[^>]+>/g, ' '))
+        .replace(/\r/g, '')
+        .replace(/[ \t]+\n/g, '\n')
+        .replace(/\n[ \t]+/g, '\n')
+        .replace(/[ \t]{2,}/g, ' ')
+        .replace(/(^|\n)\s*(?:[-*]|\u2022|\d+\.)\s+/g, '$1- ')
+        .replace(/\n{3,}/g, '\n\n')
+        .trim();
+    const getPublishedYear = m => {
+        const parts = m?.issued?.['date-parts']?.[0] || m?.published?.['date-parts']?.[0] || m?.created?.['date-parts']?.[0];
+        return Array.isArray(parts) && parts[0] ? String(parts[0]) : '';
+    };
+    const getCrossrefMailto = () => String(window.SITE?.socials?.email || '')
+        .replace(/^mailto:/i, '')
+        .trim();
+    const fetchPaperByDoi = async doi => {
+        if (!doi) return null;
+        const key = `crossref:${doi.toLowerCase()}`;
+        const cached = cache.get(key);
+        if (cached) return cached;
+        const mailto = getCrossrefMailto();
+        const suffix = mailto ? `?mailto=${encodeURIComponent(mailto)}` : '';
+        try {
+            const res = await fetch(`https://api.crossref.org/works/${encodeURIComponent(doi)}${suffix}`, { headers: { Accept: 'application/json' } });
+            if (!res.ok) throw new Error(String(res.status));
+            const payload = await res.json();
+            const message = payload?.message || null;
+            if (message) cache.set(key, message);
+            return message;
+        } catch { return null }
+    };
+    const fetchZenodoRecord = async recordId => {
+        if (!recordId) return null;
+        const key = `zenodo:${recordId}`;
+        const cached = cache.get(key);
+        if (cached) return cached;
+        try {
+            const res = await fetch(`https://zenodo.org/api/records/${encodeURIComponent(recordId)}`, { headers: { Accept: 'application/json' } });
+            if (!res.ok) throw new Error(String(res.status));
+            const payload = await res.json();
+            cache.set(key, payload);
+            return payload;
+        } catch { return null }
+    };
+    const resolveZenodoPdfUrl = rec => {
+        const files = Array.isArray(rec?.files) ? rec.files : [];
+        const pdf = files.find(f => /\.pdf$/i.test(String(f?.key || '')));
+        return String(pdf?.links?.self || pdf?.links?.download || '');
+    };
+    const fetchInlinePdfUrl = async pdfUrl => {
+        const url = String(pdfUrl || '').trim();
+        if (!url) return '';
+        try {
+            const res = await fetch(url);
+            if (!res.ok) throw new Error(String(res.status));
+            const blob = await res.blob();
+            return URL.createObjectURL(blob.type === 'application/pdf' ? blob : new Blob([blob], { type: 'application/pdf' }));
+        } catch {
+            return '';
+        }
+    };
+    const resolvePaperPdfUrl = (item, metadata) => {
+        if (item.pdfUrl) return item.pdfUrl;
+        const links = Array.isArray(metadata?.link) ? metadata.link : [];
+        const match = links.find(l => {
+            const type = String(l?.['content-type'] || '').toLowerCase();
+            const u = String(l?.URL || '');
+            return type.includes('pdf') || /\.pdf(\?|$)/i.test(u);
+        });
+        return match?.URL || '';
+    };
+    const buildPublishedEntry = async item => {
+        const doi = normalizeDoi(item?.doi);
+        const zenodoRecordId = extractZenodoRecordId(doi);
+        if (zenodoRecordId) {
+            const record = await fetchZenodoRecord(zenodoRecordId);
+            if (record) {
+                const title = String(record?.metadata?.title || '').trim() || (doi ? `DOI ${doi}` : '');
+                if (!title) return null;
+                const year = String(record?.metadata?.publication_date || '').slice(0, 4);
+                const abstract = cleanAbstractText(record?.metadata?.description);
+                const tldr = abstract || `Published on Zenodo${year ? ` (${year})` : ''}.`;
+                return {
+                    doi,
+                    title,
+                    tldr: tldr || 'No abstract available for this paper yet.',
+                    year,
+                    pdfUrl: item?.pdfUrl || resolveZenodoPdfUrl(record)
+                };
+            }
+        }
+        const metadata = doi ? await fetchPaperByDoi(doi) : null;
+        const title = (Array.isArray(metadata?.title) ? String(metadata.title.find(Boolean) || '') : '') || (doi ? `DOI ${doi}` : '');
+        if (!title) return null;
+        const abstract = cleanAbstractText(metadata?.abstract);
+        const journal = Array.isArray(metadata?.['container-title']) ? String(metadata['container-title'][0] || '') : '';
+        const year = getPublishedYear(metadata);
+        const tldr = abstract || `Published${journal ? ` in ${journal}` : ''}${year ? ` (${year})` : ''}.`;
+        return {
+            doi,
+            title,
+            tldr: tldr || 'No abstract available for this paper yet.',
+            year,
+            pdfUrl: resolvePaperPdfUrl(item, metadata)
+        };
+    };
+    const showPaperModal = async paper => {
+        if (!els.paperModal || !els.paperModalBody) return;
+        els.paperModalBody.scrollTop = 0;
+        els.paperModalBody.innerHTML = '<div class="loading">Loading PDF...</div>';
+        const inlinePdfUrl = await fetchInlinePdfUrl(paper.pdfUrl);
+        els.paperModalBody.innerHTML = '';
+        if (inlinePdfUrl) {
+            const frame = document.createElement('iframe');
+            frame.className = 'paper-pdf-frame';
+            frame.src = `${inlinePdfUrl}#page=1&view=FitH&toolbar=0&navpanes=0&scrollbar=0`;
+            frame.title = `PDF viewer: ${paper.title}`;
+            frame.loading = 'lazy';
+            els.paperModalBody.appendChild(frame);
+        } else {
+            const msg = document.createElement('div');
+            msg.className = 'error';
+            msg.textContent = 'No direct PDF URL found for this DOI.';
+            els.paperModalBody.appendChild(msg);
+        }
+        els.paperModal.style.display = 'block';
+    };
+
     // Theme
-    const GH_LANG_SOURCES = {
-        light: [
-            'https://github-readme-stats-sigma-five.vercel.app/api/top-langs?username=i3T4AN&show_icons=true&locale=en&layout=compact&theme=default&hide_border=true&custom_title=Top%20Languages&v=5'
-        ],
-        dark: [
-            'https://github-readme-stats-sigma-five.vercel.app/api/top-langs?username=i3T4AN&show_icons=true&locale=en&layout=compact&hide_border=true&bg_color=1a1b27&title_color=A855F7&text_color=CFD6E2&icon_color=00D4FF&custom_title=Top%20Languages&v=4'
-        ]
-    };
-    const GH_STREAK_SOURCES = {
-        light: [
-            'https://streak-stats.demolab.com?user=i3T4AN&theme=default&hide_border=true'
-        ],
-        dark: [
-            'https://streak-stats.demolab.com?user=i3T4AN&theme=tokyonight&hide_border=true'
-        ]
-    };
+    let GH_LANG_SOURCES = { light: [], dark: [] };
+    let GH_STREAK_SOURCES = { light: [], dark: [] };
     const setImageWithFallback = (img, urls) => {
         if (!img || !urls?.length) return;
         img.dataset.fallbackIndex = '0';
@@ -425,6 +643,113 @@
         applyTheme(saved || 'dark');
         els.themeToggle?.addEventListener('click', () => { const isDark = document.documentElement.classList.toggle('theme-dark'); localStorage.setItem('theme', isDark ? 'dark' : 'light'); updateThemeButton(isDark); updateGitHubStats(isDark) });
     };
+    const defaultSidebarItems = [
+        { label: 'Technical Skills', href: '#skills' },
+        { label: 'Published Work', href: '#published' },
+        { label: 'Terminal', href: '#terminal' },
+        {
+            label: 'Featured Projects',
+            href: '#projects',
+            children: [
+                { label: 'Automation & AI', href: '#projects-ai' },
+                { label: 'Enterprise Systems / Cloud', href: '#projects-enterprise' },
+                { label: 'Programming / Development', href: '#projects-dev' }
+            ]
+        }
+    ];
+    const normalizeSidebarItems = items => {
+        if (!Array.isArray(items)) return [];
+        return items
+            .map(item => {
+                const label = typeof item?.label === 'string' ? item.label.trim() : '';
+                const href = typeof item?.href === 'string' ? item.href.trim() : '';
+                const children = normalizeSidebarItems(item?.children);
+                if (!label || !href || !href.startsWith('#')) return null;
+                return { label, href, children };
+            })
+            .filter(Boolean);
+    };
+    const buildSidebarTree = (items, isChildLevel = false) => {
+        const frag = document.createDocumentFragment();
+        items.forEach(item => {
+            const link = document.createElement('a');
+            link.className = `sidebar-link${isChildLevel ? ' sidebar-child' : ''}${item.children.length ? ' sidebar-parent' : ''}`;
+            link.href = item.href;
+            link.textContent = item.label;
+
+            if (item.children.length) {
+                const tree = document.createElement('div');
+                tree.className = 'sidebar-tree';
+                tree.appendChild(link);
+                const childrenGroup = document.createElement('div');
+                childrenGroup.className = 'sidebar-tree-children';
+                childrenGroup.setAttribute('role', 'group');
+                childrenGroup.setAttribute('aria-label', `${item.label} links`);
+                childrenGroup.appendChild(buildSidebarTree(item.children, true));
+                tree.appendChild(childrenGroup);
+                frag.appendChild(tree);
+            } else {
+                frag.appendChild(link);
+            }
+        });
+        return frag;
+    };
+    const renderSidebarNavigation = () => {
+        if (!els.sidebarNav) return;
+        const navConfig = window.SITE?.navigation || {};
+        const title = typeof navConfig.title === 'string' && navConfig.title.trim() ? navConfig.title.trim() : 'Sections';
+        const ariaLabel = typeof navConfig.ariaLabel === 'string' && navConfig.ariaLabel.trim() ? navConfig.ariaLabel.trim() : 'Homepage section links';
+        const configuredItems = normalizeSidebarItems(navConfig.items);
+        const items = configuredItems.length ? configuredItems : defaultSidebarItems;
+
+        if (els.sectionSidebarTitle) els.sectionSidebarTitle.textContent = title;
+        els.sidebarNav.setAttribute('aria-label', ariaLabel);
+        els.sidebarNav.innerHTML = '';
+        els.sidebarNav.appendChild(buildSidebarTree(items));
+    };
+    const initSidebar = () => {
+        if (!els.sidebarToggle || !els.sectionSidebar || !els.sidebarBackdrop) return;
+        renderSidebarNavigation();
+
+        const setSidebarState = open => {
+            document.body.classList.toggle('sidebar-open', open);
+            els.sidebarToggle.setAttribute('aria-expanded', String(open));
+            els.sectionSidebar.setAttribute('aria-hidden', String(!open));
+            els.sidebarBackdrop.setAttribute('aria-hidden', String(!open));
+        };
+
+        const closeSidebar = () => setSidebarState(false);
+
+        els.sidebarToggle.addEventListener('click', () => {
+            const isOpen = document.body.classList.contains('sidebar-open');
+            if (!isOpen) setSidebarState(true);
+        });
+        els.sidebarClose?.addEventListener('click', closeSidebar);
+
+        els.sectionSidebar.addEventListener('click', e => {
+            if (!(e.target instanceof Element)) return;
+            const link = e.target.closest('a[href^="#"]');
+            if (!link) return;
+
+            const hash = link.getAttribute('href');
+            if (!hash || hash === '#') return;
+
+            const target = document.querySelector(hash);
+            if (!target) return;
+
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            history.replaceState(null, '', hash);
+        });
+    };
+    const initViewportScanHeight = () => {
+        const setScanViewportHeight = () => {
+            document.documentElement.style.setProperty('--scan-viewport-height', `${window.innerHeight}px`);
+        };
+        setScanViewportHeight();
+        addEventListener('resize', setScanViewportHeight, { passive: true });
+        addEventListener('orientationchange', setScanViewportHeight, { passive: true });
+    };
     const initHeaderScroll = () => addEventListener('scroll', () => els.header.classList.toggle('scrolled', scrollY > 20), { passive: true });
 
     // DOM builders
@@ -434,6 +759,85 @@
         card.innerHTML = `<h5><a href="${repo.html_url}" target="_blank" rel="noopener">${repo.name}</a></h5><p class="desc">${repo.description}</p><div class="meta"><span class="lang">${repo.language}</span><span>⭐ ${repo.stargazers_count}</span><span>${relativeTime(repo.updated_at)}</span></div><div class="actions"><a class="gh-link" href="${repo.html_url}" target="_blank" rel="noopener">View on GitHub →</a></div>`;
         card.addEventListener('click', e => { if (!e.target.closest('.gh-link')) { e.preventDefault(); showReadmeModal(repo.name, repo.html_url) } });
         return card;
+    };
+    const buildPaperCard = paper => {
+        const card = document.createElement('article');
+        card.className = 'card paper-card';
+        card.setAttribute('role', 'button');
+        card.setAttribute('tabindex', '0');
+
+        const title = document.createElement('h5');
+        title.textContent = paper.title;
+        card.appendChild(title);
+
+        const desc = document.createElement('div');
+        desc.className = 'desc';
+        const markdownDescription = String(paper.tldr || '').replace(/^\u2022\s+/gm, '- ');
+        const renderedDescription = convertMarkdownToHTML(markdownDescription).replace(/<p>((?:[-*] [^<]*(?:<br>)?)+)<\/p>/g, (_, block) => {
+            const items = block.split('<br>').map(line => line.trim()).filter(Boolean).map(line => line.replace(/^[-*]\s+/, ''));
+            return `<ul>${items.map(item => `<li>${item}</li>`).join('')}</ul>`;
+        });
+        desc.innerHTML = renderedDescription;
+        card.appendChild(desc);
+
+        const meta = document.createElement('div');
+        meta.className = 'meta';
+        const doiTag = document.createElement('span');
+        doiTag.className = 'lang';
+        doiTag.textContent = 'DOI';
+        const doiValue = document.createElement('span');
+        doiValue.className = 'paper-doi';
+        doiValue.textContent = paper.doi || 'N/A';
+        meta.appendChild(doiTag);
+        meta.appendChild(doiValue);
+        if (paper.year) {
+            const year = document.createElement('span');
+            year.textContent = paper.year;
+            meta.appendChild(year);
+        }
+        card.appendChild(meta);
+
+        const actions = document.createElement('div');
+        actions.className = 'actions';
+        const readHint = document.createElement('span');
+        readHint.className = 'gh-link paper-read-hint';
+        readHint.textContent = 'Read PDF →';
+        actions.appendChild(readHint);
+        card.appendChild(actions);
+
+        const open = () => showPaperModal(paper);
+        card.addEventListener('click', open);
+        card.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                open();
+            }
+        });
+        return card;
+    };
+    const renderPublishedWork = papers => {
+        const cfg = window.SITE.publishedWork || {};
+        if (els.publishedTitle) els.publishedTitle.textContent = cfg.sectionTitle || 'Published Work';
+        if (!els.publishedGrid) return;
+        els.publishedGrid.innerHTML = '';
+        if (!papers.length) {
+            if (els.publishedEmpty) {
+                els.publishedEmpty.textContent = cfg.emptyMessage || 'No published papers configured yet.';
+                els.publishedEmpty.hidden = false;
+            }
+            return;
+        }
+        if (els.publishedEmpty) els.publishedEmpty.hidden = true;
+        const frag = document.createDocumentFragment();
+        papers.forEach(p => frag.appendChild(buildPaperCard(p)));
+        els.publishedGrid.appendChild(frag);
+        requestAnimationFrame(animateCards);
+    };
+    const loadPublishedWork = async () => {
+        const items = Array.isArray(window.SITE?.publishedWork?.items) ? window.SITE.publishedWork.items : [];
+        if (!items.length) { renderPublishedWork([]); return }
+        const papers = (await Promise.all(items.map(buildPublishedEntry))).filter(Boolean);
+        renderPublishedWork(papers);
     };
 
     const sorters = { updated: (a, b) => new Date(b.updated_at) - new Date(a.updated_at), stars: (a, b) => b.stargazers_count - a.stargazers_count, name: (a, b) => a.name.localeCompare(b.name) };
@@ -445,7 +849,7 @@
         const SITE = window.SITE, groups = { dev: [], ai: [], enterprise: [] };
         for (const r of state.repos) if (state.filter === 'All' || r.language === state.filter) groups[r.__group].push(r);
         Object.keys(groups).forEach(k => groups[k].sort(sorters[state.sort]));
-        const map = { dev: els.gridDev, ai: els.gridAI, enterprise: els.gridEnt };
+        const map = { ai: els.gridAI, enterprise: els.gridEnt, dev: els.gridDev };
         for (const [k, grid] of Object.entries(map)) {
             grid.innerHTML = ''; const list = groups[k];
             if (!list.length) { grid.innerHTML = `<div class="empty">${SITE.terminal.messages.noProjectsFound}</div>`; continue }
@@ -465,21 +869,29 @@
 
     const init = () => {
         const SITE = window.SITE;
+        applyPageMeta();
+        const githubUsername = getGitHubUsername(SITE);
+        GH_LANG_SOURCES = buildGitHubLangSources(githubUsername);
+        GH_STREAK_SOURCES = buildGitHubStreakSources(githubUsername);
         els.brandName.textContent = SITE.name; els.footerName.textContent = SITE.name; els.brandTag.textContent = SITE.tagline; els.heroTitle.textContent = SITE.hero.title; els.heroTitle.setAttribute('data-text', SITE.hero.title); els.heroParagraph.textContent = SITE.hero.paragraph;
         els.linkGithub.href = SITE.socials.github; els.linkLinkedIn.href = SITE.socials.linkedin; els.linkEmail.href = SITE.socials.email;
         els.skillsGrid.innerHTML = '';
-        const statsCol = document.createElement('div'); statsCol.className = 'col primary-col'; statsCol.innerHTML = `<h4>GitHub Activity</h4><div class="github-stats"><img id="githubStatsImg" src="${GH_LANG_SOURCES.light[0]}" alt="${SITE.name.split(' ')[0]}'s GitHub Language Stats" loading="lazy"><img id="githubStreakImg" src="${GH_STREAK_SOURCES.light[0]}" alt="${SITE.name.split(' ')[0]}'s GitHub Streak Stats" loading="lazy"></div>`;
+        const statsCol = document.createElement('div'); statsCol.className = 'col primary-col'; statsCol.innerHTML = `<h4>GitHub Activity</h4><div class="github-stats"><img id="githubStatsImg" src="${GH_LANG_SOURCES.light[0] || ''}" alt="${SITE.name.split(' ')[0]}'s GitHub Language Stats" loading="lazy"><img id="githubStreakImg" src="${GH_STREAK_SOURCES.light[0] || ''}" alt="${SITE.name.split(' ')[0]}'s GitHub Streak Stats" loading="lazy"></div>`;
         els.skillsGrid.appendChild(statsCol); els.langImg = $('#githubStatsImg'); els.streakImg = $('#githubStreakImg');
         els.skillsGrid.appendChild(buildSkillCol(SITE.terminal.messages.developmentTitle, SITE.skills.development));
         els.skillsGrid.appendChild(buildSkillCol(SITE.terminal.messages.automationTitle, SITE.skills.automation));
         els.skillsGrid.appendChild(buildSkillCol(SITE.terminal.messages.systemsTitle, SITE.skills.systems));
+        if (els.publishedTitle) els.publishedTitle.textContent = SITE.publishedWork?.sectionTitle || 'Published Work';
         els.year.textContent = new Date().getFullYear();
+        initSidebar();
+        initViewportScanHeight();
         initTheme(); initHeaderScroll();
         els.sort?.addEventListener('change', e => { state.sort = e.target.value; renderProjects(state) });
         injectJSONLD(); initModal();
         if (els.terminalTitle) els.terminalTitle.textContent = SITE.terminal.title;
         if (els.currentPrompt) els.currentPrompt.textContent = SITE.terminal.prompt;
         new Terminal();
+        loadPublishedWork().catch(() => renderPublishedWork([]));
         loadRepos(state).catch(() => els.projectsEmpty.hidden = false);
     };
 

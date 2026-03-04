@@ -4,24 +4,21 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ethan Blair — Portfolio</title>
-  <meta name="google-site-verification" content="google47f0585bbbc7d4af" />
-  <meta name="description"
-    content="Ethan Blair: programmer focused on enterprise technology, automation, and AI development." />
-  <link rel="canonical" href="https://i3t4an.github.io/" />
+  <title>Portfolio</title>
+  <meta name="google-site-verification" content="" />
+  <meta name="description" content="" />
+  <link rel="canonical" href="" />
 
   <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0a0a0a" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Ethan Blair — Portfolio" />
-  <meta property="og:description"
-    content="Programmer focused on enterprise technology, automation, and AI development." />
-  <meta property="og:url" content="https://i3t4an.github.io/" />
+  <meta property="og:title" content="" />
+  <meta property="og:description" content="" />
+  <meta property="og:url" content="" />
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Ethan Blair — Portfolio" />
-  <meta name="twitter:description"
-    content="Programmer focused on enterprise technology, automation, and AI development." />
+  <meta name="twitter:title" content="" />
+  <meta name="twitter:description" content="" />
 
   <script id="jsonld"></script>
   <script src="config.js"></script>
@@ -33,9 +30,25 @@
 
   <header role="banner">
     <div class="container nav">
-      <div class="brand">
-        <h1 id="brandName">Ethan Blair</h1>
-        <p id="brandTag">Enterprise Systems • Automation • AI Development</p>
+      <div class="nav-left">
+        <button id="sidebarToggle" class="sidebar-toggle" type="button" aria-label="Open section navigation"
+          aria-controls="sectionSidebar" aria-expanded="false">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="5" cy="5" r="1"></circle>
+            <circle cx="12" cy="5" r="1"></circle>
+            <circle cx="19" cy="5" r="1"></circle>
+            <circle cx="5" cy="12" r="1"></circle>
+            <circle cx="12" cy="12" r="1"></circle>
+            <circle cx="19" cy="12" r="1"></circle>
+            <circle cx="5" cy="19" r="1"></circle>
+            <circle cx="12" cy="19" r="1"></circle>
+            <circle cx="19" cy="19" r="1"></circle>
+          </svg>
+        </button>
+        <div class="brand">
+          <h1 id="brandName"></h1>
+          <p id="brandTag"></p>
+        </div>
       </div>
       <div class="nav-links">
         <div class="social-buttons">
@@ -77,10 +90,19 @@
     </div>
   </header>
 
-  <main id="main">
+  <div id="sidebarBackdrop" class="sidebar-backdrop" aria-hidden="true"></div>
+  <aside id="sectionSidebar" class="section-sidebar" aria-label="Homepage section navigation" aria-hidden="true">
+    <div class="section-sidebar-header">
+      <h2 id="sectionSidebarTitle">Sections</h2>
+      <button id="sidebarClose" class="sidebar-close" type="button" aria-label="Close section navigation">&times;</button>
+    </div>
+    <nav id="sidebarNav" class="section-sidebar-nav" aria-label="Homepage section links"></nav>
+  </aside>
+
+  <main id="main" class="landing-page">
     <section class="hero">
       <div class="container">
-        <h2 id="heroTitle">Building practical tools for enterprise systems.</h2>
+        <h2 id="heroTitle"></h2>
         <p id="heroParagraph"></p>
       </div>
     </section>
@@ -93,7 +115,15 @@
         </div>
       </section>
 
-      <div class="terminal-container">
+      <section id="published">
+        <div class="container">
+          <h3 id="publishedTitle">Published Work</h3>
+          <div id="publishedGrid" class="grid"></div>
+          <div id="published-empty" class="empty" hidden>No published papers configured yet.</div>
+        </div>
+      </section>
+
+      <section id="terminal" class="terminal-container">
         <div class="terminal">
           <div class="terminal-header">
             <div class="terminal-controls">
@@ -114,7 +144,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
       <section id="projects">
         <div class="container">
@@ -127,17 +157,17 @@
               <option value="name">Name</option>
             </select>
           </div>
-          <div class="group">
-            <h4>Programming / Development</h4>
-            <div id="grid-dev" class="grid"></div>
-          </div>
-          <div class="group">
+          <div id="projects-ai" class="group">
             <h4>Automation & AI</h4>
             <div id="grid-ai" class="grid"></div>
           </div>
-          <div class="group">
+          <div id="projects-enterprise" class="group">
             <h4>Enterprise Systems / Cloud</h4>
             <div id="grid-enterprise" class="grid"></div>
+          </div>
+          <div id="projects-dev" class="group">
+            <h4>Programming / Development</h4>
+            <div id="grid-dev" class="grid"></div>
           </div>
           <div id="projects-empty" class="empty" hidden>Unable to load projects. Please check back later.</div>
           <div id="status" class="sr-only" role="status" aria-live="polite"></div>
@@ -148,7 +178,7 @@
 
   <footer>
     <div class="container">
-      <small>© <span id="year"></span> <span id="footerName">Ethan Blair</span>. All rights reserved.</small>
+      <small>© <span id="year"></span> <span id="footerName"></span>. All rights reserved.</small>
     </div>
   </footer>
 
@@ -164,6 +194,13 @@
       <div class="modal-footer">
         <a class="btn primary" id="modalGitHubLink" href="#" target="_blank" rel="noopener">View on GitHub →</a>
       </div>
+    </div>
+  </div>
+
+  <div id="paperModal" class="modal">
+    <div class="modal-content paper-modal-content">
+      <button class="modal-close paper-modal-close" id="paperModalClose" aria-label="Close paper viewer">&times;</button>
+      <div class="modal-body" id="paperModalBody"></div>
     </div>
   </div>
 
