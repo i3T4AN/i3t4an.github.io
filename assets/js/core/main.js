@@ -1,9 +1,7 @@
 import { convertMarkdownToHTML, sanitizeHTML } from '../utils/markdown.js';
 import { initSidebar } from '../ui/sidebar.js';
-
 'use strict';
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-
     const els = {
         brandName: $('#brandName'), footerName: $('#footerName'), brandTag: $('#brandTag'), heroTitle: $('#heroTitle'), heroParagraph: $('#heroParagraph'),
         linkGithub: $('#linkGithub'), linkLinkedIn: $('#linkLinkedIn'), linkEmail: $('#linkEmail'),
@@ -24,15 +22,15 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         sidebarToggle: $('#sidebarToggle'), sectionSidebar: $('#sectionSidebar'), sidebarClose: $('#sidebarClose'),
         sidebarNav: $('#sidebarNav'), sectionSidebarTitle: $('#sectionSidebarTitle')
     };
-
     let paperBlobUrl = '';
+    const clearPaperBlobUrl = () => { if (paperBlobUrl) { URL.revokeObjectURL(paperBlobUrl); paperBlobUrl = '' } };
     const hideModal = (modal, onHide) => {
         if (typeof onHide === 'function') onHide();
         if (modal) modal.style.display = 'none';
     };
     const hideReadmeModal = () => hideModal(els.readmeModal);
     const hidePaperModal = () => hideModal(els.paperModal, () => {
-        if (paperBlobUrl) { URL.revokeObjectURL(paperBlobUrl); paperBlobUrl = '' }
+        clearPaperBlobUrl();
         if (els.paperModalBody) els.paperModalBody.innerHTML = '';
     });
     const initModal = () => {
@@ -47,13 +45,11 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             }
         });
     };
-
     const fetchReadme = async (owner, repo) => {
         const res = await fetch(`https://raw.githubusercontent.com/${owner}/${repo}/main/README.md`);
         if (!res.ok) throw new Error(`Failed: ${res.status}`);
         return res.text();
     };
-
     const showReadmeModal = async (repoName, repoUrl) => {
         const parsed = parseRepoPath(repoUrl);
         if (!parsed) { els.modalBody.innerHTML = '<div class="error">Invalid repository URL</div>'; return }
@@ -66,7 +62,6 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             els.modalBody.innerHTML = `<div class="readme-content">${sanitizeHTML(convertMarkdownToHTML(content))}</div>`;
         } catch (e) { els.modalBody.innerHTML = `<div class="error">Unable to load README: ${e.message}</div>` }
     };
-
     class Terminal {
         constructor() {
             this.history = [];
@@ -295,8 +290,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         setTheme(args) {
             const SITE = window.SITE, t = args[0]?.toLowerCase();
             if (['light', 'dark', 'auto'].includes(t)) {
-                if (t === 'auto') { localStorage.removeItem('theme'); applyTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') }
-                else { persistTheme(t); applyTheme(t) }
+                setAppTheme(t);
                 this.output(SITE.terminal.messages.themeSet.replace('{theme}', t), 'success');
             } else this.output(SITE.terminal.messages.themeUsage, 'error');
         }
@@ -543,7 +537,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
                 return {
                     doi,
                     title,
-                    tldr: tldr || 'No abstract available for this paper yet.',
+                    tldr,
                     year,
                     pdfUrl: item?.pdfUrl || resolveZenodoPdfUrl(record)
                 };
@@ -559,14 +553,14 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         return {
             doi,
             title,
-            tldr: tldr || 'No abstract available for this paper yet.',
+            tldr,
             year,
             pdfUrl: resolvePaperPdfUrl(item, metadata)
         };
     };
     const showPaperModal = async paper => {
         if (!els.paperModal || !els.paperModalBody) return;
-        if (paperBlobUrl) { URL.revokeObjectURL(paperBlobUrl); paperBlobUrl = '' }
+        clearPaperBlobUrl();
         els.paperModalBody.scrollTop = 0;
         els.paperModalBody.innerHTML = '<div class="loading">Loading PDF...</div>';
         const inlinePdfUrl = await fetchInlinePdfUrl(paper.pdfUrl);
@@ -613,14 +607,17 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
     const updateGitHubStats = isDark => { const mode = isDark ? 'dark' : 'light'; setImageWithFallback(els.langImg, GH_LANG_SOURCES[mode]); setImageWithFallback(els.streakImg, GH_STREAK_SOURCES[mode]) };
     const applyTheme = t => { const isDark = t === 'dark'; document.documentElement.classList.toggle('theme-dark', isDark); updateThemeButton(isDark); updateGitHubStats(isDark) };
     const persistTheme = theme => localStorage.setItem('theme', theme);
+    const setAppTheme = (theme, persist = true) => {
+        if (theme === 'auto') { localStorage.removeItem('theme'); applyTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); return }
+        if (persist) persistTheme(theme);
+        applyTheme(theme);
+    };
     const initTheme = () => {
         const saved = localStorage.getItem('theme');
-        applyTheme(saved || 'dark');
+        setAppTheme(saved || 'dark', false);
         els.themeToggle?.addEventListener('click', () => {
-            const isDark = !document.documentElement.classList.contains('theme-dark');
-            const theme = isDark ? 'dark' : 'light';
-            persistTheme(theme);
-            applyTheme(theme);
+            const theme = document.documentElement.classList.contains('theme-dark') ? 'light' : 'dark';
+            setAppTheme(theme);
         });
     };
     const initViewportScanHeight = () => {

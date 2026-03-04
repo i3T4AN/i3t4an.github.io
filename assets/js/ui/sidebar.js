@@ -17,8 +17,10 @@ const buildSidebarTree = (items, isChildLevel = false) => {
         const link = document.createElement('a');
         link.className = `sidebar-link${isChildLevel ? ' sidebar-child' : ''}${item.children.length ? ' sidebar-parent' : ''}`;
         link.href = item.href;
-        link.textContent = item.label;
-
+        const label = document.createElement('span');
+        label.className = 'sidebar-link-label';
+        label.textContent = item.label;
+        link.appendChild(label);
         if (item.children.length) {
             const tree = document.createElement('div');
             tree.className = 'sidebar-tree';
@@ -39,44 +41,35 @@ const buildSidebarTree = (items, isChildLevel = false) => {
 
 export const initSidebar = (els, siteConfig) => {
     if (!els.sidebarToggle || !els.sectionSidebar || !els.sidebarNav) return;
-
     const navConfig = siteConfig?.navigation || {};
     const title = typeof navConfig.title === 'string' && navConfig.title.trim() ? navConfig.title.trim() : 'Sections';
     const ariaLabel = typeof navConfig.ariaLabel === 'string' && navConfig.ariaLabel.trim() ? navConfig.ariaLabel.trim() : 'Homepage section links';
-    const configuredItems = normalizeSidebarItems(navConfig.items);
-    const items = configuredItems;
-
+    const items = normalizeSidebarItems(navConfig.items);
     if (els.sectionSidebarTitle) els.sectionSidebarTitle.textContent = title;
     els.sidebarNav.setAttribute('aria-label', ariaLabel);
     els.sidebarNav.innerHTML = '';
     if (!items.length) return;
     els.sidebarNav.appendChild(buildSidebarTree(items));
-
     const setSidebarState = open => {
         document.body.classList.toggle('sidebar-open', open);
         els.sidebarToggle.setAttribute('aria-expanded', String(open));
         els.sectionSidebar.setAttribute('aria-hidden', String(!open));
     };
 
-    const closeSidebar = () => setSidebarState(false);
-
     els.sidebarToggle.addEventListener('click', () => {
         const isOpen = document.body.classList.contains('sidebar-open');
         if (!isOpen) setSidebarState(true);
     });
-    els.sidebarClose?.addEventListener('click', closeSidebar);
+    els.sidebarClose?.addEventListener('click', () => setSidebarState(false));
 
     els.sectionSidebar.addEventListener('click', e => {
         if (!(e.target instanceof Element)) return;
         const link = e.target.closest('a[href^="#"]');
         if (!link) return;
-
         const hash = link.getAttribute('href');
         if (!hash || hash === '#') return;
-
         const target = document.querySelector(hash);
         if (!target) return;
-
         e.preventDefault();
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         history.replaceState(null, '', hash);

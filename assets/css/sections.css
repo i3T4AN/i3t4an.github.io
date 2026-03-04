@@ -1,17 +1,13 @@
-/* Main & Hero */
 main {
     margin-top: 4.5rem;
     position: relative;
     z-index: 1;
     transition: margin-left var(--duration-standard) var(--ease-standard), width var(--duration-standard) var(--ease-standard)
 }
-
-/* Retro CRT scanline effect scoped to homepage main content */
 .landing-page {
     position: relative;
     overflow: hidden
 }
-
 .landing-page::before {
     content: '';
     display: block;
@@ -25,7 +21,6 @@ main {
     z-index: 20;
     pointer-events: none
 }
-
 .landing-page::after {
     content: '';
     display: block;
@@ -41,30 +36,25 @@ main {
     will-change: transform;
     animation: scanBar 6s linear infinite
 }
-
 @keyframes scanBar {
     0% {
         transform: translateY(calc(var(--scan-viewport-height, 100vh) + 100px))
     }
-
     100% {
         transform: translateY(-100px)
     }
 }
-
 @media (prefers-reduced-motion: reduce) {
     .landing-page::after {
         animation: none
     }
 }
-
 .hero {
     padding: 6rem 0 4rem;
     position: relative;
     background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
     overflow: hidden
 }
-
 .hero::before {
     content: '';
     position: absolute;
@@ -80,23 +70,18 @@ main {
     contain: paint;
     animation: float 22s linear infinite
 }
-
 @keyframes float {
-
     0%,
     100% {
         transform: translate3d(0, 0, 0) rotateZ(0deg)
     }
-
     33% {
         transform: translate3d(22px, -22px, 0) rotateZ(120deg)
     }
-
     66% {
         transform: translate3d(-16px, 16px, 0) rotateZ(240deg)
     }
 }
-
 .hero h2 {
     font-size: clamp(2.5rem, 6vw, 4rem);
     font-weight: 900;
@@ -107,7 +92,6 @@ main {
     z-index: 1;
     animation: fadeInUp .8s ease-out
 }
-
 .hero h2::after {
     content: attr(data-text);
     position: absolute;
@@ -121,7 +105,6 @@ main {
     will-change: opacity;
     animation: heroNeonPulse 3.2s ease-in-out 1s infinite
 }
-
 .hero p {
     color: var(--text-secondary);
     max-width: 700px;
@@ -129,36 +112,29 @@ main {
     line-height: 1.8;
     animation: fadeInUp .8s ease-out .2s backwards
 }
-
 @keyframes fadeInUp {
     from {
         opacity: 0;
         transform: translateY(30px)
     }
-
     to {
         opacity: 1;
         transform: translateY(0)
     }
 }
-
 @keyframes heroNeonPulse {
-
     0%,
     100% {
         opacity: .18
     }
-
     50% {
         opacity: .68
     }
 }
-
 section {
     padding: 2rem 0;
     position: relative
 }
-
 #skills,
 #published,
 #terminal,
@@ -168,7 +144,6 @@ section {
 #projects-dev {
     scroll-margin-top: 6rem
 }
-
 section h3 {
     font-size: 2.5rem;
     font-weight: 800;
@@ -176,14 +151,11 @@ section h3 {
     text-align: center;
     color: var(--accent-secondary)
 }
-
-/* Skills Columns */
 .cols {
     display: grid;
     gap: 2rem;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr))
 }
-
 .col {
     background: rgba(255, 255, 255, .02);
     backdrop-filter: blur(10px);
@@ -194,7 +166,6 @@ section h3 {
     position: relative;
     overflow: hidden
 }
-
 .col::before {
     content: '';
     position: absolute;
@@ -207,34 +178,28 @@ section h3 {
     transform-origin: left;
     transition: transform .3s ease
 }
-
 .col:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow-lg);
     border-color: var(--border-hover);
     background: rgba(255, 255, 255, .05)
 }
-
 .col:hover::before {
     transform: scaleX(1)
 }
-
 .col h4 {
     font-size: 1.25rem;
     margin-bottom: 1rem;
     color: var(--text-primary)
 }
-
 .col ul {
     list-style: none;
     color: var(--text-secondary)
 }
-
 .col li {
     padding: .5rem 0 .5rem 1.5rem;
     position: relative
 }
-
 .col li::before {
     content: '→';
     position: absolute;
@@ -242,28 +207,23 @@ section h3 {
     color: var(--accent);
     font-weight: 700
 }
-
 .primary-col {
     background: var(--primary-col-bg);
     border-color: var(--accent-light);
     grid-column: 1/-1
 }
-
 .primary-col::before {
     transform: scaleX(1)
 }
-
 .primary-col h4 {
     text-align: center
 }
-
 .github-stats {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 2%
 }
-
 .github-stats img {
     width: 48%;
     height: 200px;
@@ -274,12 +234,9 @@ section h3 {
     transition: var(--transition);
     border-radius: .5rem
 }
-
 .primary-col:hover .github-stats img {
     transform: scale(1.02)
 }
-
-/* Project Controls & Cards */
 .controls {
     display: flex;
     align-items: center;
@@ -293,7 +250,6 @@ section h3 {
     border-radius: 1.5rem;
     border: 1px solid var(--border)
 }
-
 .filters {
     display: flex;
     gap: .75rem;
@@ -306,20 +262,16 @@ section h3 {
     padding: .35rem .9rem .25rem .9rem;
     scrollbar-width: thin
 }
-
 .filters::-webkit-scrollbar {
     height: 8px
 }
-
 .filters::-webkit-scrollbar-thumb {
     background: rgba(0, 212, 255, .35);
     border-radius: 9999px
 }
-
 .filters::-webkit-scrollbar-track {
     background: transparent
 }
-
 .chip {
     border-radius: var(--neo-btn-radius);
     font-size: .875rem;
@@ -327,7 +279,6 @@ section h3 {
     cursor: pointer;
     color: inherit
 }
-
 .chip .chip-label {
     padding: .5rem 1.1rem;
     min-width: 64px;
@@ -335,11 +286,6 @@ section h3 {
     border-radius: var(--neo-btn-inner-radius);
     color: inherit
 }
-
-.chip:hover {
-    transform: translateY(-2px) skewX(-18deg)
-}
-
 .chip[aria-pressed="true"] {
     color: var(--chip-active-text);
     border-color: var(--neon-cyan-100);
@@ -348,11 +294,6 @@ section h3 {
     box-shadow: 0 0 14px rgba(0, 212, 255, .38), 0 0 28px rgba(168, 85, 247, .34);
     background: var(--chip-active-bg)
 }
-
-.chip[aria-pressed="true"] .chip-label {
-    color: var(--chip-active-text)
-}
-
 .sort {
     padding: .625rem 1.25rem;
     border-radius: .75rem;
@@ -366,20 +307,16 @@ section h3 {
     flex: 0 0 auto;
     margin-left: auto
 }
-
 .sort:hover {
     box-shadow: 0 0 14px rgba(0, 212, 255, .28), 0 0 24px rgba(168, 85, 247, .24)
 }
-
 .sort option {
     background: var(--sort-bg);
     color: var(--sort-text)
 }
-
 .group {
     margin-bottom: 4rem
 }
-
 .group h4 {
     font-size: 1.5rem;
     font-weight: 700;
@@ -391,32 +328,26 @@ section h3 {
     gap: 1rem;
     text-align: center
 }
-
 .group h4::before {
     content: '';
     flex: 1;
     height: 1px;
     background: linear-gradient(270deg, var(--border) 0%, transparent 100%)
 }
-
 .group h4::after {
     content: '';
     flex: 1;
     height: 1px;
     background: linear-gradient(90deg, var(--border) 0%, transparent 100%)
 }
-
 .grid {
     display: grid;
     gap: 1.5rem;
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr))
 }
-
 #publishedGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr))
 }
-
-/* Cards - consolidated hover styles */
 .card {
     background: linear-gradient(var(--bg-primary), var(--bg-primary)) padding-box, linear-gradient(135deg, rgba(0, 212, 255, .55), rgba(168, 85, 247, .55)) border-box;
     backdrop-filter: blur(10px);
@@ -436,41 +367,30 @@ section h3 {
     align-items: center;
     box-shadow: 0 0 0 1px rgba(255, 255, 255, .02) inset, 0 0 16px rgba(0, 212, 255, .12), 0 0 24px rgba(168, 85, 247, .1)
 }
-
 .card::before {
     content: none
 }
-
 .card:hover {
     transform: translateY(-8px);
     box-shadow: var(--shadow-lg), 0 0 20px rgba(0, 212, 255, .28), 0 0 36px rgba(168, 85, 247, .24);
     background: linear-gradient(var(--bg-secondary), var(--bg-secondary)) padding-box, linear-gradient(135deg, var(--neon-cyan-95), var(--neon-violet-95)) border-box
 }
-
 .card.animate-in {
     opacity: 1;
     transform: translateY(0)
 }
-
 .card h5 {
     font-size: 1.25rem;
     font-weight: 700
 }
-
 .card h5 a {
     color: var(--card-text)
 }
-
-.theme-dark .card h5 a {
-    color: var(--text-primary)
-}
-
 .desc {
     color: var(--card-text);
     line-height: 1.6;
     flex: 1
 }
-
 .meta {
     display: flex;
     align-items: center;
@@ -480,7 +400,6 @@ section h3 {
     color: var(--card-meta);
     justify-content: center
 }
-
 .lang {
     padding: .25rem .75rem;
     border-radius: 9999px;
@@ -489,14 +408,12 @@ section h3 {
     font-weight: 600;
     font-size: .75rem
 }
-
 .actions {
     margin-top: auto;
     padding-top: 1rem;
     display: flex;
     justify-content: center
 }
-
 .gh-link {
     display: inline-flex;
     align-items: center;
@@ -506,21 +423,17 @@ section h3 {
     font-size: .9rem;
     transition: var(--transition-fast)
 }
-
 .gh-link:hover {
     color: var(--accent-hover);
     transform: translateX(3px)
 }
-
 .paper-card {
     cursor: pointer;
     background: linear-gradient(var(--stats-panel-bg), var(--stats-panel-bg)) padding-box, linear-gradient(135deg, rgba(0, 212, 255, .55), rgba(168, 85, 247, .55)) border-box
 }
-
 .paper-card:hover {
     background: linear-gradient(var(--stats-panel-bg), var(--stats-panel-bg)) padding-box, linear-gradient(135deg, var(--neon-cyan-95), var(--neon-violet-95)) border-box
 }
-
 .paper-card .desc {
     max-height: 220px;
     overflow-y: auto;
@@ -529,47 +442,37 @@ section h3 {
     text-align: left;
     padding-right: .35rem
 }
-
 .paper-card .desc p {
     margin: 0 0 .9rem 0
 }
-
 .paper-card .desc p:last-child {
     margin-bottom: 0
 }
-
 .paper-card .desc ul {
     margin: 0 0 .9rem 1.2rem;
     padding: 0;
     list-style: disc
 }
-
 .paper-card .desc li {
     margin: 0 0 .45rem 0
 }
-
 .paper-card .desc::-webkit-scrollbar {
     width: 8px
 }
-
 .paper-card .desc::-webkit-scrollbar-thumb {
     background: rgba(0, 212, 255, .35);
     border-radius: 9999px
 }
-
 .paper-card .desc::-webkit-scrollbar-track {
     background: transparent
 }
-
 .paper-card .actions {
     gap: 1rem;
     flex-wrap: wrap
 }
-
 .paper-doi {
     word-break: break-all
 }
-
 .empty {
     grid-column: 1/-1;
     padding: 3rem;
