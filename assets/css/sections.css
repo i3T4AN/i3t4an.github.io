@@ -3,7 +3,7 @@ main {
     margin-top: 4.5rem;
     position: relative;
     z-index: 1;
-    transition: margin-left .3s cubic-bezier(.4, 0, .2, 1), width .3s cubic-bezier(.4, 0, .2, 1)
+    transition: margin-left var(--duration-standard) var(--ease-standard), width var(--duration-standard) var(--ease-standard)
 }
 
 /* Retro CRT scanline effect scoped to homepage main content */
@@ -342,9 +342,9 @@ section h3 {
 
 .chip[aria-pressed="true"] {
     color: var(--chip-active-text);
-    border-color: rgba(0, 212, 255, 1);
-    border-right-color: rgba(168, 85, 247, 1);
-    border-bottom-color: rgba(168, 85, 247, 1);
+    border-color: var(--neon-cyan-100);
+    border-right-color: var(--neon-violet-100);
+    border-bottom-color: var(--neon-violet-100);
     box-shadow: 0 0 14px rgba(0, 212, 255, .38), 0 0 28px rgba(168, 85, 247, .34);
     background: var(--chip-active-bg)
 }
@@ -357,7 +357,7 @@ section h3 {
     padding: .625rem 1.25rem;
     border-radius: .75rem;
     border: 1.5px solid transparent;
-    background: linear-gradient(var(--sort-bg), var(--sort-bg)) padding-box, linear-gradient(135deg, rgba(0, 212, 255, .95), rgba(168, 85, 247, .95)) border-box;
+    background: linear-gradient(var(--sort-bg), var(--sort-bg)) padding-box, linear-gradient(135deg, var(--neon-cyan-95), var(--neon-violet-95)) border-box;
     color: var(--sort-text);
     font-size: .875rem;
     font-weight: 500;
@@ -444,7 +444,7 @@ section h3 {
 .card:hover {
     transform: translateY(-8px);
     box-shadow: var(--shadow-lg), 0 0 20px rgba(0, 212, 255, .28), 0 0 36px rgba(168, 85, 247, .24);
-    background: linear-gradient(var(--bg-secondary), var(--bg-secondary)) padding-box, linear-gradient(135deg, rgba(0, 212, 255, .95), rgba(168, 85, 247, .95)) border-box
+    background: linear-gradient(var(--bg-secondary), var(--bg-secondary)) padding-box, linear-gradient(135deg, var(--neon-cyan-95), var(--neon-violet-95)) border-box
 }
 
 .card.animate-in {
@@ -461,8 +461,7 @@ section h3 {
     color: var(--card-text)
 }
 
-.theme-dark .card h5 a,
-.theme-dark .card:hover h5 a {
+.theme-dark .card h5 a {
     color: var(--text-primary)
 }
 
@@ -489,25 +488,6 @@ section h3 {
     color: var(--lang-pill-text);
     font-weight: 600;
     font-size: .75rem
-}
-
-html:not(.theme-dark) .card:hover,
-html:not(.theme-dark) .card:hover h5 a,
-html:not(.theme-dark) .card:hover .desc {
-    color: var(--card-text)
-}
-
-html:not(.theme-dark) .card:hover .meta {
-    color: var(--card-meta)
-}
-
-html:not(.theme-dark) .card:hover .gh-link {
-    color: var(--accent)
-}
-
-html:not(.theme-dark) .card:hover .lang {
-    background: var(--lang-pill-bg);
-    color: var(--lang-pill-text)
 }
 
 .actions {
@@ -538,7 +518,7 @@ html:not(.theme-dark) .card:hover .lang {
 }
 
 .paper-card:hover {
-    background: linear-gradient(var(--stats-panel-bg), var(--stats-panel-bg)) padding-box, linear-gradient(135deg, rgba(0, 212, 255, .95), rgba(168, 85, 247, .95)) border-box
+    background: linear-gradient(var(--stats-panel-bg), var(--stats-panel-bg)) padding-box, linear-gradient(135deg, var(--neon-cyan-95), var(--neon-violet-95)) border-box
 }
 
 .paper-card .desc {
@@ -588,10 +568,6 @@ html:not(.theme-dark) .card:hover .lang {
 
 .paper-doi {
     word-break: break-all
-}
-
-.paper-read-hint {
-    pointer-events: none
 }
 
 .empty {

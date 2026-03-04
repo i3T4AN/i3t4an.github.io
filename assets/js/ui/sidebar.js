@@ -11,21 +11,6 @@ const normalizeSidebarItems = items => {
         .filter(Boolean);
 };
 
-const defaultSidebarItems = [
-    { label: 'Technical Skills', href: '#skills' },
-    { label: 'Published Work', href: '#published' },
-    { label: 'Terminal', href: '#terminal' },
-    {
-        label: 'Featured Projects',
-        href: '#projects',
-        children: [
-            { label: 'Automation & AI', href: '#projects-ai' },
-            { label: 'Enterprise Systems / Cloud', href: '#projects-enterprise' },
-            { label: 'Programming / Development', href: '#projects-dev' }
-        ]
-    }
-];
-
 const buildSidebarTree = (items, isChildLevel = false) => {
     const frag = document.createDocumentFragment();
     items.forEach(item => {
@@ -59,7 +44,7 @@ export const initSidebar = (els, siteConfig) => {
     const title = typeof navConfig.title === 'string' && navConfig.title.trim() ? navConfig.title.trim() : 'Sections';
     const ariaLabel = typeof navConfig.ariaLabel === 'string' && navConfig.ariaLabel.trim() ? navConfig.ariaLabel.trim() : 'Homepage section links';
     const configuredItems = normalizeSidebarItems(navConfig.items);
-    const items = configuredItems.length ? configuredItems : defaultSidebarItems;
+    const items = configuredItems;
 
     if (els.sectionSidebarTitle) els.sectionSidebarTitle.textContent = title;
     els.sidebarNav.setAttribute('aria-label', ariaLabel);

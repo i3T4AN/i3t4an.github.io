@@ -5,7 +5,7 @@ footer {
     color: var(--text-muted);
     border-top: 1px solid var(--border);
     background: var(--bg-secondary);
-    transition: margin-left .3s cubic-bezier(.4, 0, .2, 1), width .3s cubic-bezier(.4, 0, .2, 1)
+    transition: margin-left var(--duration-standard) var(--ease-standard), width var(--duration-standard) var(--ease-standard)
 }
 
 .skip-link {

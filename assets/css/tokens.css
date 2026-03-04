@@ -24,8 +24,11 @@
     --shadow-lg: 0 20px 40px -20px #10163047;
     --shadow-glow: 0 0 18px rgba(0, 212, 255, .25), 0 0 30px rgba(168, 85, 247, .2);
     --blur-bg: saturate(180%) blur(20px);
-    --transition: all .3s cubic-bezier(.4, 0, .2, 1);
-    --transition-fast: all .2s cubic-bezier(.4, 0, .2, 1);
+    --ease-standard: cubic-bezier(.4, 0, .2, 1);
+    --duration-standard: .3s;
+    --duration-fast: .2s;
+    --transition: all var(--duration-standard) var(--ease-standard);
+    --transition-fast: all var(--duration-fast) var(--ease-standard);
     --controls-bg: rgba(255, 255, 255, .52);
     --primary-col-bg: rgba(99, 102, 241, .05);
     --stats-panel-bg: #f8faff;
@@ -43,7 +46,11 @@
     --terminal-output-text: #1e2744;
     --scan-viewport-height: 100vh;
     --sidebar-width-relative: clamp(11rem, 21vw, 15rem);
-    --sidebar-content-offset: calc(var(--sidebar-width-relative) + .85rem)
+    --sidebar-content-offset: calc(var(--sidebar-width-relative) + .85rem);
+    --neon-cyan-95: rgba(0, 212, 255, .95);
+    --neon-violet-95: rgba(168, 85, 247, .95);
+    --neon-cyan-100: rgba(0, 212, 255, 1);
+    --neon-violet-100: rgba(168, 85, 247, 1)
 }
 
 .theme-dark {

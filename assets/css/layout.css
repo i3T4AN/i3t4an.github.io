@@ -9,7 +9,7 @@ header {
     background: rgba(255, 255, 255, .7);
     backdrop-filter: var(--blur-bg);
     border-bottom: 1px solid var(--border);
-    transition: var(--transition), left .3s cubic-bezier(.4, 0, .2, 1), width .3s cubic-bezier(.4, 0, .2, 1)
+    transition: var(--transition), left var(--duration-standard) var(--ease-standard), width var(--duration-standard) var(--ease-standard)
 }
 
 .theme-dark header {
@@ -83,7 +83,7 @@ body.sidebar-open .sidebar-toggle {
     box-shadow: 18px 0 50px rgba(0, 0, 0, .25), 0 0 26px rgba(0, 212, 255, .12);
     padding: 1rem 1rem 1.4rem;
     transform: translateX(-104%);
-    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    transition: transform var(--duration-standard) var(--ease-standard);
     z-index: 1200;
     overflow-y: auto
 }
@@ -296,9 +296,9 @@ body.sidebar-open .section-sidebar {
     text-decoration: none;
     color: #131a33;
     background: #f8faff;
-    border: 1.5px solid rgba(0, 212, 255, .95);
-    border-right-color: rgba(168, 85, 247, .95);
-    border-bottom-color: rgba(168, 85, 247, .95);
+    border: 1.5px solid var(--neon-cyan-95);
+    border-right-color: var(--neon-violet-95);
+    border-bottom-color: var(--neon-violet-95);
     position: relative;
     border-radius: var(--neo-btn-radius);
     transform: skewX(-18deg);
@@ -327,20 +327,11 @@ body.sidebar-open .section-sidebar {
 .neo-btn:hover,
 .neo-btn:focus-visible {
     color: #131a33;
-    border-color: rgba(0, 212, 255, 1);
-    border-right-color: rgba(168, 85, 247, 1);
-    border-bottom-color: rgba(168, 85, 247, 1);
+    border-color: var(--neon-cyan-100);
+    border-right-color: var(--neon-violet-100);
+    border-bottom-color: var(--neon-violet-100);
     transform: translateY(-2px) skewX(-18deg);
-    box-shadow: 0 0 14px rgba(0, 212, 255, .38), 0 0 28px rgba(168, 85, 247, .34)
-}
-
-.neo-btn:hover .neo-btn-label,
-.neo-btn:focus-visible .neo-btn-label {
-    background: transparent
-}
-
-.neo-btn:hover,
-.neo-btn:focus-visible {
+    box-shadow: 0 0 14px rgba(0, 212, 255, .38), 0 0 28px rgba(168, 85, 247, .34);
     background: #eef3ff
 }
 
@@ -348,9 +339,9 @@ body.sidebar-open .section-sidebar {
 .theme-dark .neo-btn:visited {
     color: #fff;
     background: #080c16;
-    border-color: rgba(0, 212, 255, .95);
-    border-right-color: rgba(168, 85, 247, .95);
-    border-bottom-color: rgba(168, 85, 247, .95)
+    border-color: var(--neon-cyan-95);
+    border-right-color: var(--neon-violet-95);
+    border-bottom-color: var(--neon-violet-95)
 }
 
 .theme-dark .neo-btn .neo-btn-label {
@@ -364,8 +355,7 @@ body.sidebar-open .section-sidebar {
 }
 
 /* Top controls sizing */
-.nav-links .social-btn,
-.nav-links a.social-btn:visited {
+.nav-links .social-btn {
     min-width: 110px;
     height: 44px
 }

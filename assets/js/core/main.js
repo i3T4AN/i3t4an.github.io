@@ -1,4 +1,3 @@
-/* Portfolio Main Script */
 import { convertMarkdownToHTML, sanitizeHTML } from '../utils/markdown.js';
 import { initSidebar } from '../ui/sidebar.js';
 
@@ -27,12 +26,15 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
     };
 
     let paperBlobUrl = '';
-    const hideReadmeModal = () => { if (els.readmeModal) els.readmeModal.style.display = 'none' };
-    const hidePaperModal = () => {
+    const hideModal = (modal, onHide) => {
+        if (typeof onHide === 'function') onHide();
+        if (modal) modal.style.display = 'none';
+    };
+    const hideReadmeModal = () => hideModal(els.readmeModal);
+    const hidePaperModal = () => hideModal(els.paperModal, () => {
         if (paperBlobUrl) { URL.revokeObjectURL(paperBlobUrl); paperBlobUrl = '' }
         if (els.paperModalBody) els.paperModalBody.innerHTML = '';
-        if (els.paperModal) els.paperModal.style.display = 'none';
-    };
+    });
     const initModal = () => {
         els.modalClose?.addEventListener('click', hideReadmeModal);
         els.readmeModal?.addEventListener('click', e => { if (e.target === els.readmeModal) hideReadmeModal() });
@@ -65,7 +67,6 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         } catch (e) { els.modalBody.innerHTML = `<div class="error">Unable to load README: ${e.message}</div>` }
     };
 
-    // Terminal - consolidated output method
     class Terminal {
         constructor() {
             this.history = [];
@@ -295,7 +296,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             const SITE = window.SITE, t = args[0]?.toLowerCase();
             if (['light', 'dark', 'auto'].includes(t)) {
                 if (t === 'auto') { localStorage.removeItem('theme'); applyTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') }
-                else { localStorage.setItem('theme', t); applyTheme(t) }
+                else { persistTheme(t); applyTheme(t) }
                 this.output(SITE.terminal.messages.themeSet.replace('{theme}', t), 'success');
             } else this.output(SITE.terminal.messages.themeUsage, 'error');
         }
@@ -384,7 +385,6 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         }
     }
 
-    // JSON-LD
     const injectJSONLD = () => {
         const s = window.SITE;
         const profile = s.profile || {};
@@ -588,7 +588,6 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         els.paperModal.style.display = 'block';
     };
 
-    // Theme
     let GH_LANG_SOURCES = { light: [], dark: [] };
     let GH_STREAK_SOURCES = { light: [], dark: [] };
     const setImageWithFallback = (img, urls) => {
@@ -613,10 +612,16 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
     };
     const updateGitHubStats = isDark => { const mode = isDark ? 'dark' : 'light'; setImageWithFallback(els.langImg, GH_LANG_SOURCES[mode]); setImageWithFallback(els.streakImg, GH_STREAK_SOURCES[mode]) };
     const applyTheme = t => { const isDark = t === 'dark'; document.documentElement.classList.toggle('theme-dark', isDark); updateThemeButton(isDark); updateGitHubStats(isDark) };
+    const persistTheme = theme => localStorage.setItem('theme', theme);
     const initTheme = () => {
         const saved = localStorage.getItem('theme');
         applyTheme(saved || 'dark');
-        els.themeToggle?.addEventListener('click', () => { const isDark = document.documentElement.classList.toggle('theme-dark'); localStorage.setItem('theme', isDark ? 'dark' : 'light'); updateThemeButton(isDark); updateGitHubStats(isDark) });
+        els.themeToggle?.addEventListener('click', () => {
+            const isDark = !document.documentElement.classList.contains('theme-dark');
+            const theme = isDark ? 'dark' : 'light';
+            persistTheme(theme);
+            applyTheme(theme);
+        });
     };
     const initViewportScanHeight = () => {
         const setScanViewportHeight = () => {
@@ -628,7 +633,6 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
     };
     const initHeaderScroll = () => addEventListener('scroll', () => els.header.classList.toggle('scrolled', scrollY > 20), { passive: true });
 
-    // DOM builders
     const buildSkillCol = (title, items) => { const col = document.createElement('div'); col.className = 'col'; col.innerHTML = `<h4>${title}</h4>`; const ul = document.createElement('ul'), frag = document.createDocumentFragment(); items.forEach(t => { const li = document.createElement('li'); li.textContent = t; frag.appendChild(li) }); ul.appendChild(frag); col.appendChild(ul); return col };
     const buildCard = repo => {
         const card = document.createElement('article'); card.className = 'card';
@@ -757,7 +761,6 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         els.skillsGrid.appendChild(buildSkillCol(SITE.terminal.messages.developmentTitle, SITE.skills.development));
         els.skillsGrid.appendChild(buildSkillCol(SITE.terminal.messages.automationTitle, SITE.skills.automation));
         els.skillsGrid.appendChild(buildSkillCol(SITE.terminal.messages.systemsTitle, SITE.skills.systems));
-        if (els.publishedTitle) els.publishedTitle.textContent = SITE.publishedWork?.sectionTitle || 'Published Work';
         els.year.textContent = new Date().getFullYear();
         initSidebar(els, SITE);
         initViewportScanHeight();
