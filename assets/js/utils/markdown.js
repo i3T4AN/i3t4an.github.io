@@ -1,0 +1,15 @@
+export const convertMarkdownToHTML = md => md
+    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+    .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/gim, '<em>$1</em>')
+    .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+    .replace(/`(.*?)`/g, '<code>$1</code>')
+    .replace(/\[([^\[]+)\]\(([^\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/\n/g, '<br>')
+    .replace(/^(?!<)(.*)$/gim, '<p>$1</p>')
+    .replace(/<p><\/p>/g, '')
+    .replace(/^\s*[\-\*] (.*$)/gim, '<li>$1</li>')
+    .replace(/(<li>[\s\S]*<\/li>)/, '<ul>$1</ul>');

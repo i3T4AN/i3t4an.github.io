@@ -1,7 +1,9 @@
 /* Portfolio Main Script */
-(() => {
-    'use strict';
-    const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+import { convertMarkdownToHTML } from '../utils/markdown.js';
+import { initSidebar } from '../ui/sidebar.js';
+
+'use strict';
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
 
     const els = {
         brandName: $('#brandName'), footerName: $('#footerName'), brandTag: $('#brandTag'), heroTitle: $('#heroTitle'), heroParagraph: $('#heroParagraph'),
@@ -57,14 +59,6 @@
             els.modalBody.innerHTML = `<div class="readme-content">${convertMarkdownToHTML(content)}</div>`;
         } catch (e) { els.modalBody.innerHTML = `<div class="error">Unable to load README: ${e.message}</div>` }
     };
-
-    const convertMarkdownToHTML = md => md
-        .replace(/^### (.*$)/gim, '<h3>$1</h3>').replace(/^## (.*$)/gim, '<h2>$1</h2>').replace(/^# (.*$)/gim, '<h1>$1</h1>')
-        .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>').replace(/\*(.*?)\*/gim, '<em>$1</em>')
-        .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>').replace(/`(.*?)`/g, '<code>$1</code>')
-        .replace(/\[([^\[]+)\]\(([^\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
-        .replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>').replace(/^(?!<)(.*)$/gim, '<p>$1</p>')
-        .replace(/<p><\/p>/g, '').replace(/^\s*[\-\*] (.*$)/gim, '<li>$1</li>').replace(/(<li>[\s\S]*<\/li>)/, '<ul>$1</ul>');
 
     // Terminal - consolidated output method
     class Terminal {
@@ -643,105 +637,6 @@
         applyTheme(saved || 'dark');
         els.themeToggle?.addEventListener('click', () => { const isDark = document.documentElement.classList.toggle('theme-dark'); localStorage.setItem('theme', isDark ? 'dark' : 'light'); updateThemeButton(isDark); updateGitHubStats(isDark) });
     };
-    const defaultSidebarItems = [
-        { label: 'Technical Skills', href: '#skills' },
-        { label: 'Published Work', href: '#published' },
-        { label: 'Terminal', href: '#terminal' },
-        {
-            label: 'Featured Projects',
-            href: '#projects',
-            children: [
-                { label: 'Automation & AI', href: '#projects-ai' },
-                { label: 'Enterprise Systems / Cloud', href: '#projects-enterprise' },
-                { label: 'Programming / Development', href: '#projects-dev' }
-            ]
-        }
-    ];
-    const normalizeSidebarItems = items => {
-        if (!Array.isArray(items)) return [];
-        return items
-            .map(item => {
-                const label = typeof item?.label === 'string' ? item.label.trim() : '';
-                const href = typeof item?.href === 'string' ? item.href.trim() : '';
-                const children = normalizeSidebarItems(item?.children);
-                if (!label || !href || !href.startsWith('#')) return null;
-                return { label, href, children };
-            })
-            .filter(Boolean);
-    };
-    const buildSidebarTree = (items, isChildLevel = false) => {
-        const frag = document.createDocumentFragment();
-        items.forEach(item => {
-            const link = document.createElement('a');
-            link.className = `sidebar-link${isChildLevel ? ' sidebar-child' : ''}${item.children.length ? ' sidebar-parent' : ''}`;
-            link.href = item.href;
-            link.textContent = item.label;
-
-            if (item.children.length) {
-                const tree = document.createElement('div');
-                tree.className = 'sidebar-tree';
-                tree.appendChild(link);
-                const childrenGroup = document.createElement('div');
-                childrenGroup.className = 'sidebar-tree-children';
-                childrenGroup.setAttribute('role', 'group');
-                childrenGroup.setAttribute('aria-label', `${item.label} links`);
-                childrenGroup.appendChild(buildSidebarTree(item.children, true));
-                tree.appendChild(childrenGroup);
-                frag.appendChild(tree);
-            } else {
-                frag.appendChild(link);
-            }
-        });
-        return frag;
-    };
-    const renderSidebarNavigation = () => {
-        if (!els.sidebarNav) return;
-        const navConfig = window.SITE?.navigation || {};
-        const title = typeof navConfig.title === 'string' && navConfig.title.trim() ? navConfig.title.trim() : 'Sections';
-        const ariaLabel = typeof navConfig.ariaLabel === 'string' && navConfig.ariaLabel.trim() ? navConfig.ariaLabel.trim() : 'Homepage section links';
-        const configuredItems = normalizeSidebarItems(navConfig.items);
-        const items = configuredItems.length ? configuredItems : defaultSidebarItems;
-
-        if (els.sectionSidebarTitle) els.sectionSidebarTitle.textContent = title;
-        els.sidebarNav.setAttribute('aria-label', ariaLabel);
-        els.sidebarNav.innerHTML = '';
-        els.sidebarNav.appendChild(buildSidebarTree(items));
-    };
-    const initSidebar = () => {
-        if (!els.sidebarToggle || !els.sectionSidebar || !els.sidebarBackdrop) return;
-        renderSidebarNavigation();
-
-        const setSidebarState = open => {
-            document.body.classList.toggle('sidebar-open', open);
-            els.sidebarToggle.setAttribute('aria-expanded', String(open));
-            els.sectionSidebar.setAttribute('aria-hidden', String(!open));
-            els.sidebarBackdrop.setAttribute('aria-hidden', String(!open));
-        };
-
-        const closeSidebar = () => setSidebarState(false);
-
-        els.sidebarToggle.addEventListener('click', () => {
-            const isOpen = document.body.classList.contains('sidebar-open');
-            if (!isOpen) setSidebarState(true);
-        });
-        els.sidebarClose?.addEventListener('click', closeSidebar);
-
-        els.sectionSidebar.addEventListener('click', e => {
-            if (!(e.target instanceof Element)) return;
-            const link = e.target.closest('a[href^="#"]');
-            if (!link) return;
-
-            const hash = link.getAttribute('href');
-            if (!hash || hash === '#') return;
-
-            const target = document.querySelector(hash);
-            if (!target) return;
-
-            e.preventDefault();
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            history.replaceState(null, '', hash);
-        });
-    };
     const initViewportScanHeight = () => {
         const setScanViewportHeight = () => {
             document.documentElement.style.setProperty('--scan-viewport-height', `${window.innerHeight}px`);
@@ -883,7 +778,7 @@
         els.skillsGrid.appendChild(buildSkillCol(SITE.terminal.messages.systemsTitle, SITE.skills.systems));
         if (els.publishedTitle) els.publishedTitle.textContent = SITE.publishedWork?.sectionTitle || 'Published Work';
         els.year.textContent = new Date().getFullYear();
-        initSidebar();
+        initSidebar(els, SITE);
         initViewportScanHeight();
         initTheme(); initHeaderScroll();
         els.sort?.addEventListener('change', e => { state.sort = e.target.value; renderProjects(state) });
@@ -895,5 +790,7 @@
         loadRepos(state).catch(() => els.projectsEmpty.hidden = false);
     };
 
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
-})();
+export const startApp = () => {
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
+};

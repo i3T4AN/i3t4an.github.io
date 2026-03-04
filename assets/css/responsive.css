@@ -1,0 +1,235 @@
+/* Reduced motion & Responsive */
+@media(prefers-reduced-motion:reduce) {
+
+    .hero::before,
+    .hero h2::after,
+    .btn,
+    .nav-btn,
+    .col,
+    .card,
+    .chip,
+    .sort,
+    .theme-toggle,
+    .terminal-control,
+    .modal-content {
+        animation: none !important;
+        transition: none !important
+    }
+
+    .btn:hover,
+    .nav-btn:hover,
+    .col:hover,
+    .card:hover,
+    .chip:hover,
+    .sort:hover,
+    .theme-toggle:hover,
+    .terminal-control:hover,
+    .modal-close:hover {
+        transform: none !important
+    }
+}
+
+@media(max-width:768px) {
+    :root {
+        --sidebar-width-relative: min(76vw, 17rem);
+        --sidebar-content-offset: calc(var(--sidebar-width-relative) + .65rem)
+    }
+
+    .hero h2 {
+        font-size: 2.5rem
+    }
+
+    .grid {
+        grid-template-columns: 1fr
+    }
+
+    #publishedGrid {
+        grid-template-columns: 1fr
+    }
+
+    .controls {
+        flex-direction: row;
+        align-items: center;
+        gap: .7rem;
+        padding: .95rem;
+        margin-bottom: 2rem
+    }
+
+    .filters {
+        gap: .45rem;
+        padding: .2rem .45rem .1rem;
+        scrollbar-width: none
+    }
+
+    .filters::-webkit-scrollbar {
+        display: none
+    }
+
+    .chip {
+        font-size: .78rem
+    }
+
+    .chip .chip-label {
+        padding: .38rem .85rem;
+        min-width: 56px
+    }
+
+    .sort {
+        padding: .42rem .68rem;
+        border-radius: .65rem;
+        font-size: .72rem;
+        min-width: 0;
+        width: clamp(6.9rem, 32vw, 7.9rem)
+    }
+
+    section {
+        padding: 2rem 0
+    }
+
+    .github-stats {
+        flex-direction: column;
+        gap: 1rem
+    }
+
+    .github-stats img {
+        width: 100%;
+        height: auto
+    }
+
+    .terminal {
+        height: 400px
+    }
+
+    .nav {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        padding: 1rem 0
+    }
+
+    .nav-left {
+        width: 100%;
+        justify-content: flex-start
+    }
+
+    .social-buttons {
+        display: contents;
+        margin: 0
+    }
+
+    .nav-links {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        gap: clamp(.34rem, 1.4vw, .72rem);
+        width: 100%;
+        max-width: 100%;
+        overflow-x: visible;
+        overflow-y: visible;
+        padding-inline: clamp(.14rem, .8vw, .36rem)
+    }
+
+    .nav-links .social-btn,
+    .nav-links a.social-btn:visited {
+        flex: 0 0 auto;
+        width: auto;
+        min-width: 0;
+        min-height: clamp(2.1rem, 6vw, 2.6rem);
+        height: auto;
+        padding: 0;
+        aspect-ratio: auto
+    }
+
+    .nav-links .social-btn .neo-btn-label {
+        width: auto;
+        height: auto;
+        min-width: 0;
+        padding: clamp(.48rem, 1.5vw, .72rem);
+        font-size: 0;
+        line-height: 0;
+        gap: 0
+    }
+
+    .nav-links .social-icon,
+    .nav-links .theme-icon {
+        width: clamp(.72rem, 2vw, .9rem);
+        height: clamp(.72rem, 2vw, .9rem)
+    }
+
+    .nav-links #themeText {
+        display: none
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 10% auto;
+        max-height: 85vh
+    }
+
+    .modal-header,
+    .modal-footer {
+        padding: 1rem 1.5rem
+    }
+
+    .modal-body {
+        padding: 1.5rem
+    }
+
+    .paper-pdf-frame {
+        height: 60vh
+    }
+
+}
+
+@media(max-width:480px) {
+    .terminal {
+        height: 350px;
+        font-size: .75rem
+    }
+
+    .terminal-input {
+        font-size: .75rem
+    }
+
+    .nav-btn {
+        padding: .375rem .75rem;
+        font-size: .7rem
+    }
+
+    .nav-links {
+        gap: clamp(.26rem, 1.1vw, .52rem);
+        padding-inline: clamp(.12rem, .9vw, .28rem)
+    }
+
+    .nav-links .social-btn .neo-btn-label {
+        padding: clamp(.42rem, 1.15vw, .56rem)
+    }
+
+    .nav-links .social-icon,
+    .nav-links .theme-icon {
+        width: clamp(.64rem, 2.2vw, .82rem);
+        height: clamp(.64rem, 2.2vw, .82rem)
+    }
+
+    .controls {
+        gap: .55rem;
+        padding: .8rem
+    }
+
+    .chip {
+        font-size: .74rem
+    }
+
+    .chip .chip-label {
+        padding: .32rem .72rem;
+        min-width: 52px
+    }
+
+    .sort {
+        padding: .36rem .6rem;
+        font-size: .68rem;
+        min-width: 0;
+        width: clamp(6.4rem, 38vw, 7.2rem)
+    }
+}
