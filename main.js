@@ -64,7 +64,7 @@
         .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>').replace(/`(.*?)`/g, '<code>$1</code>')
         .replace(/\[([^\[]+)\]\(([^\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
         .replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>').replace(/^(?!<)(.*)$/gim, '<p>$1</p>')
-        .replace(/<p><\/p>/g, '').replace(/^\s*[\-\*] (.*$)/gim, '<li>$1</li>').replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
+        .replace(/<p><\/p>/g, '').replace(/^\s*[\-\*] (.*$)/gim, '<li>$1</li>').replace(/(<li>[\s\S]*<\/li>)/, '<ul>$1</ul>');
 
     // Terminal - consolidated output method
     class Terminal {
