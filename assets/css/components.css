@@ -29,18 +29,6 @@ footer {
     z-index: 10000
 }
 
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0
-}
-
 a:focus-visible,
 button:focus-visible,
 select:focus-visible,
@@ -132,6 +120,10 @@ select:focus-visible,
     font-weight: 600
 }
 
+.terminal-header-spacer {
+    width: 60px
+}
+
 .terminal-body {
     flex: 1;
     padding: 1rem;
@@ -163,7 +155,7 @@ select:focus-visible,
 }
 
 .terminal-command {
-    color: var(--terminal-command-text)
+    color: var(--terminal-output-text)
 }
 
 .terminal-input-line {
@@ -317,14 +309,14 @@ select:focus-visible,
     line-height: 1.6
 }
 
-.modal-body.loading {
+.modal-body .loading {
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 200px
 }
 
-.modal-body.error {
+.modal-body .error {
     color: #f87171;
     text-align: center
 }
@@ -410,4 +402,3 @@ select:focus-visible,
     background: transparent;
     display: block
 }
-

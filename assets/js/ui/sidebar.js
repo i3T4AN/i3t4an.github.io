@@ -53,7 +53,7 @@ const buildSidebarTree = (items, isChildLevel = false) => {
 };
 
 export const initSidebar = (els, siteConfig) => {
-    if (!els.sidebarToggle || !els.sectionSidebar || !els.sidebarBackdrop || !els.sidebarNav) return;
+    if (!els.sidebarToggle || !els.sectionSidebar || !els.sidebarNav) return;
 
     const navConfig = siteConfig?.navigation || {};
     const title = typeof navConfig.title === 'string' && navConfig.title.trim() ? navConfig.title.trim() : 'Sections';
@@ -71,7 +71,6 @@ export const initSidebar = (els, siteConfig) => {
         document.body.classList.toggle('sidebar-open', open);
         els.sidebarToggle.setAttribute('aria-expanded', String(open));
         els.sectionSidebar.setAttribute('aria-hidden', String(!open));
-        els.sidebarBackdrop.setAttribute('aria-hidden', String(!open));
     };
 
     const closeSidebar = () => setSidebarState(false);

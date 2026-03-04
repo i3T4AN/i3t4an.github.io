@@ -73,16 +73,6 @@ body.sidebar-open .sidebar-toggle {
     fill: currentColor
 }
 
-.sidebar-backdrop {
-    position: fixed;
-    inset: 0;
-    background: transparent;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .25s ease;
-    z-index: 1100
-}
-
 .section-sidebar {
     position: fixed;
     inset: 0 auto 0 0;
@@ -189,11 +179,6 @@ body.sidebar-open .sidebar-toggle {
 
 body.sidebar-open .section-sidebar {
     transform: translateX(0)
-}
-
-body.sidebar-open .sidebar-backdrop {
-    opacity: 0;
-    pointer-events: none
 }
 
 @media(min-width:960px) {
@@ -418,4 +403,3 @@ body.sidebar-open .sidebar-backdrop {
 .theme-dark .theme-toggle:not(.social-btn) {
     background: rgba(8, 12, 22, .82)
 }
-

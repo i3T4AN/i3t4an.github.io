@@ -1,4 +1,20 @@
-export const convertMarkdownToHTML = md => md
+const ALLOWED_TAGS = new Set(['H1', 'H2', 'H3', 'P', 'STRONG', 'EM', 'PRE', 'CODE', 'A', 'UL', 'LI', 'BR']);
+const escapeHTML = value => String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+export const sanitizeHTML = html => {
+    const t = document.createElement('template');
+    t.innerHTML = String(html || '');
+    Array.from(t.content.querySelectorAll('*')).forEach(node => {
+        if (!ALLOWED_TAGS.has(node.tagName)) return node.replaceWith(document.createTextNode(node.textContent || ''));
+        Array.from(node.attributes).forEach(attr => {
+            const name = attr.name.toLowerCase(), value = String(attr.value || '').trim();
+            if (name.startsWith('on') || name === 'style' || (node.tagName === 'A' && name === 'href' && !/^https?:\/\//i.test(value))) node.removeAttribute(attr.name);
+        });
+        if (node.tagName === 'A') { node.setAttribute('target', '_blank'); node.setAttribute('rel', 'noopener') }
+    });
+    return t.innerHTML;
+};
+
+export const convertMarkdownToHTML = md => escapeHTML(md)
     .replace(/^### (.*$)/gim, '<h3>$1</h3>')
     .replace(/^## (.*$)/gim, '<h2>$1</h2>')
     .replace(/^# (.*$)/gim, '<h1>$1</h1>')

@@ -1,5 +1,5 @@
 /* Portfolio Main Script */
-import { convertMarkdownToHTML } from '../utils/markdown.js';
+import { convertMarkdownToHTML, sanitizeHTML } from '../utils/markdown.js';
 import { initSidebar } from '../ui/sidebar.js';
 
 'use strict';
@@ -22,12 +22,17 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         terminalTitle: $('#terminalTitle'), currentPrompt: $('#currentPrompt'),
         readmeModal: $('#readmeModal'), modalTitle: $('#modalTitle'), modalBody: $('#modalBody'), modalClose: $('#modalClose'), modalGitHubLink: $('#modalGitHubLink'),
         paperModal: $('#paperModal'), paperModalBody: $('#paperModalBody'), paperModalClose: $('#paperModalClose'),
-        sidebarToggle: $('#sidebarToggle'), sectionSidebar: $('#sectionSidebar'), sidebarBackdrop: $('#sidebarBackdrop'), sidebarClose: $('#sidebarClose'),
+        sidebarToggle: $('#sidebarToggle'), sectionSidebar: $('#sectionSidebar'), sidebarClose: $('#sidebarClose'),
         sidebarNav: $('#sidebarNav'), sectionSidebarTitle: $('#sectionSidebarTitle')
     };
 
+    let paperBlobUrl = '';
     const hideReadmeModal = () => { if (els.readmeModal) els.readmeModal.style.display = 'none' };
-    const hidePaperModal = () => { if (els.paperModal) els.paperModal.style.display = 'none' };
+    const hidePaperModal = () => {
+        if (paperBlobUrl) { URL.revokeObjectURL(paperBlobUrl); paperBlobUrl = '' }
+        if (els.paperModalBody) els.paperModalBody.innerHTML = '';
+        if (els.paperModal) els.paperModal.style.display = 'none';
+    };
     const initModal = () => {
         els.modalClose?.addEventListener('click', hideReadmeModal);
         els.readmeModal?.addEventListener('click', e => { if (e.target === els.readmeModal) hideReadmeModal() });
@@ -56,7 +61,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         els.readmeModal.style.display = 'block';
         try {
             const content = await fetchReadme(parsed.owner, parsed.name);
-            els.modalBody.innerHTML = `<div class="readme-content">${convertMarkdownToHTML(content)}</div>`;
+            els.modalBody.innerHTML = `<div class="readme-content">${sanitizeHTML(convertMarkdownToHTML(content))}</div>`;
         } catch (e) { els.modalBody.innerHTML = `<div class="error">Unable to load README: ${e.message}</div>` }
     };
 
@@ -429,40 +434,33 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         const parsed = parseRepoPath(site.socials?.github || '');
         return parsed?.owner || '';
     };
-    const buildGitHubLangSources = username => {
+    const buildGitHubSources = (username, light, dark) => {
         if (!username) return { light: [], dark: [] };
         const encoded = encodeURIComponent(username);
-        return {
-            light: [
-                `https://github-readme-stats-sigma-five.vercel.app/api/top-langs?username=${encoded}&show_icons=true&locale=en&layout=compact&theme=default&hide_border=true&custom_title=Top%20Languages&v=5`
-            ],
-            dark: [
-                `https://github-readme-stats-sigma-five.vercel.app/api/top-langs?username=${encoded}&show_icons=true&locale=en&layout=compact&hide_border=true&bg_color=1a1b27&title_color=A855F7&text_color=CFD6E2&icon_color=00D4FF&custom_title=Top%20Languages&v=4`
-            ]
-        };
+        return { light: [light(encoded)], dark: [dark(encoded)] };
     };
-    const buildGitHubStreakSources = username => {
-        if (!username) return { light: [], dark: [] };
-        const encoded = encodeURIComponent(username);
-        return {
-            light: [
-                `https://streak-stats.demolab.com?user=${encoded}&theme=default&hide_border=true`
-            ],
-            dark: [
-                `https://streak-stats.demolab.com?user=${encoded}&theme=tokyonight&hide_border=true`
-            ]
-        };
+    const buildGitHubLangSources = username => buildGitHubSources(
+        username,
+        encoded => `https://github-readme-stats-sigma-five.vercel.app/api/top-langs?username=${encoded}&show_icons=true&locale=en&layout=compact&theme=default&hide_border=true&custom_title=Top%20Languages&v=5`,
+        encoded => `https://github-readme-stats-sigma-five.vercel.app/api/top-langs?username=${encoded}&show_icons=true&locale=en&layout=compact&hide_border=true&bg_color=1a1b27&title_color=A855F7&text_color=CFD6E2&icon_color=00D4FF&custom_title=Top%20Languages&v=4`
+    );
+    const buildGitHubStreakSources = username => buildGitHubSources(
+        username,
+        encoded => `https://streak-stats.demolab.com?user=${encoded}&theme=default&hide_border=true`,
+        encoded => `https://streak-stats.demolab.com?user=${encoded}&theme=tokyonight&hide_border=true`
+    );
+
+    const formatRepoName = name => String(name || '').replace(/[-_]/g, ' ').replace(/\b\w/g, m => m.toUpperCase());
+    const fetchJsonCached = async (key, url, headers, map = d => d) => {
+        const cached = cache.get(key); if (cached) return cached;
+        try { const r = await fetch(url, { headers }); if (!r.ok) throw new Error(String(r.status)); const out = map(await r.json()); if (out) cache.set(key, out); return out } catch { return null }
     };
 
     const fetchRepo = async (owner, name) => {
-        const key = `gh:${owner}/${name}`, cached = cache.get(key); if (cached) return cached;
-        try {
-            const res = await fetch(`https://api.github.com/repos/${owner}/${name}`, { headers: { Accept: 'application/vnd.github+json' } });
-            if (!res.ok) throw new Error(res.status);
-            const d = await res.json();
-            const repo = { full_name: d.full_name, html_url: d.html_url, description: d.description || name.replace(/[-_]/g, ' ').replace(/\b\w/g, m => m.toUpperCase()), language: d.language || 'Other', stargazers_count: d.stargazers_count || 0, updated_at: d.updated_at || new Date().toISOString(), name, error: false };
-            cache.set(key, repo); return repo;
-        } catch { return { full_name: `${owner}/${name}`, html_url: `https://github.com/${owner}/${name}`, description: name.replace(/[-_]/g, ' ').replace(/\b\w/g, m => m.toUpperCase()), language: 'Other', stargazers_count: 0, updated_at: new Date().toISOString(), name, error: true } }
+        const key = `gh:${owner}/${name}`;
+        const repo = await fetchJsonCached(key, `https://api.github.com/repos/${owner}/${name}`, { Accept: 'application/vnd.github+json' }, d => ({ full_name: d.full_name, html_url: d.html_url, description: d.description || formatRepoName(name), language: d.language || 'Other', stargazers_count: d.stargazers_count || 0, updated_at: d.updated_at || new Date().toISOString(), name, error: false }));
+        if (repo) return repo;
+        return { full_name: `${owner}/${name}`, html_url: `https://github.com/${owner}/${name}`, description: formatRepoName(name), language: 'Other', stargazers_count: 0, updated_at: new Date().toISOString(), name, error: true };
     };
 
     const normalizeDoi = v => String(v || '')
@@ -496,32 +494,13 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         .trim();
     const fetchPaperByDoi = async doi => {
         if (!doi) return null;
-        const key = `crossref:${doi.toLowerCase()}`;
-        const cached = cache.get(key);
-        if (cached) return cached;
         const mailto = getCrossrefMailto();
         const suffix = mailto ? `?mailto=${encodeURIComponent(mailto)}` : '';
-        try {
-            const res = await fetch(`https://api.crossref.org/works/${encodeURIComponent(doi)}${suffix}`, { headers: { Accept: 'application/json' } });
-            if (!res.ok) throw new Error(String(res.status));
-            const payload = await res.json();
-            const message = payload?.message || null;
-            if (message) cache.set(key, message);
-            return message;
-        } catch { return null }
+        return fetchJsonCached(`crossref:${doi.toLowerCase()}`, `https://api.crossref.org/works/${encodeURIComponent(doi)}${suffix}`, { Accept: 'application/json' }, payload => payload?.message || null);
     };
     const fetchZenodoRecord = async recordId => {
         if (!recordId) return null;
-        const key = `zenodo:${recordId}`;
-        const cached = cache.get(key);
-        if (cached) return cached;
-        try {
-            const res = await fetch(`https://zenodo.org/api/records/${encodeURIComponent(recordId)}`, { headers: { Accept: 'application/json' } });
-            if (!res.ok) throw new Error(String(res.status));
-            const payload = await res.json();
-            cache.set(key, payload);
-            return payload;
-        } catch { return null }
+        return fetchJsonCached(`zenodo:${recordId}`, `https://zenodo.org/api/records/${encodeURIComponent(recordId)}`, { Accept: 'application/json' });
     };
     const resolveZenodoPdfUrl = rec => {
         const files = Array.isArray(rec?.files) ? rec.files : [];
@@ -587,11 +566,13 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
     };
     const showPaperModal = async paper => {
         if (!els.paperModal || !els.paperModalBody) return;
+        if (paperBlobUrl) { URL.revokeObjectURL(paperBlobUrl); paperBlobUrl = '' }
         els.paperModalBody.scrollTop = 0;
         els.paperModalBody.innerHTML = '<div class="loading">Loading PDF...</div>';
         const inlinePdfUrl = await fetchInlinePdfUrl(paper.pdfUrl);
         els.paperModalBody.innerHTML = '';
         if (inlinePdfUrl) {
+            paperBlobUrl = inlinePdfUrl;
             const frame = document.createElement('iframe');
             frame.className = 'paper-pdf-frame';
             frame.src = `${inlinePdfUrl}#page=1&view=FitH&toolbar=0&navpanes=0&scrollbar=0`;
@@ -672,7 +653,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             const items = block.split('<br>').map(line => line.trim()).filter(Boolean).map(line => line.replace(/^[-*]\s+/, ''));
             return `<ul>${items.map(item => `<li>${item}</li>`).join('')}</ul>`;
         });
-        desc.innerHTML = renderedDescription;
+        desc.innerHTML = sanitizeHTML(renderedDescription);
         card.appendChild(desc);
 
         const meta = document.createElement('div');

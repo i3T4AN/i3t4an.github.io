@@ -491,21 +491,21 @@ section h3 {
     font-size: .75rem
 }
 
-:not(.theme-dark) .card:hover,
-:not(.theme-dark) .card:hover h5 a,
-:not(.theme-dark) .card:hover .desc {
+html:not(.theme-dark) .card:hover,
+html:not(.theme-dark) .card:hover h5 a,
+html:not(.theme-dark) .card:hover .desc {
     color: var(--card-text)
 }
 
-:not(.theme-dark) .card:hover .meta {
+html:not(.theme-dark) .card:hover .meta {
     color: var(--card-meta)
 }
 
-:not(.theme-dark) .card:hover .gh-link {
+html:not(.theme-dark) .card:hover .gh-link {
     color: var(--accent)
 }
 
-:not(.theme-dark) .card:hover .lang {
+html:not(.theme-dark) .card:hover .lang {
     background: var(--lang-pill-bg);
     color: var(--lang-pill-text)
 }
@@ -603,4 +603,3 @@ section h3 {
     color: var(--text-muted);
     background: var(--bg-tertiary)
 }
-
