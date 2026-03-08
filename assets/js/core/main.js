@@ -13,7 +13,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         googleSiteVerification: $('meta[name="google-site-verification"]'),
         header: $('header'), filters: $('#filters'), gridDev: $('#grid-dev'), gridAI: $('#grid-ai'), gridEnt: $('#grid-enterprise'),
         projectsEmpty: $('#projects-empty'), themeToggle: $('#themeToggle'), themeIcon: $('#themeIcon'), themeText: $('#themeText'),
-        langImg: null, streakImg: null,
+        langImg: null, streakImg: null, starsTotal: null,
         terminalBody: $('#terminalBody'), terminalInput: $('#terminalInput'), terminalOutput: $('#terminalOutput'),
         terminalClose: $('#terminalClose'), terminalMaximize: $('#terminalMaximize'), matrixCanvas: $('#matrixCanvas'),
         terminalTitle: $('#terminalTitle'), currentPrompt: $('#currentPrompt'),
@@ -445,6 +445,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
     );
 
     const formatRepoName = name => String(name || '').replace(/[-_]/g, ' ').replace(/\b\w/g, m => m.toUpperCase());
+    const formatNumber = n => new Intl.NumberFormat('en-US').format(Number(n) || 0);
     const fetchJsonCached = async (key, url, headers, map = d => d) => {
         const cached = cache.get(key); if (cached) return cached;
         try { const r = await fetch(url, { headers }); if (!r.ok) throw new Error(String(r.status)); const out = map(await r.json()); if (out) cache.set(key, out); return out } catch { return null }
@@ -455,6 +456,60 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         const repo = await fetchJsonCached(key, `https://api.github.com/repos/${owner}/${name}`, { Accept: 'application/vnd.github+json' }, d => ({ full_name: d.full_name, html_url: d.html_url, description: d.description || formatRepoName(name), language: d.language || 'Other', stargazers_count: d.stargazers_count || 0, updated_at: d.updated_at || new Date().toISOString(), name, error: false }));
         if (repo) return repo;
         return { full_name: `${owner}/${name}`, html_url: `https://github.com/${owner}/${name}`, description: formatRepoName(name), language: 'Other', stargazers_count: 0, updated_at: new Date().toISOString(), name, error: true };
+    };
+    const animateNumber = (el, from, to, duration = 850) => {
+        if (!el) return;
+        const start = performance.now();
+        const begin = Number(from) || 0;
+        const end = Number(to) || 0;
+        const tick = now => {
+            const p = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - p, 3);
+            const value = Math.round(begin + (end - begin) * eased);
+            el.textContent = formatNumber(value);
+            if (p < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+    };
+    const setStarsTotal = (value, animate = false) => {
+        if (!els.starsTotal) return;
+        const next = Number(value);
+        if (!Number.isFinite(next)) {
+            els.starsTotal.textContent = 'N/A';
+            return;
+        }
+        const prev = Number(els.starsTotal.dataset.value || '0');
+        els.starsTotal.dataset.value = String(next);
+        if (animate) animateNumber(els.starsTotal, prev, next);
+        else els.starsTotal.textContent = formatNumber(next);
+    };
+    const fetchGitHubStarsTotal = async username => {
+        let page = 1, total = 0;
+        const headers = { Accept: 'application/vnd.github+json' };
+        while (page <= 30) {
+            const res = await fetch(`https://api.github.com/users/${encodeURIComponent(username)}/repos?per_page=100&page=${page}&type=owner`, { headers });
+            if (!res.ok) throw new Error(String(res.status));
+            const repos = await res.json();
+            if (!Array.isArray(repos) || !repos.length) break;
+            total += repos.reduce((sum, repo) => sum + (Number(repo?.stargazers_count) || 0), 0);
+            if (repos.length < 100) break;
+            page++;
+        }
+        return total;
+    };
+    const loadGitHubStarsTotal = async username => {
+        if (!username || !els.starsTotal) return;
+        const key = `gh:stars:${username.toLowerCase()}`;
+        const cached = cache.get(key);
+        if (cached && Number.isFinite(cached.total)) setStarsTotal(cached.total, false);
+        else els.starsTotal.textContent = '...';
+        try {
+            const total = await fetchGitHubStarsTotal(username);
+            cache.set(key, { total, updatedAt: Date.now() });
+            setStarsTotal(total, !cached || cached.total !== total);
+        } catch {
+            if (!(cached && Number.isFinite(cached.total))) setStarsTotal(NaN, false);
+        }
     };
 
     const normalizeDoi = v => String(v || '')
@@ -753,8 +808,9 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         els.brandName.textContent = SITE.name; els.footerName.textContent = SITE.name; els.brandTag.textContent = SITE.tagline; els.heroTitle.textContent = SITE.hero.title; els.heroTitle.setAttribute('data-text', SITE.hero.title); els.heroParagraph.textContent = SITE.hero.paragraph;
         els.linkGithub.href = SITE.socials.github; els.linkLinkedIn.href = SITE.socials.linkedin; els.linkEmail.href = SITE.socials.email;
         els.skillsGrid.innerHTML = '';
-        const statsCol = document.createElement('div'); statsCol.className = 'col primary-col'; statsCol.innerHTML = `<h4>GitHub Activity</h4><div class="github-stats"><img id="githubStatsImg" src="${GH_LANG_SOURCES.light[0] || ''}" alt="${SITE.name.split(' ')[0]}'s GitHub Language Stats" loading="lazy"><img id="githubStreakImg" src="${GH_STREAK_SOURCES.light[0] || ''}" alt="${SITE.name.split(' ')[0]}'s GitHub Streak Stats" loading="lazy"></div>`;
-        els.skillsGrid.appendChild(statsCol); els.langImg = $('#githubStatsImg'); els.streakImg = $('#githubStreakImg');
+        const statsCol = document.createElement('div'); statsCol.className = 'col primary-col'; statsCol.innerHTML = `<h4>GitHub Activity</h4><div class="github-stats"><img id="githubStatsImg" src="${GH_LANG_SOURCES.light[0] || ''}" alt="${SITE.name.split(' ')[0]}'s GitHub Language Stats" loading="lazy"><img id="githubStreakImg" src="${GH_STREAK_SOURCES.light[0] || ''}" alt="${SITE.name.split(' ')[0]}'s GitHub Streak Stats" loading="lazy"></div><div class="github-stars-total" aria-live="polite"><span class="github-stars-label">Total Stars</span><span id="githubStarsTotal" class="github-stars-value">...</span></div>`;
+        els.skillsGrid.appendChild(statsCol); els.langImg = $('#githubStatsImg'); els.streakImg = $('#githubStreakImg'); els.starsTotal = $('#githubStarsTotal');
+        loadGitHubStarsTotal(githubUsername);
         els.skillsGrid.appendChild(buildSkillCol(SITE.terminal.messages.developmentTitle, SITE.skills.development));
         els.skillsGrid.appendChild(buildSkillCol(SITE.terminal.messages.automationTitle, SITE.skills.automation));
         els.skillsGrid.appendChild(buildSkillCol(SITE.terminal.messages.systemsTitle, SITE.skills.systems));

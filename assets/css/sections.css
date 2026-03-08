@@ -237,6 +237,29 @@ section h3 {
 .primary-col:hover .github-stats img {
     transform: scale(1.02)
 }
+.github-stars-total {
+    margin-top: 1rem;
+    padding: .85rem 1rem;
+    border: 1px solid var(--stats-panel-border);
+    border-radius: .65rem;
+    background: var(--stats-panel-bg);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: .75rem
+}
+.github-stars-label {
+    font-size: .9rem;
+    color: var(--text-secondary);
+    font-weight: 600
+}
+.github-stars-value {
+    font-size: 1.55rem;
+    line-height: 1;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: .02em
+}
 .controls {
     display: flex;
     align-items: center;
