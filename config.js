@@ -48,6 +48,7 @@ window.SITE = {
         { group: 'dev', url: 'https://github.com/i3T4AN/numberguesser-resume' },
         { group: 'dev', url: 'https://github.com/i3T4AN/weatherCLI' },
         { group: 'dev', url: 'https://github.com/i3T4AN/streamdock' },
+        { group: 'dev', url: 'https://github.com/i3T4AN/LIBRE-HACKTIVATOR_iOS_12-16' },
         { group: 'ai', url: 'https://github.com/i3T4AN/Agent_Example' },
         { group: 'ai', url: 'https://github.com/i3T4AN/Kali_Linux_MCP' },
         { group: 'ai', url: 'https://github.com/i3T4AN/lmstudio-openai-proxy' },
