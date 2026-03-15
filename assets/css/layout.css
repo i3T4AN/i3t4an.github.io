@@ -31,6 +31,25 @@ header.scrolled {
     gap: .85rem;
     min-width: 0
 }
+.brand-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(2.2rem, 4vw, 2.9rem);
+    height: clamp(.725rem, 1.3vw, .975rem);
+    flex: 0 0 auto;
+    text-decoration: none;
+    border-radius: .45rem;
+    overflow: hidden
+}
+.brand-mark-logo {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain
+}
 .sidebar-toggle {
     width: 44px;
     height: 44px;

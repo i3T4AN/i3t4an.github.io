@@ -12,7 +12,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         twitterCard: $('meta[name="twitter:card"]'), twitterTitle: $('meta[name="twitter:title"]'), twitterDescription: $('meta[name="twitter:description"]'),
         googleSiteVerification: $('meta[name="google-site-verification"]'),
         header: $('header'), filters: $('#filters'), gridDev: $('#grid-dev'), gridAI: $('#grid-ai'), gridEnt: $('#grid-enterprise'),
-        projectsEmpty: $('#projects-empty'), themeToggle: $('#themeToggle'), themeIcon: $('#themeIcon'), themeText: $('#themeText'),
+        projectsEmpty: $('#projects-empty'), themeToggle: $('#themeToggle'), themeIcon: $('#themeIcon'), themeText: $('#themeText'), brandLogo: $('#brandLogo'),
         langImg: null, streakImg: null, starsTotal: null,
         terminalBody: $('#terminalBody'), terminalInput: $('#terminalInput'), terminalOutput: $('#terminalOutput'),
         terminalClose: $('#terminalClose'), terminalMaximize: $('#terminalMaximize'), matrixCanvas: $('#matrixCanvas'),
@@ -250,7 +250,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         showAbout() {
             const SITE = window.SITE;
             this.output(SITE.hero.title, 'help');
-            this.output(`\n${SITE.hero.paragraph}`, 'text', true);
+            this.output(`\n${decodeHTML(sanitizeHTML(SITE.hero.paragraph))}`, 'text', true);
         }
 
         showSkills() {
@@ -651,6 +651,11 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         img.src = urls[0];
     };
     const updateThemeButton = isDark => {
+        if (els.brandLogo) {
+            els.brandLogo.src = isDark
+                ? './assets/images/branding/i3T4AN_Logo_White.png'
+                : './assets/images/branding/i3T4AN_Logo_Black.png';
+        }
         if (els.themeIcon) {
             els.themeIcon.innerHTML = isDark
                 ? '<svg viewBox="0 0 24 24" class="social-icon" aria-hidden="true"><path fill="currentColor" d="M12 4.5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 12 4.5Zm0 10.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm0 4.5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 12 19.5ZM4.5 12a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5h-1.5A.75.75 0 0 1 4.5 12Zm12 0a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5h-1.5A.75.75 0 0 1 16.5 12ZM6.7 6.7a.75.75 0 0 1 1.06 0l1.06 1.06a.75.75 0 0 1-1.06 1.06L6.7 7.76a.75.75 0 0 1 0-1.06Zm8.48 8.48a.75.75 0 0 1 1.06 0l1.06 1.06a.75.75 0 0 1-1.06 1.06l-1.06-1.06a.75.75 0 0 1 0-1.06ZM6.7 17.3a.75.75 0 0 1 0-1.06l1.06-1.06a.75.75 0 0 1 1.06 1.06L7.76 17.3a.75.75 0 0 1-1.06 0Zm8.48-8.48a.75.75 0 0 1 0-1.06l1.06-1.06a.75.75 0 1 1 1.06 1.06l-1.06 1.06a.75.75 0 0 1-1.06 0Z"/></svg>'
@@ -805,7 +810,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         const githubUsername = getGitHubUsername(SITE);
         GH_LANG_SOURCES = buildGitHubLangSources(githubUsername);
         GH_STREAK_SOURCES = buildGitHubStreakSources(githubUsername);
-        els.brandName.textContent = SITE.name; els.footerName.textContent = SITE.name; els.brandTag.textContent = SITE.tagline; els.heroTitle.textContent = SITE.hero.title; els.heroTitle.setAttribute('data-text', SITE.hero.title); els.heroParagraph.textContent = SITE.hero.paragraph;
+        els.brandName.textContent = SITE.name; els.footerName.textContent = SITE.name; els.brandTag.textContent = SITE.tagline; els.heroTitle.textContent = SITE.hero.title; els.heroTitle.setAttribute('data-text', SITE.hero.title); els.heroParagraph.innerHTML = sanitizeHTML(SITE.hero.paragraph);
         els.linkGithub.href = SITE.socials.github; els.linkLinkedIn.href = SITE.socials.linkedin; els.linkEmail.href = SITE.socials.email;
         els.skillsGrid.innerHTML = '';
         const statsCol = document.createElement('div'); statsCol.className = 'col primary-col'; statsCol.innerHTML = `<h4>GitHub Activity</h4><div class="github-stats"><img id="githubStatsImg" src="${GH_LANG_SOURCES.light[0] || ''}" alt="${SITE.name.split(' ')[0]}'s GitHub Language Stats" loading="lazy"><img id="githubStreakImg" src="${GH_STREAK_SOURCES.light[0] || ''}" alt="${SITE.name.split(' ')[0]}'s GitHub Streak Stats" loading="lazy"></div><div class="github-stars-total" aria-live="polite"><span class="github-stars-label">Total Stars</span><span id="githubStarsTotal" class="github-stars-value">...</span></div>`;
