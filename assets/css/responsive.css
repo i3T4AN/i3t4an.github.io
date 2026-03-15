@@ -103,12 +103,24 @@
 
     .nav-left {
         width: 100%;
-        justify-content: flex-start
+        justify-content: flex-start;
+        gap: .62rem
+    }
+
+    .nav-left .brand {
+        flex: 1 1 auto;
+        min-width: 0
+    }
+
+    .nav-left .brand p {
+        white-space: nowrap;
+        font-size: clamp(.58rem, 2.15vw, .82rem);
+        line-height: 1.25
     }
 
     .brand-mark {
-        width: clamp(2rem, 9vw, 2.6rem);
-        height: clamp(.675rem, 2.7vw, .85rem)
+        width: clamp(1.8rem, 7vw, 2.3rem);
+        height: clamp(.62rem, 2.2vw, .78rem)
     }
 
     .social-buttons {
@@ -117,8 +129,8 @@
     }
 
     .nav-links {
-        justify-content: flex-start;
-        flex-wrap: nowrap;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: clamp(.34rem, 1.4vw, .72rem);
         width: 100%;
         max-width: 100%;
@@ -128,18 +140,19 @@
     }
 
     .nav-links .social-btn {
-        flex: 0 0 auto;
+        width: 100%;
+        flex: 1 1 0;
         min-width: 0;
-        min-height: clamp(2.1rem, 6vw, 2.6rem);
+        min-height: clamp(2.3rem, 7.2vw, 2.75rem);
         height: auto;
         padding: 0
     }
 
     .nav-links .social-btn .neo-btn-label {
-        width: auto;
+        width: 100%;
         height: auto;
         min-width: 0;
-        padding: clamp(.48rem, 1.5vw, .72rem);
+        padding: clamp(.5rem, 1.6vw, .74rem);
         font-size: 0;
         line-height: 0;
         gap: 0
@@ -192,12 +205,12 @@
     }
 
     .nav-links {
-        gap: clamp(.26rem, 1.1vw, .52rem);
+        gap: clamp(.26rem, 1.3vw, .52rem);
         padding-inline: clamp(.12rem, .9vw, .28rem)
     }
 
     .nav-links .social-btn .neo-btn-label {
-        padding: clamp(.42rem, 1.15vw, .56rem)
+        padding: clamp(.46rem, 1.25vw, .6rem)
     }
 
     .nav-links .social-icon,
