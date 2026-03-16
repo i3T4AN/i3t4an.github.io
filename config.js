@@ -69,7 +69,8 @@ window.SITE = {
         { group: 'enterprise', url: 'https://github.com/i3T4AN/Get-ADDeviceList' },
         { group: 'enterprise', url: 'https://github.com/i3T4AN/Rename-ADComputerClient' },
         { group: 'enterprise', url: 'https://github.com/i3T4AN/Syspulse' },
-        { group: 'enterprise', url: 'https://github.com/i3T4AN/Repair-AD-Trust-for-DC' }
+        { group: 'enterprise', url: 'https://github.com/i3T4AN/Repair-AD-Trust-for-DC' },
+        { group: 'enterprise', url: 'https://github.com/i3T4AN/SCCM_Lanschool_Reg_Removal' }
 
     ],
     publishedWork: {
