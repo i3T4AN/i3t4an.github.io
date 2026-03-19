@@ -689,6 +689,47 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         addEventListener('orientationchange', setScanViewportHeight, { passive: true });
     };
     const initHeaderScroll = () => addEventListener('scroll', () => els.header.classList.toggle('scrolled', scrollY > 20), { passive: true });
+    const initCursorOverlay = () => {
+        const cursor = document.createElement('img');
+        let x = -9999;
+        let y = -9999;
+        let visible = false;
+        let needsPaint = true;
+
+        cursor.id = 'cursor-overlay';
+        cursor.alt = '';
+        cursor.setAttribute('aria-hidden', 'true');
+        cursor.draggable = false;
+        cursor.src = './cursor.png';
+        cursor.onerror = () => {
+            if (!cursor.dataset.fallbackUsed) {
+                cursor.dataset.fallbackUsed = '1';
+                cursor.src = './Cursor.png';
+            }
+        };
+
+        const paint = () => {
+            if (needsPaint) {
+                cursor.style.transform = `translate3d(${x}px, ${y}px, 0) scale(0.5)`;
+                cursor.style.opacity = visible ? '1' : '0';
+                needsPaint = false;
+            }
+            requestAnimationFrame(paint);
+        };
+
+        const onMove = event => {
+            x = event.clientX;
+            y = event.clientY;
+            visible = true;
+            needsPaint = true;
+        };
+
+        document.body.appendChild(cursor);
+        addEventListener('mousemove', onMove, { passive: true });
+        addEventListener('mouseenter', onMove, { passive: true });
+        addEventListener('mouseleave', () => { visible = false; needsPaint = true }, { passive: true });
+        paint();
+    };
 
     const buildSkillCol = (title, items) => { const col = document.createElement('div'); col.className = 'col'; col.innerHTML = `<h4>${title}</h4>`; const ul = document.createElement('ul'), frag = document.createDocumentFragment(); items.forEach(t => { const li = document.createElement('li'); li.textContent = t; frag.appendChild(li) }); ul.appendChild(frag); col.appendChild(ul); return col };
     const buildCard = repo => {
@@ -822,6 +863,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         els.year.textContent = new Date().getFullYear();
         initSidebar(els, SITE);
         initViewportScanHeight();
+        initCursorOverlay();
         initTheme(); initHeaderScroll();
         els.sort?.addEventListener('change', e => { state.sort = e.target.value; renderProjects(state) });
         injectJSONLD(); initModal();
