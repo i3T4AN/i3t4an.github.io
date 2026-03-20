@@ -13,6 +13,12 @@
     --accent-secondary: #a855f7;
     --accent-hover: #22e5ff;
     --accent-light: rgba(0, 212, 255, .15);
+    --bg-texture-image: url("../../bg-texture.png");
+    --bg-texture-opacity: .3;
+    --bg-texture-pan-x: 0%;
+    --constellation-ai: #00d4ff;
+    --constellation-enterprise: #a855f7;
+    --constellation-dev: #4ade80;
     --card-text: #151b30;
     --card-meta: #445077;
     --lang-pill-bg: rgba(168, 85, 247, .14);
@@ -85,6 +91,9 @@
     --terminal-shadow: 0 0 40px rgba(99, 102, 241, .15), 0 8px 32px rgba(0, 0, 0, .3);
     --terminal-title-text: rgba(255, 255, 255, .8);
     --terminal-output-text: rgba(255, 255, 255, .9);
+    --constellation-ai: #22d3ee;
+    --constellation-enterprise: #c084fc;
+    --constellation-dev: #4ade80;
 }
 
 * {
@@ -135,7 +144,26 @@ body::before {
     inset: 0;
     background: var(--gradient-mesh);
     pointer-events: none;
-    z-index: 0
+    z-index: 1
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 100vh;
+    height: 100vw;
+    background-image: var(--bg-texture-image);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: var(--bg-texture-pan-x) 50%;
+    opacity: var(--bg-texture-opacity);
+    pointer-events: none;
+    z-index: 0;
+    transform: translate(-50%, -50%) rotate(90deg);
+    transform-origin: center;
+    will-change: background-position
 }
 
 h1,

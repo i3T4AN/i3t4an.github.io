@@ -26,20 +26,46 @@ window.SITE = {
     },
     skills: {
         development: [
-            "JavaScript/TypeScript, React, Node.js",
-            "Python, C#, Objective-C",
-            "PowerShell, AppleScript, Xcode"
+            "JavaScript/TypeScript",
+            "React",
+            "Node.js",
+            "Python",
+            "C#",
+            "Objective-C",
+            "PowerShell",
+            "AppleScript",
+            "Xcode",
+            "FastAPI",
+            "Lua",
+            "Batch scripting",
+            ".NET tooling",
+            "API integration patterns"
         ],
         automation: [
+            "Microsoft Power BI",
             "Microsoft Copilot Studio",
             "Power Automate",
-            "Mabl (Automated QA Testing)"
+            "Mabl (Automated QA Testing)",
+            "RAG pipelines",
+            "MCP server development",
+            "Semantic search",
+            "Vector databases (Qdrant)",
+            "Multi-model LLM integration (Claude/Gemini/OpenAI-compatible proxies)"
         ],
         systems: [
-            "Microsoft Azure, Intune, SCCM",
-            "Power BI",
-            "macOS, Windows, Linux",
-            "Q-SYS (AV Integration)"
+            "Microsoft Intune",
+            "Microsoft SCCM",
+            "Microsoft Azure",
+            "Windows",
+            "Linux",
+            "macOS",
+            "Q-SYS (AV)",
+            "Active Directory",
+            "Entra ID / Azure AD",
+            "Microsoft Graph",
+            "LDAP",
+            "WinRM / PowerShell Remoting",
+            "MDM policy automation (Intune/SCCM)"
         ]
     },
     repos: [
@@ -277,7 +303,7 @@ window.SITE = {
             taglinePrefix: 'Tagline:',
             noProjectsFound: 'No projects match the current filter.',
             developmentTitle: 'Programming & Development',
-            automationTitle: 'AI, QA & Automation',
+            automationTitle: 'Automation, AI & Enterprise Tools',
             systemsTitle: 'Cloud, Systems & Tools'
         },
         matrix: {

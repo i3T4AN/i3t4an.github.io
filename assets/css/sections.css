@@ -138,6 +138,7 @@ section {
 #skills,
 #published,
 #terminal,
+#constellation,
 #projects,
 #projects-ai,
 #projects-enterprise,
@@ -218,15 +219,83 @@ section h3 {
 .primary-col h4 {
     text-align: center
 }
-.github-stats {
+#skills .col:not(.primary-col) {
+    aspect-ratio: 1 / 1;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column
+}
+#skills .col:not(.primary-col) ul {
+    overflow: auto;
+    padding-right: .35rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none
+}
+#skills .col:not(.primary-col) ul::-webkit-scrollbar {
+    display: none
+}
+.constellation-intro {
+    margin: -1.5rem auto 1.4rem;
+    max-width: 760px;
+    text-align: center;
+    color: var(--text-secondary)
+}
+.constellation-shell {
+    position: relative;
+    width: min(100%, 380px);
+    aspect-ratio: 1 / 1;
+    margin: 0 auto;
+    border: 1px solid var(--border);
+    border-radius: 1.4rem;
+    overflow: hidden;
+    background: linear-gradient(var(--stats-panel-bg), var(--stats-panel-bg)) padding-box, linear-gradient(135deg, rgba(0, 212, 255, .4), rgba(168, 85, 247, .42)) border-box;
+    box-shadow: var(--shadow-lg)
+}
+.constellation-shell::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at 14% 20%, rgba(0, 212, 255, .15), transparent 44%), radial-gradient(circle at 88% 8%, rgba(168, 85, 247, .2), transparent 46%);
+    z-index: 1
+}
+.constellation-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 2
+}
+.constellation-tooltip {
+    position: absolute;
+    left: 1rem;
+    bottom: 1rem;
+    z-index: 3;
+    max-width: min(620px, calc(100% - 2rem));
+    border-radius: .75rem;
+    border: 1px solid var(--border);
+    background: var(--controls-bg);
+    backdrop-filter: blur(10px);
+    color: var(--text-primary);
+    font-size: .9rem;
+    font-weight: 500;
+    line-height: 1.35;
+    padding: .5rem .75rem
+}
+.github-stats {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 200px minmax(0, 1fr);
+    align-items: stretch;
     gap: 2%
 }
-.github-stats img {
-    width: 48%;
+.github-stats > * {
+    min-width: 0
+}
+.github-stats img,
+.github-stats .constellation-shell {
+    width: 100%;
     height: 200px;
+}
+.github-stats img {
     object-fit: contain;
     background: var(--stats-panel-bg);
     border: 1px solid var(--stats-panel-border);
@@ -234,19 +303,43 @@ section h3 {
     transition: var(--transition);
     border-radius: .5rem
 }
+.github-stats .constellation-shell {
+    max-width: 200px;
+    aspect-ratio: 1 / 1;
+    margin: 0;
+    justify-self: center;
+    border-radius: .5rem
+}
+.github-stats .constellation-canvas {
+    height: 100%
+}
+.github-stats .constellation-tooltip {
+    display: none
+}
 .primary-col:hover .github-stats img {
     transform: scale(1.02)
 }
 .github-stars-total {
     margin-top: 1rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: .65rem
+}
+.github-stars-cell {
+    min-width: 0;
     padding: .85rem 1rem;
     border: 1px solid var(--stats-panel-border);
     border-radius: .65rem;
     background: var(--stats-panel-bg);
     display: flex;
+    align-items: center
+}
+.github-stars-cell-total {
     justify-content: space-between;
-    align-items: baseline;
     gap: .75rem
+}
+.github-stars-cell-hover {
+    justify-content: flex-start
 }
 .github-stars-label {
     font-size: .9rem;
@@ -259,6 +352,16 @@ section h3 {
     font-weight: 800;
     color: var(--text-primary);
     letter-spacing: .02em
+}
+.constellation-hover-output {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    font-size: .9rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden
 }
 .controls {
     display: flex;

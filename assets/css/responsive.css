@@ -81,13 +81,20 @@
     }
 
     .github-stats {
-        flex-direction: column;
+        grid-template-columns: 1fr;
         gap: 1rem
     }
 
-    .github-stats img {
+    .github-stats img,
+    .github-stats .constellation-shell {
         width: 100%;
         height: auto
+    }
+
+    .github-stats .constellation-shell {
+        aspect-ratio: 1 / 1;
+        max-width: 380px;
+        justify-self: center
     }
 
     .terminal {

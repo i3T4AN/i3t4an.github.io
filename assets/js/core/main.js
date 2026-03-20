@@ -13,10 +13,11 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         googleSiteVerification: $('meta[name="google-site-verification"]'),
         header: $('header'), filters: $('#filters'), gridDev: $('#grid-dev'), gridAI: $('#grid-ai'), gridEnt: $('#grid-enterprise'),
         projectsEmpty: $('#projects-empty'), themeToggle: $('#themeToggle'), themeIcon: $('#themeIcon'), themeText: $('#themeText'), brandLogo: $('#brandLogo'),
-        langImg: null, streakImg: null, starsTotal: null,
+        langImg: null, streakImg: null, starsTotal: null, constellationHoverOutput: null,
         terminalBody: $('#terminalBody'), terminalInput: $('#terminalInput'), terminalOutput: $('#terminalOutput'),
         terminalClose: $('#terminalClose'), terminalMaximize: $('#terminalMaximize'), matrixCanvas: $('#matrixCanvas'),
         terminalTitle: $('#terminalTitle'), currentPrompt: $('#currentPrompt'),
+        constellationCanvas: $('#repoConstellationCanvas'), constellationTooltip: $('#constellationTooltip'),
         readmeModal: $('#readmeModal'), modalTitle: $('#modalTitle'), modalBody: $('#modalBody'), modalClose: $('#modalClose'), modalGitHubLink: $('#modalGitHubLink'),
         paperModal: $('#paperModal'), paperModalBody: $('#paperModalBody'), paperModalClose: $('#paperModalClose'),
         sidebarToggle: $('#sidebarToggle'), sectionSidebar: $('#sectionSidebar'), sidebarClose: $('#sidebarClose'),
@@ -257,6 +258,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             const SITE = window.SITE, m = SITE.terminal.messages;
             this.output(m.skillsTitle, 'help');
             [['development', m.developmentTitle], ['automation', m.automationTitle], ['systems', m.systemsTitle]].forEach(([k, t]) => {
+                if (!Array.isArray(SITE.skills[k]) || !SITE.skills[k].length) return;
                 this.output(`\n${t.toUpperCase()}:\n`);
                 SITE.skills[k].forEach(s => this.output(`  • ${s}\n`));
             });
@@ -376,6 +378,342 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             this.output('\n');
             this.output(SITE.terminal.whoami[Math.floor(Math.random() * SITE.terminal.whoami.length)], 'help');
             this.output(`\n${SITE.terminal.messages.taglinePrefix} ${SITE.tagline}`, 'text', true);
+        }
+    }
+
+    const REPO_GROUP_LABELS = {
+        ai: 'Automation & AI',
+        enterprise: 'Enterprise Systems / Cloud',
+        dev: 'Programming / Development'
+    };
+    const ENABLE_CONSTELLATION = true;
+
+    class RepoConstellation {
+        constructor(canvas, tooltipEl, onSelectRepo) {
+            this.canvas = canvas;
+            this.tooltipEl = tooltipEl;
+            this.onSelectRepo = onSelectRepo;
+            this.ctx = canvas?.getContext('2d');
+            this.nodes = [];
+            this.links = [];
+            this.pointer = { x: 0, y: 0, inside: false };
+            this.hoveredNode = null;
+            this.rafId = null;
+            this.width = 0;
+            this.height = 0;
+            this.lastTooltip = '';
+            this.defaultTooltip = '';
+            this.tooltipBaseFontPx = 0;
+            this.tooltipMinFontPx = 7;
+            this.reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+            this.palette = {
+                surface: '#0b1120',
+                text: '#e2e8f0',
+                textMuted: '#94a3b8',
+                border: 'rgba(148,163,184,.25)',
+                grid: 'rgba(148,163,184,.2)',
+                link: 'rgba(148,163,184,.22)',
+                linkActive: 'rgba(0,212,255,.48)',
+                ai: '#00d4ff',
+                enterprise: '#a855f7',
+                dev: '#4ade80'
+            };
+            if (!this.canvas || !this.ctx) return;
+            this.onPointerMove = this.onPointerMove.bind(this);
+            this.onPointerLeave = this.onPointerLeave.bind(this);
+            this.onClick = this.onClick.bind(this);
+            this.onResize = this.onResize.bind(this);
+            this.onMotionPreferenceChange = this.onMotionPreferenceChange.bind(this);
+            this.loop = this.loop.bind(this);
+            this.canvas.addEventListener('pointermove', this.onPointerMove, { passive: true });
+            this.canvas.addEventListener('pointerleave', this.onPointerLeave, { passive: true });
+            this.canvas.addEventListener('click', this.onClick);
+            addEventListener('resize', this.onResize, { passive: true });
+            if (this.reducedMotionQuery.addEventListener) this.reducedMotionQuery.addEventListener('change', this.onMotionPreferenceChange);
+            else this.reducedMotionQuery.addListener(this.onMotionPreferenceChange);
+            this.refreshPalette();
+            this.resize();
+            this.setTooltip(this.defaultTooltip);
+            this.drawBackground();
+        }
+
+        prefersReducedMotion() {
+            return Boolean(this.reducedMotionQuery?.matches);
+        }
+
+        readVar(name, fallback) {
+            const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+            return value || fallback;
+        }
+
+        refreshPalette() {
+            const isDark = document.documentElement.classList.contains('theme-dark');
+            this.palette = {
+                surface: this.readVar('--stats-panel-bg', isDark ? '#0b1120' : '#f8faff'),
+                text: this.readVar('--text-primary', isDark ? '#e2e8f0' : '#1f2937'),
+                textMuted: this.readVar('--text-secondary', isDark ? '#94a3b8' : '#475569'),
+                border: this.readVar('--border', 'rgba(148,163,184,.25)'),
+                grid: isDark ? 'rgba(71,85,105,.24)' : 'rgba(148,163,184,.26)',
+                link: isDark ? 'rgba(148,163,184,.26)' : 'rgba(71,85,105,.22)',
+                linkActive: isDark ? 'rgba(0,212,255,.6)' : 'rgba(0,212,255,.44)',
+                ai: this.readVar('--constellation-ai', '#00d4ff'),
+                enterprise: this.readVar('--constellation-enterprise', '#a855f7'),
+                dev: this.readVar('--constellation-dev', '#4ade80')
+            };
+            if (this.nodes.length) this.render(performance.now());
+        }
+
+        onMotionPreferenceChange() {
+            this.stop();
+            this.render(performance.now());
+            this.ensureFrame();
+        }
+
+        onResize() {
+            this.resize();
+            this.render(performance.now());
+            this.fitTooltipText();
+            this.ensureFrame();
+        }
+
+        resize() {
+            const rect = this.canvas.getBoundingClientRect();
+            this.width = Math.max(1, Math.floor(rect.width || this.canvas.clientWidth || 0));
+            this.height = Math.max(1, Math.floor(rect.height || this.canvas.clientHeight || 0));
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            this.canvas.width = Math.floor(this.width * dpr);
+            this.canvas.height = Math.floor(this.height * dpr);
+            this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+
+        setRepos(repos) {
+            const list = Array.isArray(repos)
+                ? [...repos].filter(Boolean).sort((a, b) => (Number(b?.stargazers_count) || 0) - (Number(a?.stargazers_count) || 0))
+                : [];
+            if (!list.length) {
+                this.nodes = [];
+                this.links = [];
+                this.setTooltip('No repositories available.');
+                this.stop();
+                this.drawBackground();
+                return;
+            }
+            const maxStars = Math.max(...list.map(r => Number(r?.stargazers_count) || 0), 1);
+            this.nodes = list.map((repo, index) => {
+                const starValue = Number(repo?.stargazers_count) || 0;
+                const radial = Math.sqrt((index + 1) / (list.length + 1));
+                return {
+                    id: index,
+                    repo,
+                    group: repo.__group || 'dev',
+                    stars: starValue,
+                    language: repo.language || 'Other',
+                    radial,
+                    angle: index * 2.399963229728653,
+                    speed: 0.4 + Math.random() * 0.85,
+                    phase: Math.random() * Math.PI * 2,
+                    wobble: 4 + Math.random() * 8,
+                    radius: 5 + ((starValue / maxStars) * 10),
+                    x: this.width / 2,
+                    y: this.height / 2
+                };
+            });
+            this.links = this.buildLinks();
+            this.setTooltip(this.defaultTooltip);
+            this.stop();
+            this.render(performance.now());
+            this.ensureFrame();
+        }
+
+        buildLinks() {
+            const links = [];
+            const seen = new Set();
+            const connect = (a, b) => {
+                if (!a || !b || a === b) return;
+                const key = [a.id, b.id].sort((x, y) => x - y).join(':');
+                if (seen.has(key)) return;
+                seen.add(key);
+                links.push([a, b]);
+            };
+            const grouped = new Map();
+            this.nodes.forEach(node => {
+                const bucket = grouped.get(node.group) || [];
+                bucket.push(node);
+                grouped.set(node.group, bucket);
+            });
+            grouped.forEach(groupNodes => {
+                const sorted = [...groupNodes].sort((a, b) => a.radial - b.radial);
+                for (let i = 1; i < sorted.length; i++) connect(sorted[i - 1], sorted[i]);
+            });
+            const hubs = [...this.nodes].sort((a, b) => b.stars - a.stars).slice(0, Math.min(10, this.nodes.length));
+            for (let i = 1; i < hubs.length; i++) connect(hubs[0], hubs[i]);
+            return links;
+        }
+
+        getGroupColor(group) {
+            if (group === 'ai') return this.palette.ai;
+            if (group === 'enterprise') return this.palette.enterprise;
+            return this.palette.dev;
+        }
+
+        onPointerMove(event) {
+            const rect = this.canvas.getBoundingClientRect();
+            this.pointer.x = event.clientX - rect.left;
+            this.pointer.y = event.clientY - rect.top;
+            this.pointer.inside = true;
+            this.render(performance.now());
+        }
+
+        onPointerLeave() {
+            this.pointer.inside = false;
+            this.hoveredNode = null;
+            this.setTooltip(this.defaultTooltip);
+            this.render(performance.now());
+        }
+
+        onClick() {
+            if (typeof this.onSelectRepo !== 'function') return;
+            const targetNode = this.hoveredNode;
+            if (!targetNode) return;
+            this.hoveredNode = targetNode;
+            this.onSelectRepo(targetNode.repo);
+        }
+
+        setTooltip(text) {
+            if (!this.tooltipEl) return;
+            const nextText = text ?? '';
+            if (nextText === this.lastTooltip) return;
+            this.lastTooltip = nextText;
+            this.tooltipEl.textContent = nextText;
+            this.fitTooltipText();
+        }
+
+        fitTooltipText() {
+            if (!this.tooltipEl) return;
+            if (!this.tooltipBaseFontPx) {
+                const computed = getComputedStyle(this.tooltipEl);
+                const parsed = Number.parseFloat(computed.fontSize);
+                if (Number.isFinite(parsed) && parsed > 0) this.tooltipBaseFontPx = parsed;
+            }
+            const baseSize = this.tooltipBaseFontPx || 14;
+            const minSize = this.tooltipMinFontPx;
+            if (!this.tooltipEl.textContent) {
+                this.tooltipEl.style.fontSize = '';
+                return;
+            }
+            let size = baseSize;
+            this.tooltipEl.style.fontSize = `${size}px`;
+            let guard = 0;
+            while (this.tooltipEl.scrollWidth > this.tooltipEl.clientWidth && size > minSize && guard < 40) {
+                size = Math.max(minSize, size - 0.5);
+                this.tooltipEl.style.fontSize = `${size}px`;
+                guard++;
+            }
+        }
+
+        drawBackground() {
+            this.ctx.clearRect(0, 0, this.width, this.height);
+            this.ctx.fillStyle = this.palette.surface;
+            this.ctx.fillRect(0, 0, this.width, this.height);
+            this.ctx.strokeStyle = this.palette.grid;
+            this.ctx.lineWidth = 1;
+            for (let x = 24; x < this.width; x += 24) {
+                this.ctx.beginPath();
+                this.ctx.moveTo(x, 0);
+                this.ctx.lineTo(x, this.height);
+                this.ctx.stroke();
+            }
+            for (let y = 24; y < this.height; y += 24) {
+                this.ctx.beginPath();
+                this.ctx.moveTo(0, y);
+                this.ctx.lineTo(this.width, y);
+                this.ctx.stroke();
+            }
+        }
+
+        findNearestNodeToPointer(maxDistance = Infinity) {
+            if (!this.pointer.inside || !this.nodes.length) return null;
+            let nearest = null;
+            let bestDistance = Infinity;
+            this.nodes.forEach(node => {
+                const distance = Math.hypot(node.x - this.pointer.x, node.y - this.pointer.y);
+                if (distance < bestDistance) {
+                    bestDistance = distance;
+                    nearest = node;
+                }
+            });
+            if (!nearest) return null;
+            return bestDistance <= maxDistance ? nearest : null;
+        }
+
+        findHoveredNode() {
+            const nearest = this.findNearestNodeToPointer(Infinity);
+            if (!nearest) return null;
+            const distance = Math.hypot(nearest.x - this.pointer.x, nearest.y - this.pointer.y);
+            return distance <= nearest.radius + 10 ? nearest : null;
+        }
+
+        render(now = performance.now()) {
+            if (!this.nodes.length) return;
+            const t = now / 1000;
+            const centerX = this.width / 2;
+            const centerY = this.height / 2;
+            const orbitScale = Math.min(this.width, this.height) * 0.41;
+            this.drawBackground();
+            this.nodes.forEach(node => {
+                const baseAngle = node.angle + (t * 0.07);
+                let x = centerX + (Math.cos(baseAngle) * node.radial * orbitScale) + (Math.cos((t * node.speed) + node.phase) * node.wobble);
+                let y = centerY + (Math.sin(baseAngle) * node.radial * orbitScale) + (Math.sin((t * node.speed) + node.phase) * node.wobble);
+                node.x = Math.min(this.width - node.radius - 6, Math.max(node.radius + 6, x));
+                node.y = Math.min(this.height - node.radius - 6, Math.max(node.radius + 6, y));
+            });
+            this.hoveredNode = this.findHoveredNode();
+            this.links.forEach(([a, b]) => {
+                const emphasized = this.hoveredNode && (a === this.hoveredNode || b === this.hoveredNode);
+                this.ctx.beginPath();
+                this.ctx.moveTo(a.x, a.y);
+                this.ctx.lineTo(b.x, b.y);
+                this.ctx.strokeStyle = emphasized ? this.palette.linkActive : this.palette.link;
+                this.ctx.lineWidth = emphasized ? 1.8 : 1;
+                this.ctx.stroke();
+            });
+            this.nodes.forEach(node => {
+                const hovered = node === this.hoveredNode;
+                const color = this.getGroupColor(node.group);
+                this.ctx.beginPath();
+                this.ctx.fillStyle = color;
+                this.ctx.shadowColor = color;
+                this.ctx.shadowBlur = hovered ? 24 : 12;
+                this.ctx.arc(node.x, node.y, node.radius + (hovered ? 1.8 : 0), 0, Math.PI * 2);
+                this.ctx.fill();
+                this.ctx.shadowBlur = 0;
+                this.ctx.strokeStyle = document.documentElement.classList.contains('theme-dark') ? 'rgba(248,250,252,.7)' : 'rgba(15,23,42,.65)';
+                this.ctx.lineWidth = hovered ? 1.8 : 1;
+                this.ctx.stroke();
+            });
+            if (this.hoveredNode) {
+                const hoveredRepo = this.hoveredNode.repo;
+                this.setTooltip(`${hoveredRepo.name} | ${this.hoveredNode.language} | ${REPO_GROUP_LABELS[this.hoveredNode.group] || this.hoveredNode.group} | ${formatNumber(this.hoveredNode.stars)} stars | Updated ${relativeTime(hoveredRepo.updated_at)}`);
+            } else {
+                this.setTooltip(this.defaultTooltip);
+            }
+        }
+
+        loop(now) {
+            this.rafId = null;
+            this.render(now);
+            this.ensureFrame();
+        }
+
+        ensureFrame() {
+            if (this.rafId || this.prefersReducedMotion() || !this.nodes.length) return;
+            this.rafId = requestAnimationFrame(this.loop);
+        }
+
+        stop() {
+            if (!this.rafId) return;
+            cancelAnimationFrame(this.rafId);
+            this.rafId = null;
         }
     }
 
@@ -639,6 +977,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
 
     let GH_LANG_SOURCES = { light: [], dark: [] };
     let GH_STREAK_SOURCES = { light: [], dark: [] };
+    let repoConstellation = null;
     const setImageWithFallback = (img, urls) => {
         if (!img || !urls?.length) return;
         img.dataset.fallbackIndex = '0';
@@ -665,7 +1004,19 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         els.themeToggle?.setAttribute('aria-pressed', String(isDark));
     };
     const updateGitHubStats = isDark => { const mode = isDark ? 'dark' : 'light'; setImageWithFallback(els.langImg, GH_LANG_SOURCES[mode]); setImageWithFallback(els.streakImg, GH_STREAK_SOURCES[mode]) };
-    const applyTheme = t => { const isDark = t === 'dark'; document.documentElement.classList.toggle('theme-dark', isDark); updateThemeButton(isDark); updateGitHubStats(isDark) };
+    const applyTheme = t => {
+        const isDark = t === 'dark';
+        document.documentElement.classList.toggle('theme-dark', isDark);
+        updateThemeButton(isDark);
+        updateGitHubStats(isDark);
+        if (ENABLE_CONSTELLATION && repoConstellation) {
+            try {
+                repoConstellation.refreshPalette();
+            } catch {
+                repoConstellation = null;
+            }
+        }
+    };
     const persistTheme = theme => localStorage.setItem('theme', theme);
     const setAppTheme = (theme, persist = true) => {
         if (theme === 'auto') { localStorage.removeItem('theme'); applyTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); return }
@@ -688,13 +1039,111 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         addEventListener('resize', setScanViewportHeight, { passive: true });
         addEventListener('orientationchange', setScanViewportHeight, { passive: true });
     };
+    const initScrollStartAtTop = () => {
+        try {
+            if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+        } catch { }
+        if (location.hash) {
+            history.replaceState(null, '', `${location.pathname}${location.search}`);
+        }
+        const toTop = () => window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+        toTop();
+        requestAnimationFrame(toTop);
+    };
     const initHeaderScroll = () => addEventListener('scroll', () => els.header.classList.toggle('scrolled', scrollY > 20), { passive: true });
+    const initTextureParallax = () => {
+        const root = document.documentElement;
+        const scroller = document.scrollingElement || document.documentElement;
+        let targetPercent = 0;
+        let renderedPercent = 0;
+        let rafId = 0;
+
+        const apply = value => root.style.setProperty('--bg-texture-pan-x', `${value.toFixed(3)}%`);
+        const stop = () => {
+            if (!rafId) return;
+            cancelAnimationFrame(rafId);
+            rafId = 0;
+        };
+        const tick = () => {
+            rafId = 0;
+            const delta = targetPercent - renderedPercent;
+            renderedPercent += delta * 0.16;
+            if (Math.abs(delta) < 0.03) renderedPercent = targetPercent;
+            apply(renderedPercent);
+            if (renderedPercent !== targetPercent) rafId = requestAnimationFrame(tick);
+        };
+        const updateTarget = () => {
+            const maxScroll = Math.max(1, scroller.scrollHeight - scroller.clientHeight);
+            const progress = Math.min(1, Math.max(0, scroller.scrollTop / maxScroll));
+            targetPercent = progress * 100;
+            if (!rafId) rafId = requestAnimationFrame(tick);
+        };
+        addEventListener('scroll', updateTarget, { passive: true });
+        addEventListener('resize', updateTarget, { passive: true });
+        addEventListener('orientationchange', updateTarget, { passive: true });
+        stop();
+        targetPercent = 0;
+        renderedPercent = 0;
+        apply(0);
+        updateTarget();
+    };
     const initCursorOverlay = () => {
         const cursor = document.createElement('img');
         let x = -9999;
         let y = -9999;
         let visible = false;
         let needsPaint = true;
+        const cursorScale = 0.5;
+        let hotspotX = 15;
+        let hotspotY = 15;
+        const detectCursorHotspot = image => {
+            try {
+                const w = image.naturalWidth || 0;
+                const h = image.naturalHeight || 0;
+                if (!w || !h) return null;
+                const canvas = document.createElement('canvas');
+                canvas.width = w;
+                canvas.height = h;
+                const ctx = canvas.getContext('2d', { willReadFrequently: true });
+                if (!ctx) return null;
+                ctx.drawImage(image, 0, 0, w, h);
+                const data = ctx.getImageData(0, 0, w, h).data;
+                let maxAlpha = 0;
+                for (let i = 3; i < data.length; i += 4) {
+                    if (data[i] > maxAlpha) maxAlpha = data[i];
+                }
+                if (!maxAlpha) return null;
+                const alphaThreshold = Math.max(1, Math.floor(maxAlpha * 0.8));
+                let minSum = Infinity;
+                let sampleCount = 0;
+                let sumX = 0;
+                let sumY = 0;
+                for (let py = 0; py < h; py++) {
+                    for (let px = 0; px < w; px++) {
+                        const alpha = data[((py * w) + px) * 4 + 3];
+                        if (alpha < alphaThreshold) continue;
+                        const sum = px + py;
+                        if (sum < minSum) {
+                            minSum = sum;
+                            sampleCount = 1;
+                            sumX = px;
+                            sumY = py;
+                        } else if (sum === minSum) {
+                            sampleCount++;
+                            sumX += px;
+                            sumY += py;
+                        }
+                    }
+                }
+                if (!sampleCount) return null;
+                return {
+                    x: (sumX / sampleCount) * cursorScale,
+                    y: (sumY / sampleCount) * cursorScale
+                };
+            } catch {
+                return null;
+            }
+        };
 
         cursor.id = 'cursor-overlay';
         cursor.alt = '';
@@ -707,10 +1156,18 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
                 cursor.src = './Cursor.png';
             }
         };
+        cursor.onload = () => {
+            const w = cursor.naturalWidth || 60;
+            const h = cursor.naturalHeight || 60;
+            const measured = detectCursorHotspot(cursor);
+            hotspotX = measured?.x ?? (w * cursorScale) / 2;
+            hotspotY = measured?.y ?? (h * cursorScale) / 2;
+            needsPaint = true;
+        };
 
         const paint = () => {
             if (needsPaint) {
-                cursor.style.transform = `translate3d(${x}px, ${y}px, 0) scale(0.5)`;
+                cursor.style.transform = `translate3d(${x - hotspotX}px, ${y - hotspotY}px, 0) scale(${cursorScale})`;
                 cursor.style.opacity = visible ? '1' : '0';
                 needsPaint = false;
             }
@@ -732,8 +1189,32 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
     };
 
     const buildSkillCol = (title, items) => { const col = document.createElement('div'); col.className = 'col'; col.innerHTML = `<h4>${title}</h4>`; const ul = document.createElement('ul'), frag = document.createDocumentFragment(); items.forEach(t => { const li = document.createElement('li'); li.textContent = t; frag.appendChild(li) }); ul.appendChild(frag); col.appendChild(ul); return col };
+    const buildGitHubActivityCol = (firstName, langSrc, streakSrc) => {
+        const col = document.createElement('div');
+        col.className = 'col primary-col';
+        col.innerHTML = `
+            <h4>GitHub Activity</h4>
+            <div class="github-stats">
+                <img id="githubStatsImg" src="${langSrc}" alt="${firstName}'s GitHub Language Stats" loading="lazy">
+                <div id="constellationHost" aria-hidden="true"></div>
+                <img id="githubStreakImg" src="${streakSrc}" alt="${firstName}'s GitHub Streak Stats" loading="lazy">
+            </div>
+            <div class="github-stars-total">
+                <div class="github-stars-cell github-stars-cell-total">
+                    <span class="github-stars-label">Total Stars</span>
+                    <span id="githubStarsTotal" class="github-stars-value" aria-live="polite" aria-atomic="true">...</span>
+                </div>
+                <div class="github-stars-cell github-stars-cell-hover">
+                    <span id="constellationHoverOutput" class="constellation-hover-output" aria-live="off"></span>
+                </div>
+            </div>
+        `;
+        return col;
+    };
     const buildCard = repo => {
         const card = document.createElement('article'); card.className = 'card';
+        card.dataset.repoName = String(repo.name || '').toLowerCase();
+        card.dataset.repoUrl = String(repo.html_url || '').toLowerCase();
         card.innerHTML = `<h5><a href="${repo.html_url}" target="_blank" rel="noopener">${repo.name}</a></h5><p class="desc">${repo.description}</p><div class="meta"><span class="lang">${repo.language}</span><span>⭐ ${repo.stargazers_count}</span><span>${relativeTime(repo.updated_at)}</span></div><div class="actions"><a class="gh-link" href="${repo.html_url}" target="_blank" rel="noopener">View on GitHub →</a></div>`;
         card.addEventListener('click', e => { if (!e.target.closest('.gh-link')) { e.preventDefault(); showReadmeModal(repo.name, repo.html_url) } });
         return card;
@@ -840,12 +1321,38 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         const SITE = window.SITE;
         const results = (await Promise.all(SITE.repos.map(async item => { const p = parseRepoPath(item.url); if (!p) return null; const d = await fetchRepo(p.owner, p.name); d.__group = item.group; return d }))).filter(Boolean);
         results.forEach(d => { if (d.language) state.languages.add(d.language) });
-        state.repos = results; renderProjects(state);
+        state.repos = results;
+        renderProjects(state);
+        if (ENABLE_CONSTELLATION && repoConstellation) {
+            try {
+                repoConstellation.setRepos(results);
+            } catch {
+                repoConstellation = null;
+            }
+        }
     };
 
     const state = { repos: [], filter: 'All', sort: 'updated', languages: new Set(['All']) };
+    const focusRepoCard = repo => {
+        const targetUrl = String(repo?.html_url || '').toLowerCase();
+        const targetName = String(repo?.name || '').toLowerCase();
+        if (!targetUrl && !targetName) return;
+        if (state.filter !== 'All') {
+            state.filter = 'All';
+            renderProjects(state);
+        }
+        const cards = $$('#projects .card');
+        const targetCard = cards.find(card => card.dataset.repoUrl === targetUrl || card.dataset.repoName === targetName);
+        if (!targetCard) {
+            document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            return;
+        }
+        targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        targetCard.classList.add('animate-in');
+    };
 
     const init = () => {
+        initScrollStartAtTop();
         const SITE = window.SITE;
         applyPageMeta();
         const githubUsername = getGitHubUsername(SITE);
@@ -854,24 +1361,61 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         els.brandName.textContent = SITE.name; els.footerName.textContent = SITE.name; els.brandTag.textContent = SITE.tagline; els.heroTitle.textContent = SITE.hero.title; els.heroTitle.setAttribute('data-text', SITE.hero.title); els.heroParagraph.innerHTML = sanitizeHTML(SITE.hero.paragraph);
         els.linkGithub.href = SITE.socials.github; els.linkLinkedIn.href = SITE.socials.linkedin; els.linkEmail.href = SITE.socials.email;
         els.skillsGrid.innerHTML = '';
-        const statsCol = document.createElement('div'); statsCol.className = 'col primary-col'; statsCol.innerHTML = `<h4>GitHub Activity</h4><div class="github-stats"><img id="githubStatsImg" src="${GH_LANG_SOURCES.light[0] || ''}" alt="${SITE.name.split(' ')[0]}'s GitHub Language Stats" loading="lazy"><img id="githubStreakImg" src="${GH_STREAK_SOURCES.light[0] || ''}" alt="${SITE.name.split(' ')[0]}'s GitHub Streak Stats" loading="lazy"></div><div class="github-stars-total" aria-live="polite"><span class="github-stars-label">Total Stars</span><span id="githubStarsTotal" class="github-stars-value">...</span></div>`;
-        els.skillsGrid.appendChild(statsCol); els.langImg = $('#githubStatsImg'); els.streakImg = $('#githubStreakImg'); els.starsTotal = $('#githubStarsTotal');
+        const statsCol = buildGitHubActivityCol(SITE.name.split(' ')[0], GH_LANG_SOURCES.light[0] || '', GH_STREAK_SOURCES.light[0] || '');
+        els.skillsGrid.appendChild(statsCol); els.langImg = $('#githubStatsImg'); els.streakImg = $('#githubStreakImg'); els.starsTotal = $('#githubStarsTotal'); els.constellationHoverOutput = $('#constellationHoverOutput');
+        const constellationSection = $('#constellation');
+        const constellationShell = constellationSection?.querySelector('.constellation-shell');
+        const constellationHost = $('#constellationHost', statsCol);
+        if (constellationHost && constellationShell) {
+            constellationHost.replaceWith(constellationShell);
+            constellationSection.hidden = true;
+            constellationSection.setAttribute('aria-hidden', 'true');
+        }
+        els.constellationCanvas = $('#repoConstellationCanvas');
+        els.constellationTooltip = $('#constellationTooltip');
+        if (els.constellationTooltip) {
+            els.constellationTooltip.hidden = true;
+            els.constellationTooltip.setAttribute('aria-hidden', 'true');
+        }
         loadGitHubStarsTotal(githubUsername);
-        els.skillsGrid.appendChild(buildSkillCol(SITE.terminal.messages.developmentTitle, SITE.skills.development));
-        els.skillsGrid.appendChild(buildSkillCol(SITE.terminal.messages.automationTitle, SITE.skills.automation));
-        els.skillsGrid.appendChild(buildSkillCol(SITE.terminal.messages.systemsTitle, SITE.skills.systems));
+        const skillSections = [
+            [SITE.terminal.messages.developmentTitle, SITE.skills.development],
+            [SITE.terminal.messages.automationTitle, SITE.skills.automation],
+            [SITE.terminal.messages.systemsTitle, SITE.skills.systems]
+        ];
+        skillSections.forEach(([title, items]) => {
+            if (!Array.isArray(items) || !items.length) return;
+            els.skillsGrid.appendChild(buildSkillCol(title, items));
+        });
         els.year.textContent = new Date().getFullYear();
         initSidebar(els, SITE);
         initViewportScanHeight();
+        initTextureParallax();
         initCursorOverlay();
         initTheme(); initHeaderScroll();
+        if (ENABLE_CONSTELLATION) {
+            try {
+                repoConstellation = new RepoConstellation(
+                    els.constellationCanvas,
+                    els.constellationHoverOutput,
+                    repo => focusRepoCard(repo)
+                );
+            } catch {
+                repoConstellation = null;
+            }
+        } else if (els.constellationTooltip) {
+            els.constellationTooltip.textContent = 'Constellation unavailable right now.';
+        }
         els.sort?.addEventListener('change', e => { state.sort = e.target.value; renderProjects(state) });
         injectJSONLD(); initModal();
         if (els.terminalTitle) els.terminalTitle.textContent = SITE.terminal.title;
         if (els.currentPrompt) els.currentPrompt.textContent = SITE.terminal.prompt;
         new Terminal();
         loadPublishedWork().catch(() => renderPublishedWork([]));
-        loadRepos(state).catch(() => els.projectsEmpty.hidden = false);
+        loadRepos(state).catch(() => {
+            els.projectsEmpty.hidden = false;
+            repoConstellation?.setTooltip('Unable to load repositories right now.');
+        });
     };
 
 export const startApp = () => {
