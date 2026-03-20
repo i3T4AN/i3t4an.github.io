@@ -29,6 +29,19 @@
     }
 }
 
+@media (hover: none), (pointer: coarse) {
+    html,
+    body,
+    body * {
+        cursor: auto !important;
+    }
+
+    #cursor-overlay {
+        display: none !important;
+        opacity: 0 !important;
+    }
+}
+
 @media(max-width:768px) {
     :root {
         --sidebar-width-relative: min(76vw, 17rem);

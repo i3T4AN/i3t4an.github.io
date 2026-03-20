@@ -406,6 +406,9 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             this.tooltipBaseFontPx = 0;
             this.tooltipMinFontPx = 7;
             this.reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+            this.pageVisible = !document.hidden;
+            this.inViewport = true;
+            this.visibilityObserver = null;
             this.palette = {
                 surface: '#0b1120',
                 text: '#e2e8f0',
@@ -424,13 +427,23 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             this.onClick = this.onClick.bind(this);
             this.onResize = this.onResize.bind(this);
             this.onMotionPreferenceChange = this.onMotionPreferenceChange.bind(this);
+            this.onVisibilityChange = this.onVisibilityChange.bind(this);
+            this.onVisibilityObserved = this.onVisibilityObserved.bind(this);
             this.loop = this.loop.bind(this);
             this.canvas.addEventListener('pointermove', this.onPointerMove, { passive: true });
             this.canvas.addEventListener('pointerleave', this.onPointerLeave, { passive: true });
             this.canvas.addEventListener('click', this.onClick);
             addEventListener('resize', this.onResize, { passive: true });
+            document.addEventListener('visibilitychange', this.onVisibilityChange);
             if (this.reducedMotionQuery.addEventListener) this.reducedMotionQuery.addEventListener('change', this.onMotionPreferenceChange);
             else this.reducedMotionQuery.addListener(this.onMotionPreferenceChange);
+            if ('IntersectionObserver' in window) {
+                this.visibilityObserver = new IntersectionObserver(this.onVisibilityObserved, {
+                    root: null,
+                    threshold: 0.01
+                });
+                this.visibilityObserver.observe(this.canvas);
+            }
             this.refreshPalette();
             this.resize();
             this.setTooltip(this.defaultTooltip);
@@ -467,6 +480,31 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             this.stop();
             this.render(performance.now());
             this.ensureFrame();
+        }
+
+        onVisibilityChange() {
+            this.pageVisible = !document.hidden;
+            if (!this.pageVisible) {
+                this.stop();
+                return;
+            }
+            this.render(performance.now());
+            this.ensureFrame();
+        }
+
+        onVisibilityObserved(entries) {
+            const isVisible = entries.some(entry => entry.isIntersecting && entry.intersectionRatio > 0);
+            this.inViewport = isVisible;
+            if (!this.inViewport) {
+                this.stop();
+                return;
+            }
+            this.render(performance.now());
+            this.ensureFrame();
+        }
+
+        canAnimate() {
+            return this.pageVisible && this.inViewport;
         }
 
         onResize() {
@@ -693,7 +731,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             });
             if (this.hoveredNode) {
                 const hoveredRepo = this.hoveredNode.repo;
-                this.setTooltip(`${hoveredRepo.name} | ${this.hoveredNode.language} | ${REPO_GROUP_LABELS[this.hoveredNode.group] || this.hoveredNode.group} | ${formatNumber(this.hoveredNode.stars)} stars | Updated ${relativeTime(hoveredRepo.updated_at)}`);
+                this.setTooltip(`${hoveredRepo.name} | ${this.hoveredNode.language} | ${REPO_GROUP_LABELS[this.hoveredNode.group] || this.hoveredNode.group} | ${formatNumber(this.hoveredNode.stars)} stars | Pushed ${formatRepoLastUpdated(hoveredRepo)}`);
             } else {
                 this.setTooltip(this.defaultTooltip);
             }
@@ -706,7 +744,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         }
 
         ensureFrame() {
-            if (this.rafId || this.prefersReducedMotion() || !this.nodes.length) return;
+            if (this.rafId || this.prefersReducedMotion() || !this.nodes.length || !this.canAnimate()) return;
             this.rafId = requestAnimationFrame(this.loop);
         }
 
@@ -738,8 +776,74 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
     };
 
     const parseRepoPath = url => { try { const u = new URL(url); const [owner, name] = u.pathname.slice(1).split('/'); return { owner, name } } catch { return null } };
-    const relativeTime = d => { const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' }); const sec = (new Date(d) - new Date()) / 1e3; const units = [[31536e3, 'year'], [2592e3, 'month'], [604800, 'week'], [86400, 'day'], [3600, 'hour'], [60, 'minute'], [1, 'second']]; for (const [s, u] of units) { const v = sec / s; if (Math.abs(v) >= 1 || u === 'second') return rtf.format(Math.round(v), u) } };
-    const cache = { get: k => { try { return JSON.parse(sessionStorage.getItem(k)) } catch { return null } }, set: (k, v) => { try { sessionStorage.setItem(k, JSON.stringify(v)) } catch { } } };
+    const relativeTime = d => {
+        const timestamp = Date.parse(d || '');
+        if (!Number.isFinite(timestamp)) return 'Unknown';
+        const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
+        const sec = (timestamp - Date.now()) / 1e3;
+        const units = [[31536e3, 'year'], [2592e3, 'month'], [604800, 'week'], [86400, 'day'], [3600, 'hour'], [60, 'minute'], [1, 'second']];
+        for (const [s, u] of units) {
+            const v = sec / s;
+            if (Math.abs(v) >= 1 || u === 'second') return rtf.format(Math.round(v), u);
+        }
+        return 'Unknown';
+    };
+    const getRepoLastUpdatedValue = repo => {
+        const pushedAt = String(repo?.pushed_at || '').trim();
+        return pushedAt || '';
+    };
+    const getRepoUpdatedTimestamp = repo => {
+        const raw = getRepoLastUpdatedValue(repo);
+        if (!raw) return 0;
+        const parsed = Date.parse(raw);
+        return Number.isFinite(parsed) ? parsed : 0;
+    };
+    const formatRepoLastUpdated = repo => {
+        const raw = getRepoLastUpdatedValue(repo);
+        return raw ? relativeTime(raw) : 'Unknown';
+    };
+    const getStorage = () => {
+        const candidates = [];
+        try { candidates.push(localStorage); } catch { }
+        try { candidates.push(sessionStorage); } catch { }
+        for (const store of candidates) {
+            try {
+                const probe = '__portfolio_cache_probe__';
+                store.setItem(probe, '1');
+                store.removeItem(probe);
+                return store;
+            } catch { }
+        }
+        return null;
+    };
+    const CACHE_TTL_MS = 12 * 60 * 60 * 1000;
+    const cacheStorage = getStorage();
+    const cache = {
+        get: (key, maxAgeMs = CACHE_TTL_MS) => {
+            if (!cacheStorage) return null;
+            try {
+                const raw = cacheStorage.getItem(key);
+                if (!raw) return null;
+                const parsed = JSON.parse(raw);
+                if (parsed && typeof parsed === 'object' && 'value' in parsed && typeof parsed.cachedAt === 'number') {
+                    if (maxAgeMs > 0 && (Date.now() - parsed.cachedAt) > maxAgeMs) {
+                        cacheStorage.removeItem(key);
+                        return null;
+                    }
+                    return parsed.value;
+                }
+                return parsed;
+            } catch {
+                return null;
+            }
+        },
+        set: (key, value) => {
+            if (!cacheStorage) return;
+            try {
+                cacheStorage.setItem(key, JSON.stringify({ value, cachedAt: Date.now() }));
+            } catch { }
+        }
+    };
 
     const applyPageMeta = () => {
         const s = window.SITE;
@@ -784,16 +888,51 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
 
     const formatRepoName = name => String(name || '').replace(/[-_]/g, ' ').replace(/\b\w/g, m => m.toUpperCase());
     const formatNumber = n => new Intl.NumberFormat('en-US').format(Number(n) || 0);
-    const fetchJsonCached = async (key, url, headers, map = d => d) => {
-        const cached = cache.get(key); if (cached) return cached;
-        try { const r = await fetch(url, { headers }); if (!r.ok) throw new Error(String(r.status)); const out = map(await r.json()); if (out) cache.set(key, out); return out } catch { return null }
+    const fetchJsonCached = async (key, url, headers, map = d => d, ttlMs = CACHE_TTL_MS) => {
+        const cached = cache.get(key, ttlMs);
+        if (cached) return cached;
+        try {
+            const r = await fetch(url, { headers });
+            if (!r.ok) throw new Error(String(r.status));
+            const out = map(await r.json());
+            if (out) cache.set(key, out);
+            return out;
+        } catch {
+            return null;
+        }
     };
 
     const fetchRepo = async (owner, name) => {
         const key = `gh:${owner}/${name}`;
-        const repo = await fetchJsonCached(key, `https://api.github.com/repos/${owner}/${name}`, { Accept: 'application/vnd.github+json' }, d => ({ full_name: d.full_name, html_url: d.html_url, description: d.description || formatRepoName(name), language: d.language || 'Other', stargazers_count: d.stargazers_count || 0, updated_at: d.updated_at || new Date().toISOString(), name, error: false }));
+        const repo = await fetchJsonCached(
+            key,
+            `https://api.github.com/repos/${owner}/${name}`,
+            { Accept: 'application/vnd.github+json' },
+            d => ({
+                full_name: d.full_name,
+                html_url: d.html_url,
+                description: d.description || formatRepoName(name),
+                language: d.language || 'Other',
+                stargazers_count: d.stargazers_count || 0,
+                pushed_at: d.pushed_at || null,
+                updated_at: d.updated_at || null,
+                name,
+                error: false
+            }),
+            CACHE_TTL_MS
+        );
         if (repo) return repo;
-        return { full_name: `${owner}/${name}`, html_url: `https://github.com/${owner}/${name}`, description: formatRepoName(name), language: 'Other', stargazers_count: 0, updated_at: new Date().toISOString(), name, error: true };
+        return {
+            full_name: `${owner}/${name}`,
+            html_url: `https://github.com/${owner}/${name}`,
+            description: formatRepoName(name),
+            language: 'Other',
+            stargazers_count: 0,
+            pushed_at: null,
+            updated_at: null,
+            name,
+            error: true
+        };
     };
     const animateNumber = (el, from, to, duration = 850) => {
         if (!el) return;
@@ -821,33 +960,13 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         if (animate) animateNumber(els.starsTotal, prev, next);
         else els.starsTotal.textContent = formatNumber(next);
     };
-    const fetchGitHubStarsTotal = async username => {
-        let page = 1, total = 0;
-        const headers = { Accept: 'application/vnd.github+json' };
-        while (page <= 30) {
-            const res = await fetch(`https://api.github.com/users/${encodeURIComponent(username)}/repos?per_page=100&page=${page}&type=owner`, { headers });
-            if (!res.ok) throw new Error(String(res.status));
-            const repos = await res.json();
-            if (!Array.isArray(repos) || !repos.length) break;
-            total += repos.reduce((sum, repo) => sum + (Number(repo?.stargazers_count) || 0), 0);
-            if (repos.length < 100) break;
-            page++;
+    const setFeaturedStarsTotal = repos => {
+        if (!Array.isArray(repos)) {
+            setStarsTotal(NaN, false);
+            return;
         }
-        return total;
-    };
-    const loadGitHubStarsTotal = async username => {
-        if (!username || !els.starsTotal) return;
-        const key = `gh:stars:${username.toLowerCase()}`;
-        const cached = cache.get(key);
-        if (cached && Number.isFinite(cached.total)) setStarsTotal(cached.total, false);
-        else els.starsTotal.textContent = '...';
-        try {
-            const total = await fetchGitHubStarsTotal(username);
-            cache.set(key, { total, updatedAt: Date.now() });
-            setStarsTotal(total, !cached || cached.total !== total);
-        } catch {
-            if (!(cached && Number.isFinite(cached.total))) setStarsTotal(NaN, false);
-        }
+        const total = repos.reduce((sum, repo) => sum + (Number(repo?.stargazers_count) || 0), 0);
+        setStarsTotal(total, true);
     };
 
     const normalizeDoi = v => String(v || '')
@@ -1040,15 +1159,13 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         addEventListener('orientationchange', setScanViewportHeight, { passive: true });
     };
     const initScrollStartAtTop = () => {
-        try {
-            if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-        } catch { }
-        if (location.hash) {
-            history.replaceState(null, '', `${location.pathname}${location.search}`);
-        }
-        const toTop = () => window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-        toTop();
-        requestAnimationFrame(toTop);
+        if (location.hash) return;
+        const navEntries = performance.getEntriesByType?.('navigation') || [];
+        const navType = navEntries[0]?.type;
+        if (navType === 'back_forward') return;
+        requestAnimationFrame(() => {
+            window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+        });
     };
     const initHeaderScroll = () => addEventListener('scroll', () => els.header.classList.toggle('scrolled', scrollY > 20), { passive: true });
     const initTextureParallax = () => {
@@ -1088,11 +1205,15 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         updateTarget();
     };
     const initCursorOverlay = () => {
+        if (window.matchMedia('(hover: none), (pointer: coarse)').matches) return;
         const cursor = document.createElement('img');
         let x = -9999;
         let y = -9999;
         let visible = false;
         let needsPaint = true;
+        let rafId = 0;
+        let lastMoveAt = 0;
+        const idleWindowMs = 120;
         const cursorScale = 0.5;
         let hotspotX = 15;
         let hotspotY = 15;
@@ -1163,15 +1284,22 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             hotspotX = measured?.x ?? (w * cursorScale) / 2;
             hotspotY = measured?.y ?? (h * cursorScale) / 2;
             needsPaint = true;
+            schedulePaint();
         };
 
-        const paint = () => {
+        const schedulePaint = () => {
+            if (rafId) return;
+            rafId = requestAnimationFrame(paint);
+        };
+
+        const paint = now => {
+            rafId = 0;
             if (needsPaint) {
                 cursor.style.transform = `translate3d(${x - hotspotX}px, ${y - hotspotY}px, 0) scale(${cursorScale})`;
                 cursor.style.opacity = visible ? '1' : '0';
                 needsPaint = false;
             }
-            requestAnimationFrame(paint);
+            if (visible && (now - lastMoveAt) < idleWindowMs) schedulePaint();
         };
 
         const onMove = event => {
@@ -1179,13 +1307,20 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             y = event.clientY;
             visible = true;
             needsPaint = true;
+            lastMoveAt = performance.now();
+            schedulePaint();
         };
 
         document.body.appendChild(cursor);
         addEventListener('mousemove', onMove, { passive: true });
         addEventListener('mouseenter', onMove, { passive: true });
-        addEventListener('mouseleave', () => { visible = false; needsPaint = true }, { passive: true });
-        paint();
+        addEventListener('mouseleave', () => { visible = false; needsPaint = true; schedulePaint() }, { passive: true });
+        addEventListener('visibilitychange', () => {
+            if (!document.hidden) return;
+            visible = false;
+            needsPaint = true;
+            schedulePaint();
+        });
     };
 
     const buildSkillCol = (title, items) => { const col = document.createElement('div'); col.className = 'col'; col.innerHTML = `<h4>${title}</h4>`; const ul = document.createElement('ul'), frag = document.createDocumentFragment(); items.forEach(t => { const li = document.createElement('li'); li.textContent = t; frag.appendChild(li) }); ul.appendChild(frag); col.appendChild(ul); return col };
@@ -1211,12 +1346,75 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         `;
         return col;
     };
+    const getSafeGitHubRepoUrl = rawUrl => {
+        try {
+            const url = new URL(String(rawUrl || ''));
+            const host = url.hostname.toLowerCase();
+            if (url.protocol !== 'https:') return '';
+            if (host !== 'github.com' && host !== 'www.github.com') return '';
+            const [owner, name] = url.pathname.split('/').filter(Boolean);
+            if (!owner || !name) return '';
+            return `https://github.com/${owner}/${name}`;
+        } catch {
+            return '';
+        }
+    };
     const buildCard = repo => {
-        const card = document.createElement('article'); card.className = 'card';
-        card.dataset.repoName = String(repo.name || '').toLowerCase();
-        card.dataset.repoUrl = String(repo.html_url || '').toLowerCase();
-        card.innerHTML = `<h5><a href="${repo.html_url}" target="_blank" rel="noopener">${repo.name}</a></h5><p class="desc">${repo.description}</p><div class="meta"><span class="lang">${repo.language}</span><span>⭐ ${repo.stargazers_count}</span><span>${relativeTime(repo.updated_at)}</span></div><div class="actions"><a class="gh-link" href="${repo.html_url}" target="_blank" rel="noopener">View on GitHub →</a></div>`;
-        card.addEventListener('click', e => { if (!e.target.closest('.gh-link')) { e.preventDefault(); showReadmeModal(repo.name, repo.html_url) } });
+        const card = document.createElement('article');
+        card.className = 'card';
+        const repoName = String(repo?.name || 'Untitled Repository');
+        const repoDescription = String(repo?.description || 'No description provided.');
+        const repoLanguage = String(repo?.language || 'Other');
+        const repoUrl = getSafeGitHubRepoUrl(repo?.html_url);
+        const repoStars = formatNumber(repo?.stargazers_count);
+        const pushedLabel = formatRepoLastUpdated(repo);
+        card.dataset.repoName = repoName.toLowerCase();
+        card.dataset.repoUrl = repoUrl.toLowerCase();
+
+        const title = document.createElement('h5');
+        const titleLink = document.createElement('a');
+        titleLink.textContent = repoName;
+        titleLink.href = repoUrl || '#';
+        if (repoUrl) {
+            titleLink.target = '_blank';
+            titleLink.rel = 'noopener';
+        }
+        title.appendChild(titleLink);
+
+        const description = document.createElement('p');
+        description.className = 'desc';
+        description.textContent = repoDescription;
+
+        const meta = document.createElement('div');
+        meta.className = 'meta';
+        const lang = document.createElement('span');
+        lang.className = 'lang';
+        lang.textContent = repoLanguage;
+        const stars = document.createElement('span');
+        stars.textContent = `⭐ ${repoStars}`;
+        const pushed = document.createElement('span');
+        pushed.textContent = `Pushed ${pushedLabel}`;
+        meta.append(lang, stars, pushed);
+
+        const actions = document.createElement('div');
+        actions.className = 'actions';
+        const githubLink = document.createElement('a');
+        githubLink.className = 'gh-link';
+        githubLink.textContent = 'View on GitHub →';
+        githubLink.href = repoUrl || '#';
+        if (repoUrl) {
+            githubLink.target = '_blank';
+            githubLink.rel = 'noopener';
+        }
+        actions.appendChild(githubLink);
+
+        card.append(title, description, meta, actions);
+        card.addEventListener('click', e => {
+            if (e.target.closest('.gh-link')) return;
+            e.preventDefault();
+            if (!repoUrl) return;
+            showReadmeModal(repoName, repoUrl);
+        });
         return card;
     };
     const buildPaperCard = paper => {
@@ -1299,7 +1497,11 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         renderPublishedWork(papers);
     };
 
-    const sorters = { updated: (a, b) => new Date(b.updated_at) - new Date(a.updated_at), stars: (a, b) => b.stargazers_count - a.stargazers_count, name: (a, b) => a.name.localeCompare(b.name) };
+    const sorters = {
+        updated: (a, b) => getRepoUpdatedTimestamp(b) - getRepoUpdatedTimestamp(a),
+        stars: (a, b) => b.stargazers_count - a.stargazers_count,
+        name: (a, b) => a.name.localeCompare(b.name)
+    };
     const updateFilterChips = state => { els.filters.innerHTML = ''; const langs = ['All', ...Array.from(state.languages).filter(l => l !== 'All').sort()], frag = document.createDocumentFragment(); langs.forEach(lang => { const chip = document.createElement('button'); chip.className = 'chip neo-btn'; chip.type = 'button'; chip.setAttribute('aria-pressed', String(state.filter === lang)); chip.innerHTML = `<span class="chip-label neo-btn-label">${lang}</span>`; chip.addEventListener('click', () => { state.filter = lang; renderProjects(state) }); frag.appendChild(chip) }); els.filters.appendChild(frag) };
     const observer = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('animate-in'); observer.unobserve(e.target) } }), { threshold: .1, rootMargin: '50px' });
     const animateCards = () => $$('.card').forEach(c => { c.classList.remove('animate-in'); observer.observe(c) });
@@ -1322,6 +1524,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         const results = (await Promise.all(SITE.repos.map(async item => { const p = parseRepoPath(item.url); if (!p) return null; const d = await fetchRepo(p.owner, p.name); d.__group = item.group; return d }))).filter(Boolean);
         results.forEach(d => { if (d.language) state.languages.add(d.language) });
         state.repos = results;
+        setFeaturedStarsTotal(results);
         renderProjects(state);
         if (ENABLE_CONSTELLATION && repoConstellation) {
             try {
@@ -1377,7 +1580,6 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             els.constellationTooltip.hidden = true;
             els.constellationTooltip.setAttribute('aria-hidden', 'true');
         }
-        loadGitHubStarsTotal(githubUsername);
         const skillSections = [
             [SITE.terminal.messages.developmentTitle, SITE.skills.development],
             [SITE.terminal.messages.automationTitle, SITE.skills.automation],
@@ -1414,6 +1616,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         loadPublishedWork().catch(() => renderPublishedWork([]));
         loadRepos(state).catch(() => {
             els.projectsEmpty.hidden = false;
+            setStarsTotal(NaN, false);
             repoConstellation?.setTooltip('Unable to load repositories right now.');
         });
     };
