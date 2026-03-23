@@ -133,6 +133,7 @@ window.SITE = {
         { group: 'ai', url: 'https://github.com/i3T4AN/evillimiter-mcp-server' },
         { group: 'ai', url: 'https://github.com/i3T4AN/Vector-Knowledge-Base' },
         { group: 'ai', url: 'https://github.com/i3T4AN/Semantic-skill-space' },
+        { group: 'ai', url: 'https://github.com/i3T4AN/Archivist-MCP' },
         { group: 'enterprise', url: 'https://github.com/i3T4AN/applescript-device-rename' },
         { group: 'enterprise', url: 'https://github.com/i3T4AN/SCCM-font-install-no-restart' },
         { group: 'enterprise', url: 'https://github.com/i3T4AN/azuread-inactive-users-export' },
