@@ -4,29 +4,69 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Portfolio</title>
-  <meta name="google-site-verification" content="" />
-  <meta name="description" content="" />
-  <link rel="canonical" href="" />
+  <title>Ethan Blair — Portfolio</title>
+  <meta name="google-site-verification" content="google47f0585bbbc7d4af" />
+  <meta name="description" content="Desktop Engineer focused on enterprise systems, automation, applied AI, and software development." />
+  <link rel="canonical" href="https://i3t4an.github.io/" />
   <link rel="icon" href="./assets/icons/favicon.ico" sizes="any" />
 
   <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0a0a0a" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="" />
-  <meta property="og:description" content="" />
-  <meta property="og:url" content="" />
+  <meta property="og:title" content="Ethan Blair — Portfolio" />
+  <meta property="og:description" content="Desktop Engineer focused on enterprise systems, automation, applied AI, and software development." />
+  <meta property="og:url" content="https://i3t4an.github.io/" />
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="" />
-  <meta name="twitter:description" content="" />
+  <meta name="twitter:title" content="Ethan Blair — Portfolio" />
+  <meta name="twitter:description" content="Desktop Engineer focused on enterprise systems, automation, applied AI, and software development." />
 
-  <script id="jsonld"></script>
+  <script id="jsonld" type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Ethan Blair","url":"https://i3t4an.github.io/","email":"mailto:i3t4an8lair@gmail.com","jobTitle":"Desktop Engineer","affiliation":{"@type":"CollegeOrUniversity","name":"University of Northern Colorado"},"sameAs":["https://github.com/i3T4AN","https://www.linkedin.com/in/ethan-blair-99a3b72a2"]}</script>
   <script src="config.js"></script>
   <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
+  <div id="bootSequence" class="boot-sequence" aria-hidden="true">
+    <div class="boot-ignition" aria-hidden="true"></div>
+    <div class="boot-shell">
+      <div class="boot-topline">
+        <span>I3T4AN SYSTEMS // FIELD TERMINAL</span>
+        <span id="bootClock">00:00:00:000</span>
+      </div>
+      <div class="boot-grid">
+        <div class="boot-log-panel">
+          <div class="boot-panel-label">BOOT / DIAGNOSTIC STREAM</div>
+          <pre id="bootLog" class="boot-log"></pre>
+        </div>
+        <div class="boot-identity-panel">
+          <div class="boot-panel-label">IDENTITY / RECONSTRUCTION</div>
+          <pre id="bootAscii" class="boot-ascii"></pre>
+          <div class="boot-identity-meta">
+            <span>SUBJECT: ETHAN BLAIR</span>
+            <span>ACCESS: PUBLIC</span>
+            <span>SIGNAL: <b id="bootSignal">17%</b></span>
+          </div>
+        </div>
+        <div class="boot-telemetry-panel">
+          <div class="boot-panel-label">UPLINK / TOPOLOGY</div>
+          <canvas id="bootTelemetry" class="boot-telemetry"></canvas>
+          <div class="boot-meters">
+            <span>CPU <b id="bootCpu">00</b>%</span>
+            <span>MEM <b id="bootMem">0000</b>MB</span>
+            <span>NET <b id="bootNet">0.0</b>MB/s</span>
+          </div>
+        </div>
+      </div>
+      <div class="boot-hex-row"><span id="bootHex"></span></div>
+      <div class="boot-progress-track"><i id="bootProgress"></i></div>
+      <div class="boot-bottomline">
+        <span id="bootStatus">POWERING PHOSPHOR ARRAY</span>
+        <span>ANY KEY / TAP TO SKIP</span>
+      </div>
+    </div>
+    <div class="boot-handoff-scan" aria-hidden="true"></div>
+  </div>
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header role="banner">
@@ -47,7 +87,7 @@
           </svg>
         </button>
         <a class="brand-mark" href="./" aria-label="Home">
-          <img id="brandLogo" class="brand-mark-logo" src="./assets/images/branding/i3T4AN_Logo_Black.png" alt="i3T4AN logo" loading="eager" decoding="async">
+          <img id="brandLogo" class="brand-mark-logo" src="./assets/images/branding/i3T4AN_Logo_Black.png" alt="i3T4AN logo" width="1511" height="610" loading="eager" decoding="async">
         </a>
         <div class="brand">
           <h1 id="brandName"></h1>
@@ -142,7 +182,7 @@
             <div id="terminalOutput"></div>
             <div class="terminal-input-line">
               <span class="terminal-prompt" id="currentPrompt"></span>
-              <input type="text" class="terminal-input" id="terminalInput" autocomplete="off" autocorrect="off"
+              <input type="text" class="terminal-input" id="terminalInput" aria-label="Terminal command" autocomplete="off" autocorrect="off"
                 autocapitalize="off" spellcheck="false">
             </div>
           </div>
@@ -164,7 +204,7 @@
           <h3>Featured Projects</h3>
           <div class="controls">
             <div class="filters" id="filters"></div>
-            <select id="sort" class="sort">
+            <select id="sort" class="sort" aria-label="Sort featured projects">
               <option value="updated">Last Updated</option>
               <option value="stars">Stars</option>
               <option value="name">Name</option>
@@ -194,11 +234,11 @@
     </div>
   </footer>
 
-  <div id="readmeModal" class="modal">
-    <div class="modal-content">
+  <div id="readmeModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-content" tabindex="-1">
       <div class="modal-header">
         <h3 id="modalTitle">Project README</h3>
-        <button class="modal-close" id="modalClose">&times;</button>
+        <button class="modal-close" id="modalClose" type="button" aria-label="Close project README">&times;</button>
       </div>
       <div class="modal-body" id="modalBody">
       </div>
@@ -208,9 +248,9 @@
     </div>
   </div>
 
-  <div id="paperModal" class="modal">
-    <div class="modal-content paper-modal-content">
-      <button class="modal-close paper-modal-close" id="paperModalClose" aria-label="Close paper viewer">&times;</button>
+  <div id="paperModal" class="modal" role="dialog" aria-modal="true" aria-label="Published paper viewer" aria-hidden="true">
+    <div class="modal-content paper-modal-content" tabindex="-1">
+      <button class="modal-close paper-modal-close" id="paperModalClose" type="button" aria-label="Close paper viewer">&times;</button>
       <div class="modal-body" id="paperModalBody"></div>
     </div>
   </div>
