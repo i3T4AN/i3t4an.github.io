@@ -24,10 +24,27 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         sidebarNav: $('#sidebarNav'), sectionSidebarTitle: $('#sectionSidebarTitle')
     };
     let paperBlobUrl = '';
+    let modalReturnFocus = null;
     const clearPaperBlobUrl = () => { if (paperBlobUrl) { URL.revokeObjectURL(paperBlobUrl); paperBlobUrl = '' } };
     const hideModal = (modal, onHide) => {
         if (typeof onHide === 'function') onHide();
-        if (modal) modal.style.display = 'none';
+        if (modal) {
+            modal.style.display = 'none';
+            modal.setAttribute('aria-hidden', 'true');
+        }
+        if (![els.readmeModal, els.paperModal].some(item => item?.style.display === 'block')) {
+            document.body.classList.remove('modal-open');
+        }
+        if (modalReturnFocus instanceof HTMLElement) modalReturnFocus.focus();
+        modalReturnFocus = null;
+    };
+    const showModal = (modal, initialFocus) => {
+        if (!modal) return;
+        modalReturnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+        modal.style.display = 'block';
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('modal-open');
+        requestAnimationFrame(() => (initialFocus || modal.querySelector('.modal-content'))?.focus());
     };
     const hideReadmeModal = () => hideModal(els.readmeModal);
     const hidePaperModal = () => hideModal(els.paperModal, () => {
@@ -46,20 +63,26 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             }
         });
     };
-    const fetchReadme = async (owner, repo) => {
-        const res = await fetch(`https://raw.githubusercontent.com/${owner}/${repo}/main/README.md`);
-        if (!res.ok) throw new Error(`Failed: ${res.status}`);
-        return res.text();
+    const fetchReadme = async (owner, repo, defaultBranch) => {
+        const branches = [...new Set([defaultBranch, 'main', 'master'].filter(Boolean))];
+        let lastStatus = 404;
+        for (const branch of branches) {
+            const res = await fetch(`https://raw.githubusercontent.com/${owner}/${repo}/${encodeURIComponent(branch)}/README.md`);
+            if (res.ok) return res.text();
+            lastStatus = res.status;
+            if (res.status !== 404) break;
+        }
+        throw new Error(`Failed: ${lastStatus}`);
     };
-    const showReadmeModal = async (repoName, repoUrl) => {
+    const showReadmeModal = async (repoName, repoUrl, defaultBranch) => {
         const parsed = parseRepoPath(repoUrl);
         if (!parsed) { els.modalBody.innerHTML = '<div class="error">Invalid repository URL</div>'; return }
         els.modalTitle.textContent = `${repoName} - README`;
         els.modalBody.innerHTML = '<div class="loading">Loading README...</div>';
         els.modalGitHubLink.href = repoUrl;
-        els.readmeModal.style.display = 'block';
+        showModal(els.readmeModal, els.modalClose);
         try {
-            const content = await fetchReadme(parsed.owner, parsed.name);
+            const content = await fetchReadme(parsed.owner, parsed.name, defaultBranch);
             els.modalBody.innerHTML = `<div class="readme-content">${sanitizeHTML(convertMarkdownToHTML(content))}</div>`;
         } catch (e) { els.modalBody.innerHTML = `<div class="error">Unable to load README: ${e.message}</div>` }
     };
@@ -1091,7 +1114,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             msg.textContent = 'No direct PDF URL found for this DOI.';
             els.paperModalBody.appendChild(msg);
         }
-        els.paperModal.style.display = 'block';
+        showModal(els.paperModal, els.paperModalClose);
     };
 
     let GH_LANG_SOURCES = { light: [], dark: [] };
@@ -1136,14 +1159,19 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             }
         }
     };
-    const persistTheme = theme => localStorage.setItem('theme', theme);
+    const persistTheme = theme => { try { localStorage.setItem('theme', theme) } catch { } };
     const setAppTheme = (theme, persist = true) => {
-        if (theme === 'auto') { localStorage.removeItem('theme'); applyTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); return }
+        if (theme === 'auto') {
+            try { localStorage.removeItem('theme') } catch { }
+            applyTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            return;
+        }
         if (persist) persistTheme(theme);
         applyTheme(theme);
     };
     const initTheme = () => {
-        const saved = localStorage.getItem('theme');
+        let saved = null;
+        try { saved = localStorage.getItem('theme') } catch { }
         setAppTheme(saved || 'dark', false);
         els.themeToggle?.addEventListener('click', () => {
             const theme = document.documentElement.classList.contains('theme-dark') ? 'light' : 'dark';
@@ -1413,7 +1441,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             if (e.target.closest('.gh-link')) return;
             e.preventDefault();
             if (!repoUrl) return;
-            showReadmeModal(repoName, repoUrl);
+            showReadmeModal(repoName, repoUrl, repo?.default_branch);
         });
         return card;
     };
@@ -1561,7 +1589,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         const githubUsername = getGitHubUsername(SITE);
         GH_LANG_SOURCES = buildGitHubLangSources(githubUsername);
         GH_STREAK_SOURCES = buildGitHubStreakSources(githubUsername);
-        els.brandName.textContent = SITE.name; els.footerName.textContent = SITE.name; els.brandTag.textContent = SITE.tagline; els.heroTitle.textContent = SITE.hero.title; els.heroTitle.setAttribute('data-text', SITE.hero.title); els.heroParagraph.innerHTML = sanitizeHTML(SITE.hero.paragraph);
+        els.brandName.textContent = SITE.name; els.footerName.textContent = SITE.name; els.brandTag.textContent = SITE.tagline; els.heroTitle.textContent = SITE.hero.title; els.heroTitle.setAttribute('data-text', SITE.hero.title); els.heroTitle.setAttribute('aria-label', SITE.hero.title); els.heroParagraph.innerHTML = sanitizeHTML(SITE.hero.paragraph);
         els.linkGithub.href = SITE.socials.github; els.linkLinkedIn.href = SITE.socials.linkedin; els.linkEmail.href = SITE.socials.email;
         els.skillsGrid.innerHTML = '';
         const statsCol = buildGitHubActivityCol(SITE.name.split(' ')[0], GH_LANG_SOURCES.light[0] || '', GH_STREAK_SOURCES.light[0] || '');
