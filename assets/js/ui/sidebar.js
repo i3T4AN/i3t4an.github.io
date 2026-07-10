@@ -54,6 +54,8 @@ export const initSidebar = (els, siteConfig) => {
         document.body.classList.toggle('sidebar-open', open);
         els.sidebarToggle.setAttribute('aria-expanded', String(open));
         els.sectionSidebar.setAttribute('aria-hidden', String(!open));
+        if (open) els.sidebarClose?.focus();
+        else els.sidebarToggle.focus();
     };
 
     els.sidebarToggle.addEventListener('click', () => {
@@ -72,5 +74,11 @@ export const initSidebar = (els, siteConfig) => {
         if (!target) return;
         e.preventDefault();
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        setSidebarState(false);
+    });
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && document.body.classList.contains('sidebar-open')) {
+            setSidebarState(false);
+        }
     });
 };
