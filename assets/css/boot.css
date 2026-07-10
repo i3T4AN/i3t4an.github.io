@@ -1,0 +1,310 @@
+:root {
+    --boot-purple: #a855f7;
+    --boot-purple-hot: #d8a7ff;
+    --boot-purple-dim: #54207e;
+    --boot-cyan: #00d4ff;
+    --boot-error: #ff3c88
+}
+
+.boot-sequence {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483000;
+    overflow: hidden;
+    color: var(--boot-purple-hot);
+    background: #000;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+    letter-spacing: .04em;
+    clip-path: inset(0 0 0 0);
+    transition: clip-path .88s cubic-bezier(.72, 0, .25, 1), filter .25s ease
+}
+
+.boot-sequence[hidden] { display: none }
+body.boot-running { overflow: hidden }
+
+.boot-sequence::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    pointer-events: none;
+    opacity: .42;
+    background: repeating-linear-gradient(to bottom, transparent 0, transparent 2px, rgba(168, 85, 247, .12) 3px, rgba(0, 0, 0, .42) 4px);
+    mix-blend-mode: screen
+}
+
+.boot-sequence::after {
+    content: '';
+    position: absolute;
+    inset: -8%;
+    z-index: 21;
+    pointer-events: none;
+    box-shadow: inset 0 0 16vw 7vw #000;
+    animation: bootFlicker .12s steps(2, end) infinite
+}
+
+.boot-ignition {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 30;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--boot-purple-hot);
+    box-shadow: 0 0 18px 8px var(--boot-purple), 0 0 70px 20px rgba(168, 85, 247, .45);
+    transform: translate(-50%, -50%);
+    animation: bootIgnition .48s cubic-bezier(.2, .8, .2, 1) forwards
+}
+
+.boot-shell {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-rows: 38px 1fr 28px 3px 34px;
+    padding: 18px 22px;
+    opacity: 0;
+    transform: scaleY(.04) scaleX(.7);
+    filter: blur(8px);
+    animation: bootOpen .42s .28s cubic-bezier(.2, .8, .2, 1) forwards
+}
+
+.boot-topline,
+.boot-bottomline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-color: rgba(168, 85, 247, .5);
+    color: var(--boot-purple);
+    font-size: clamp(8px, .72vw, 11px)
+}
+
+.boot-topline { border-bottom: 1px solid rgba(168, 85, 247, .48) }
+.boot-bottomline { border-top: 1px solid rgba(168, 85, 247, .48) }
+
+.boot-grid {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1.08fr 1.3fr .92fr;
+    gap: 1px;
+    margin: 12px 0;
+    border: 1px solid rgba(168, 85, 247, .38);
+    background: rgba(168, 85, 247, .34)
+}
+
+.boot-log-panel,
+.boot-identity-panel,
+.boot-telemetry-panel {
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    background: rgba(2, 0, 5, .94);
+    box-shadow: inset 0 0 40px rgba(168, 85, 247, .05)
+}
+
+.boot-panel-label {
+    height: 31px;
+    display: flex;
+    align-items: center;
+    padding: 0 11px;
+    border-bottom: 1px solid rgba(168, 85, 247, .35);
+    color: var(--boot-purple);
+    font-size: clamp(7px, .62vw, 10px)
+}
+
+.boot-log {
+    position: absolute;
+    inset: 41px 10px 10px;
+    margin: 0;
+    overflow: hidden;
+    white-space: pre-wrap;
+    color: var(--boot-purple-hot);
+    text-shadow: 0 0 8px rgba(168, 85, 247, .85);
+    font-size: clamp(7px, .66vw, 11px);
+    line-height: 1.42
+}
+
+.boot-log .ok { color: var(--boot-cyan) }
+.boot-log .warn { color: var(--boot-error) }
+
+.boot-identity-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center
+}
+
+.boot-identity-panel .boot-panel-label {
+    position: absolute;
+    inset: 0 0 auto;
+    width: 100%
+}
+
+.boot-ascii {
+    min-height: 7em;
+    margin: 0;
+    color: var(--boot-purple-hot);
+    text-align: left;
+    white-space: pre;
+    font-weight: 700;
+    font-size: clamp(7px, 1.02vw, 16px);
+    line-height: 1.18;
+    letter-spacing: 0;
+    text-shadow: 0 0 4px var(--boot-purple), 0 0 16px rgba(168, 85, 247, .72), 2px 0 rgba(0, 212, 255, .24), -2px 0 rgba(255, 60, 136, .2)
+}
+
+.boot-ascii.is-locked { animation: bootIdentityLock .16s steps(2, end) 2 }
+
+.boot-identity-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 18px;
+    margin-top: 22px;
+    color: var(--boot-purple);
+    font-size: clamp(7px, .62vw, 10px)
+}
+
+.boot-identity-meta b,
+.boot-meters b {
+    color: var(--boot-cyan);
+    font-weight: 500
+}
+
+.boot-telemetry {
+    position: absolute;
+    inset: 32px 0 34px;
+    width: 100%;
+    height: calc(100% - 66px)
+}
+
+.boot-meters {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: 9px;
+    display: flex;
+    justify-content: space-between;
+    color: var(--boot-purple);
+    font-size: clamp(6px, .55vw, 9px)
+}
+
+.boot-hex-row {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    color: var(--boot-purple-dim);
+    font-size: 8px;
+    line-height: 28px
+}
+
+.boot-progress-track {
+    overflow: hidden;
+    background: rgba(168, 85, 247, .16)
+}
+
+.boot-progress-track i {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, var(--boot-purple-dim), var(--boot-purple-hot), var(--boot-cyan));
+    box-shadow: 0 0 16px var(--boot-purple)
+}
+
+.boot-handoff-scan {
+    position: absolute;
+    z-index: 40;
+    top: -9vh;
+    left: 0;
+    width: 100%;
+    height: 9vh;
+    opacity: 0;
+    background: linear-gradient(to bottom, transparent, rgba(168, 85, 247, .16) 30%, var(--boot-purple-hot) 82%, transparent);
+    filter: blur(1px);
+    box-shadow: 0 12px 45px rgba(168, 85, 247, .42)
+}
+
+.boot-sequence.is-handoff {
+    clip-path: inset(0 0 100% 0);
+    filter: saturate(1.35) contrast(1.3)
+}
+
+.boot-sequence.is-handoff .boot-shell { animation: bootDegauss .38s cubic-bezier(.7, 0, .3, 1) forwards }
+.boot-sequence.is-handoff .boot-handoff-scan {
+    opacity: 1;
+    animation: bootScanHandoff .88s cubic-bezier(.72, 0, .25, 1) forwards
+}
+
+@keyframes bootIgnition {
+    0% { width: 3px; height: 3px; opacity: 1 }
+    48% { width: 82vw; height: 2px; border-radius: 0; opacity: 1 }
+    78% { width: 100vw; height: 5px; opacity: .95 }
+    100% { width: 120vw; height: 100vh; opacity: 0 }
+}
+
+@keyframes bootOpen {
+    0% { opacity: 0; transform: scaleY(.02) scaleX(.72); filter: blur(10px) }
+    50% { opacity: 1; transform: scaleY(.08) scaleX(1); filter: blur(2px) }
+    100% { opacity: 1; transform: scale(1); filter: none }
+}
+
+@keyframes bootFlicker {
+    0%, 100% { opacity: .32 }
+    50% { opacity: .46 }
+}
+
+@keyframes bootIdentityLock {
+    0% { transform: translateX(-4px); filter: blur(.6px) }
+    50% { transform: translateX(5px) skewX(-3deg); color: var(--boot-cyan) }
+    100% { transform: none; filter: none }
+}
+
+@keyframes bootDegauss {
+    0% { transform: scale(1); filter: none }
+    38% { transform: scaleX(.94) scaleY(1.08) skewX(-1.5deg); filter: blur(1px) }
+    70% { transform: scaleX(1.04) scaleY(.97) }
+    100% { transform: scale(1); filter: none }
+}
+
+@keyframes bootScanHandoff {
+    from { transform: translateY(0) }
+    to { transform: translateY(118vh) }
+}
+
+@media (max-width: 760px) {
+    .boot-shell {
+        padding: 12px;
+        grid-template-rows: 32px 1fr 24px 3px 32px
+    }
+    .boot-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: .9fr 1.15fr .8fr;
+        margin: 8px 0
+    }
+    .boot-panel-label { height: 24px }
+    .boot-log {
+        inset: 30px 8px 7px;
+        font-size: clamp(6px, 1.7vw, 9px);
+        line-height: 1.25
+    }
+    .boot-ascii { font-size: clamp(5px, 1.48vw, 10px) }
+    .boot-identity-meta { margin-top: 7px }
+    .boot-telemetry {
+        inset: 25px 0 24px;
+        height: calc(100% - 49px)
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .boot-sequence::after,
+    .boot-ignition,
+    .boot-shell,
+    .boot-ascii,
+    .boot-handoff-scan { animation: none !important }
+    .boot-shell {
+        opacity: 1;
+        transform: none;
+        filter: none
+    }
+}
