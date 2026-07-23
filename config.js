@@ -17,7 +17,7 @@ window.SITE = {
     },
     hero: {
         title: "Building Practical Automation for Enterprise Systems.",
-        paragraph: "I’m Ethan Blair, a University of Northern Colorado graduate in Computer Information Systems, a Desktop Engineer supporting enterprise systems at scale, and the lead developer behind <a href=\"https://wtms.live\">wtms.live</a>. My work centers on automation, applied AI, and software development that reduces manual effort and improves reliability."
+        paragraph: "I’m Ethan Blair, a University of Northern Colorado graduate in Computer Information Systems, a Desktop Engineer supporting enterprise systems at scale. My work centers on automation, applied AI, and software development that reduces manual effort and improves reliability."
     },
     socials: {
         github: "https://github.com/i3T4AN",
