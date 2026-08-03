@@ -10,7 +10,7 @@ window.SITE = {
     },
     hero: {
         title: "Building Practical Automation for Enterprise Systems.",
-        paragraph: "I’m Ethan Blair, a University of Northern Colorado graduate in Computer Information Systems, a Desktop Engineer supporting enterprise systems at scale. My work centers on automation, applied AI, and software development that reduces manual effort and improves reliability."
+        paragraph: "I’m Ethan Blair, a University of Northern Colorado graduate in Computer Information Systems and a Desktop Engineer supporting the technology behind UNC’s new College of Osteopathic Medicine. I build automation, applied AI, and software solutions that reduce manual work, improve reliability, and help enterprise systems operate more efficiently at scale."
     },
     socials: {
         github: "https://github.com/i3T4AN",
