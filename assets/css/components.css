@@ -285,6 +285,17 @@ select:focus-visible,
 .modal-body .readme-content p {
     margin-bottom: 1em
 }
+.modal-body .readme-content img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    margin: 1.25rem auto;
+    border: 1px solid var(--border);
+    border-radius: .75rem;
+    background: var(--bg-tertiary);
+    box-shadow: var(--shadow-sm)
+}
 .modal-body .readme-content code {
     background-color: var(--bg-tertiary);
     padding: 0.2em 0.4em;

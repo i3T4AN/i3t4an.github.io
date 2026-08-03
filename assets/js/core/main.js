@@ -46,21 +46,24 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             }
         });
     };
-    const fetchReadme = async (owner, repo) => {
-        const res = await fetch(`https://raw.githubusercontent.com/${owner}/${repo}/main/README.md`);
+    const fetchReadme = async (owner, repo, branch) => {
+        const res = await fetch(`https://raw.githubusercontent.com/${owner}/${repo}/${encodeURIComponent(branch)}/README.md`);
         if (!res.ok) throw new Error(`Failed: ${res.status}`);
         return res.text();
     };
-    const showReadmeModal = async (repoName, repoUrl) => {
+    const showReadmeModal = async (repoName, repoUrl, defaultBranch) => {
         const parsed = parseRepoPath(repoUrl);
         if (!parsed) { els.modalBody.innerHTML = '<div class="error">Invalid repository URL</div>'; return }
+        // Old browser cache entries may predate default_branch; retain the prior behavior only for those entries.
+        const branch = String(defaultBranch || 'main').trim();
         els.modalTitle.textContent = `${repoName} - README`;
         els.modalBody.innerHTML = '<div class="loading">Loading README...</div>';
         els.modalGitHubLink.href = repoUrl;
         els.readmeModal.style.display = 'block';
         try {
-            const content = await fetchReadme(parsed.owner, parsed.name);
-            els.modalBody.innerHTML = `<div class="readme-content">${sanitizeHTML(convertMarkdownToHTML(content))}</div>`;
+            const content = await fetchReadme(parsed.owner, parsed.name, branch);
+            const readmeBaseUrl = `https://raw.githubusercontent.com/${parsed.owner}/${parsed.name}/${encodeURIComponent(branch)}/`;
+            els.modalBody.innerHTML = `<div class="readme-content">${sanitizeHTML(convertMarkdownToHTML(content, { baseUrl: readmeBaseUrl }))}</div>`;
         } catch (e) { els.modalBody.innerHTML = `<div class="error">Unable to load README: ${e.message}</div>` }
     };
     class Terminal {
@@ -847,7 +850,8 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
 
     const applyPageMeta = () => {
         const s = window.SITE;
-        const seo = s.seo || {};
+        const seo = s.seo;
+        if (!seo) return;
         const title = seo.title || s.name || document.title;
         const description = seo.description || '';
         const canonicalUrl = s.url || '';
@@ -916,6 +920,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
                 stargazers_count: d.stargazers_count || 0,
                 pushed_at: d.pushed_at || null,
                 updated_at: d.updated_at || null,
+                default_branch: d.default_branch || '',
                 name,
                 error: false
             }),
@@ -930,6 +935,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             stargazers_count: 0,
             pushed_at: null,
             updated_at: null,
+            default_branch: '',
             name,
             error: true
         };
@@ -1413,7 +1419,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             if (e.target.closest('.gh-link')) return;
             e.preventDefault();
             if (!repoUrl) return;
-            showReadmeModal(repoName, repoUrl);
+            showReadmeModal(repoName, repoUrl, repo?.default_branch);
         });
         return card;
     };

@@ -8,13 +8,6 @@ window.SITE = {
         affiliation: "University of Northern Colorado",
         jobTitle: "Desktop Engineer"
     },
-    seo: {
-        title: "Ethan Blair — Portfolio",
-        description: "Desktop Engineer focused on enterprise systems, automation, applied AI, and software development.",
-        ogType: "website",
-        twitterCard: "summary",
-        googleSiteVerification: "google47f0585bbbc7d4af"
-    },
     hero: {
         title: "Building Practical Automation for Enterprise Systems.",
         paragraph: "I’m Ethan Blair, a University of Northern Colorado graduate in Computer Information Systems, a Desktop Engineer supporting enterprise systems at scale. My work centers on automation, applied AI, and software development that reduces manual effort and improves reliability."
@@ -134,6 +127,7 @@ window.SITE = {
         { group: 'ai', url: 'https://github.com/i3T4AN/Vector-Knowledge-Base' },
         { group: 'ai', url: 'https://github.com/i3T4AN/Semantic-skill-space' },
         { group: 'ai', url: 'https://github.com/i3T4AN/Archivist-MCP' },
+        { group: 'enterprise', url: 'https://github.com/i3T4AN/intune-kiosk-template-builder' },
         { group: 'enterprise', url: 'https://github.com/i3T4AN/applescript-device-rename' },
         { group: 'enterprise', url: 'https://github.com/i3T4AN/SCCM-font-install-no-restart' },
         { group: 'enterprise', url: 'https://github.com/i3T4AN/azuread-inactive-users-export' },

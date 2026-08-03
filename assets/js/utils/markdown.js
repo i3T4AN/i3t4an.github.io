@@ -1,8 +1,9 @@
 const ALLOWED_TAGS = new Set([
     'H1', 'H2', 'H3', 'P', 'STRONG', 'EM', 'PRE', 'CODE', 'A', 'UL', 'LI', 'BR',
-    'TABLE', 'THEAD', 'TBODY', 'TR', 'TH', 'TD'
+    'TABLE', 'THEAD', 'TBODY', 'TR', 'TH', 'TD', 'IMG'
 ]);
 const SAFE_HREF_RE = /^(https?:\/\/|mailto:)/i;
+const SAFE_IMAGE_SRC_RE = /^https?:\/\//i;
 const escapeHTML = value => String(value || '')
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -18,6 +19,13 @@ export const sanitizeHTML = html => {
             node.replaceWith(document.createTextNode(node.textContent || ''));
             return;
         }
+        if (node.tagName === 'IMG') {
+            const source = String(node.getAttribute('src') || '').trim();
+            if (!SAFE_IMAGE_SRC_RE.test(source)) {
+                node.remove();
+                return;
+            }
+        }
         Array.from(node.attributes).forEach(attr => {
             const name = attr.name.toLowerCase();
             const value = String(attr.value || '').trim();
@@ -29,7 +37,9 @@ export const sanitizeHTML = html => {
                 node.removeAttribute(attr.name);
                 return;
             }
-            if (node.tagName !== 'A' || (name !== 'href' && name !== 'target' && name !== 'rel')) {
+            const allowedAnchorAttribute = node.tagName === 'A' && (name === 'href' || name === 'target' || name === 'rel');
+            const allowedImageAttribute = node.tagName === 'IMG' && (name === 'src' || name === 'alt' || name === 'loading' || name === 'decoding');
+            if (!allowedAnchorAttribute && !allowedImageAttribute) {
                 node.removeAttribute(attr.name);
             }
         });
@@ -41,14 +51,39 @@ export const sanitizeHTML = html => {
     return t.innerHTML;
 };
 
-const renderInline = text => {
+const resolveImageSource = (value, baseUrl) => {
+    try {
+        const valueText = String(value || '').trim();
+        const repoRelativeValue = valueText.startsWith('/') && !valueText.startsWith('//')
+            ? valueText.slice(1)
+            : valueText;
+        const source = new URL(repoRelativeValue, baseUrl || window.location.href).href;
+        return SAFE_IMAGE_SRC_RE.test(source) ? source : '';
+    } catch {
+        return '';
+    }
+};
+
+const renderInline = (text, options = {}) => {
     const codeSplit = String(text || '').split(/(`[^`]*`)/g);
+    const imageTokens = [];
     return codeSplit.map(part => {
         if (/^`[^`]*`$/.test(part)) return `<code>${escapeHTML(part.slice(1, -1))}</code>`;
-        return escapeHTML(part)
+        const tokenizedImages = part.replace(/!\[([^\]]*)\]\(\s*(?:<([^>]+)>|([^\s)]+))\s*\)/g, (match, alt, bracketedSource, bareSource) => {
+            const source = resolveImageSource(bracketedSource || bareSource, options.baseUrl);
+            if (!source) return match;
+            const token = `@@README_IMAGE_${imageTokens.length}@@`;
+            imageTokens.push(`<img src="${escapeHTML(source)}" alt="${escapeHTML(alt)}" loading="lazy" decoding="async">`);
+            return token;
+        });
+        let html = escapeHTML(tokenizedImages)
             .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+|mailto:[^)\s]+)\)/gi, '<a href="$2">$1</a>')
             .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
             .replace(/\*([^*]+)\*/g, '<em>$1</em>');
+        imageTokens.forEach((image, index) => {
+            html = html.replace(`@@README_IMAGE_${index}@@`, image);
+        });
+        return html;
     }).join('');
 };
 
@@ -63,7 +98,7 @@ const isTableSeparator = row => {
     return cells.every(cell => /^:?-{3,}:?$/.test(cell));
 };
 
-export const convertMarkdownToHTML = md => {
+export const convertMarkdownToHTML = (md, options = {}) => {
     const lines = String(md || '').replace(/\r/g, '').split('\n');
     const out = [];
     let i = 0;
@@ -96,7 +131,7 @@ export const convertMarkdownToHTML = md => {
         const h = line.match(/^(#{1,3})\s+(.+)$/);
         if (h) {
             const level = h[1].length;
-            out.push(`<h${level}>${renderInline(h[2].trim())}</h${level}>`);
+            out.push(`<h${level}>${renderInline(h[2].trim(), options)}</h${level}>`);
             i++;
             continue;
         }
@@ -107,7 +142,7 @@ export const convertMarkdownToHTML = md => {
                 items.push(lines[i].replace(/^\s*[-*]\s+/, ''));
                 i++;
             }
-            out.push(`<ul>${items.map(item => `<li>${renderInline(item.trim())}</li>`).join('')}</ul>`);
+            out.push(`<ul>${items.map(item => `<li>${renderInline(item.trim(), options)}</li>`).join('')}</ul>`);
             continue;
         }
 
@@ -119,8 +154,8 @@ export const convertMarkdownToHTML = md => {
                 bodyRows.push(parseTableRow(lines[i]));
                 i++;
             }
-            const headerHtml = `<tr>${headerCells.map(cell => `<th>${renderInline(cell)}</th>`).join('')}</tr>`;
-            const bodyHtml = bodyRows.map(row => `<tr>${row.map(cell => `<td>${renderInline(cell)}</td>`).join('')}</tr>`).join('');
+            const headerHtml = `<tr>${headerCells.map(cell => `<th>${renderInline(cell, options)}</th>`).join('')}</tr>`;
+            const bodyHtml = bodyRows.map(row => `<tr>${row.map(cell => `<td>${renderInline(cell, options)}</td>`).join('')}</tr>`).join('');
             out.push(`<table><thead>${headerHtml}</thead><tbody>${bodyHtml}</tbody></table>`);
             continue;
         }
@@ -137,7 +172,7 @@ export const convertMarkdownToHTML = md => {
             para.push(lines[i]);
             i++;
         }
-        out.push(`<p>${renderInline(para.join(' ').trim())}</p>`);
+        out.push(`<p>${renderInline(para.join(' ').trim(), options)}</p>`);
     }
 
     return out.join('\n');
