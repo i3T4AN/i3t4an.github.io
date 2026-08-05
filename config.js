@@ -113,6 +113,7 @@ window.SITE = {
     },
     repos: [
         { group: 'dev', url: 'https://github.com/i3T4AN/csv-watcher' },
+        { group: 'dev', url: 'https://github.com/i3T4AN/janus-omnikey' },
         { group: 'dev', url: 'https://github.com/i3T4AN/sudokusolver-resume' },
         { group: 'dev', url: 'https://github.com/i3T4AN/numberguesser-resume' },
         { group: 'dev', url: 'https://github.com/i3T4AN/weatherCLI' },
