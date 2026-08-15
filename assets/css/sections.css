@@ -454,23 +454,48 @@ section h3 {
     text-align: center
 }
 .elsewhere-viewport {
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: hidden;
     container-type: inline-size;
     border: 1px solid var(--border);
     border-radius: 1.25rem;
     padding: .8rem 0;
-    background: rgba(255, 255, 255, .02);
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch
-}
-.elsewhere-viewport::-webkit-scrollbar {
-    display: none
+    background: rgba(255, 255, 255, .02)
 }
 .elsewhere-track {
     display: flex;
     width: max-content;
-    gap: .8rem
+    gap: .8rem;
+    transform: translateX(0)
+}
+.elsewhere-track.is-carousel {
+    animation: elsewhere-scroll 72s linear infinite;
+    will-change: transform
+}
+@media (hover: hover) and (pointer: fine) {
+    .elsewhere-viewport:hover .elsewhere-track.is-carousel,
+    .elsewhere-viewport:focus-within .elsewhere-track.is-carousel {
+        animation-play-state: paused
+    }
+}
+@keyframes elsewhere-scroll {
+    from { transform: translateX(0) }
+    to { transform: translateX(calc(-50% - .4rem)) }
+}
+@media (prefers-reduced-motion: reduce) {
+    .elsewhere-viewport {
+        overflow-x: auto;
+        overflow-y: hidden;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch
+    }
+
+    .elsewhere-viewport::-webkit-scrollbar {
+        display: none
+    }
+
+    .elsewhere-track.is-carousel {
+        animation: none
+    }
 }
 .elsewhere-card {
     display: flex;
