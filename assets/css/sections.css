@@ -454,34 +454,23 @@ section h3 {
     text-align: center
 }
 .elsewhere-viewport {
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
     container-type: inline-size;
     border: 1px solid var(--border);
     border-radius: 1.25rem;
     padding: .8rem 0;
-    background: rgba(255, 255, 255, .02)
+    background: rgba(255, 255, 255, .02);
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch
+}
+.elsewhere-viewport::-webkit-scrollbar {
+    display: none
 }
 .elsewhere-track {
     display: flex;
     width: max-content;
-    gap: .8rem;
-    will-change: transform
-}
-.elsewhere-track.is-ready {
-    animation: elsewhere-scroll 72s linear infinite
-}
-.elsewhere-viewport:hover .elsewhere-track,
-.elsewhere-viewport:focus-within .elsewhere-track {
-    animation-play-state: paused
-}
-@media (hover: none), (pointer: coarse) {
-    .elsewhere-viewport:hover .elsewhere-track,
-    .elsewhere-viewport:focus-within .elsewhere-track {
-        animation-play-state: running
-    }
-}
-@keyframes elsewhere-scroll {
-    to { transform: translateX(calc(-50% - .4rem)) }
+    gap: .8rem
 }
 .elsewhere-card {
     display: flex;
@@ -542,9 +531,6 @@ section h3 {
     border-color: var(--accent);
     box-shadow: 0 0 18px rgba(0, 212, 255, .2);
     outline: none
-}
-@media (prefers-reduced-motion: reduce) {
-    .elsewhere-track.is-ready { animation: none }
 }
 .card {
     background: linear-gradient(var(--bg-primary), var(--bg-primary)) padding-box, linear-gradient(135deg, rgba(0, 212, 255, .55), rgba(168, 85, 247, .55)) border-box;

@@ -1410,11 +1410,117 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         card.append(copy);
         return card;
     };
+    let stopElsewhereCarousel = () => {};
+    const startElsewhereCarousel = (cards, duplicateCards) => {
+        stopElsewhereCarousel();
+        const viewport = els.elsewhereTrack?.parentElement;
+        if (!viewport || cards.length < 2 || !duplicateCards.length) return;
+
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+        let intervalId = 0;
+        let resetTimer = 0;
+        let resumeTimer = 0;
+        let loopWidth = 0;
+        let cardStep = 0;
+        let hovered = false;
+        let keyboardFocused = false;
+        let lastPointerDown = 0;
+
+        const measure = () => {
+            loopWidth = duplicateCards[0].offsetLeft - cards[0].offsetLeft;
+            cardStep = cards[1].offsetLeft - cards[0].offsetLeft;
+        };
+        const stop = () => {
+            clearInterval(intervalId);
+            intervalId = 0;
+        };
+        const normalizePosition = () => {
+            if (loopWidth > 0 && viewport.scrollLeft >= loopWidth) {
+                viewport.scrollLeft -= loopWidth;
+            }
+        };
+        const advance = () => {
+            measure();
+            normalizePosition();
+            if (!cardStep) return;
+            viewport.scrollTo({ left: viewport.scrollLeft + cardStep, behavior: 'smooth' });
+            clearTimeout(resetTimer);
+            resetTimer = window.setTimeout(normalizePosition, 700);
+        };
+        const start = () => {
+            if (reducedMotion || hovered || keyboardFocused || document.hidden || intervalId) return;
+            intervalId = window.setInterval(advance, 3200);
+        };
+        const resumeSoon = () => {
+            clearTimeout(resumeTimer);
+            resumeTimer = window.setTimeout(start, 1800);
+        };
+        const onPointerDown = () => {
+            lastPointerDown = performance.now();
+            keyboardFocused = false;
+            stop();
+        };
+        const onPointerUp = () => resumeSoon();
+        const onFocusIn = () => {
+            if (performance.now() - lastPointerDown < 750) return;
+            keyboardFocused = true;
+            stop();
+        };
+        const onFocusOut = event => {
+            if (viewport.contains(event.relatedTarget)) return;
+            keyboardFocused = false;
+            start();
+        };
+        const onMouseEnter = () => {
+            if (!finePointer) return;
+            hovered = true;
+            stop();
+        };
+        const onMouseLeave = () => {
+            hovered = false;
+            start();
+        };
+        const onVisibilityChange = () => document.hidden ? stop() : start();
+        const onResize = () => {
+            measure();
+            normalizePosition();
+        };
+
+        viewport.addEventListener('pointerdown', onPointerDown, { passive: true });
+        viewport.addEventListener('pointerup', onPointerUp, { passive: true });
+        viewport.addEventListener('pointercancel', onPointerUp, { passive: true });
+        viewport.addEventListener('focusin', onFocusIn);
+        viewport.addEventListener('focusout', onFocusOut);
+        viewport.addEventListener('mouseenter', onMouseEnter);
+        viewport.addEventListener('mouseleave', onMouseLeave);
+        document.addEventListener('visibilitychange', onVisibilityChange);
+        window.addEventListener('resize', onResize);
+
+        requestAnimationFrame(() => {
+            measure();
+            start();
+        });
+
+        stopElsewhereCarousel = () => {
+            stop();
+            clearTimeout(resetTimer);
+            clearTimeout(resumeTimer);
+            viewport.removeEventListener('pointerdown', onPointerDown);
+            viewport.removeEventListener('pointerup', onPointerUp);
+            viewport.removeEventListener('pointercancel', onPointerUp);
+            viewport.removeEventListener('focusin', onFocusIn);
+            viewport.removeEventListener('focusout', onFocusOut);
+            viewport.removeEventListener('mouseenter', onMouseEnter);
+            viewport.removeEventListener('mouseleave', onMouseLeave);
+            document.removeEventListener('visibilitychange', onVisibilityChange);
+            window.removeEventListener('resize', onResize);
+        };
+    };
     const renderElsewhere = entries => {
         const cfg = SITE.elsewhere || {};
         if (els.elsewhereTitle) els.elsewhereTitle.textContent = cfg.sectionTitle || 'Elsewhere';
         if (!els.elsewhereTrack || !entries.length) return;
-        els.elsewhereTrack.classList.remove('is-ready');
         els.elsewhereTrack.innerHTML = '';
         const cards = entries.map(buildElsewhereCard);
         const duplicateCards = entries.map(buildElsewhereCard);
@@ -1423,7 +1529,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             card.tabIndex = -1;
         });
         els.elsewhereTrack.append(...cards, ...duplicateCards);
-        requestAnimationFrame(() => els.elsewhereTrack.classList.add('is-ready'));
+        startElsewhereCarousel(cards, duplicateCards);
     };
     const loadElsewhere = async () => {
         const urls = Array.isArray(SITE?.elsewhere?.items) ? SITE.elsewhere.items : [];
