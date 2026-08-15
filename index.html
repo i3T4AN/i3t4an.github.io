@@ -28,19 +28,27 @@
   <script id="jsonld" type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Ethan Blair",
+      "@type": "ProfilePage",
+      "@id": "https://i3t4an.github.io/#profile",
       "url": "https://i3t4an.github.io/",
-      "email": "i3t4an8lair@gmail.com",
-      "jobTitle": "Desktop Engineer",
-      "affiliation": {
-        "@type": "CollegeOrUniversity",
-        "name": "University of Northern Colorado"
-      },
-      "sameAs": [
-        "https://github.com/i3T4AN",
-        "https://www.linkedin.com/in/ethan-blair-99a3b72a2"
-      ]
+      "mainEntity": {
+        "@type": "Person",
+        "@id": "https://i3t4an.github.io/#person",
+        "name": "Ethan Blair",
+        "alternateName": "i3T4AN",
+        "url": "https://i3t4an.github.io/",
+        "email": "i3t4an8lair@gmail.com",
+        "description": "Desktop Engineer focused on enterprise systems, automation, applied AI, and software development.",
+        "jobTitle": "Desktop Engineer",
+        "affiliation": {
+          "@type": "CollegeOrUniversity",
+          "name": "University of Northern Colorado"
+        },
+        "sameAs": [
+          "https://github.com/i3T4AN",
+          "https://www.linkedin.com/in/ethan-e-blair/"
+        ]
+      }
     }
   </script>
   <script src="config.js"></script>
@@ -147,6 +155,16 @@
         </div>
       </section>
 
+      <section id="elsewhere" aria-labelledby="elsewhereTitle">
+        <div class="container">
+          <h3 id="elsewhereTitle">Elsewhere</h3>
+          <p class="elsewhere-intro">Articles, interviews, and features connected to my work.</p>
+          <div class="elsewhere-viewport" tabindex="0" aria-label="Elsewhere articles. The carousel pauses while focused or hovered.">
+            <div id="elsewhereTrack" class="elsewhere-track"></div>
+          </div>
+        </div>
+      </section>
+
       <section id="terminal" class="terminal-container">
         <div class="terminal">
           <div class="terminal-header">
@@ -166,16 +184,6 @@
               <input type="text" class="terminal-input" id="terminalInput" autocomplete="off" autocorrect="off"
                 autocapitalize="off" spellcheck="false">
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="constellation">
-        <div class="container">
-          <h3>Repo Constellation</h3>
-          <div class="constellation-shell">
-            <canvas id="repoConstellationCanvas" class="constellation-canvas" aria-label="Interactive map of featured repositories"></canvas>
-            <div id="constellationTooltip" class="constellation-tooltip">Loading repositories...</div>
           </div>
         </div>
       </section>
@@ -219,7 +227,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h3 id="modalTitle">Project README</h3>
-        <button class="modal-close" id="modalClose">&times;</button>
+        <button class="modal-close" id="modalClose" type="button" aria-label="Close project README">&times;</button>
       </div>
       <div class="modal-body" id="modalBody">
       </div>
@@ -231,12 +239,11 @@
 
   <div id="paperModal" class="modal">
     <div class="modal-content paper-modal-content">
-      <button class="modal-close paper-modal-close" id="paperModalClose" aria-label="Close paper viewer">&times;</button>
+      <button class="modal-close paper-modal-close" id="paperModalClose" type="button" aria-label="Close paper viewer">&times;</button>
       <div class="modal-body" id="paperModalBody"></div>
     </div>
   </div>
 
-  <canvas class="matrix-canvas" id="matrixCanvas"></canvas>
   <script type="module" src="assets/js/app.js"></script>
 </body>
 

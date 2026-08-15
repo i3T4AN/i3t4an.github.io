@@ -2,22 +2,20 @@ import { convertMarkdownToHTML, sanitizeHTML } from '../utils/markdown.js';
 import { initSidebar } from '../ui/sidebar.js';
 'use strict';
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+    const SITE = window.SITE;
     const els = {
         brandName: $('#brandName'), footerName: $('#footerName'), brandTag: $('#brandTag'), heroTitle: $('#heroTitle'), heroParagraph: $('#heroParagraph'),
         linkGithub: $('#linkGithub'), linkLinkedIn: $('#linkLinkedIn'), linkEmail: $('#linkEmail'),
         skillsGrid: $('#skillsGrid'), year: $('#year'), jsonld: $('#jsonld'), sort: $('#sort'),
         publishedTitle: $('#publishedTitle'), publishedGrid: $('#publishedGrid'), publishedEmpty: $('#published-empty'),
-        metaDescription: $('meta[name="description"]'), canonical: $('link[rel="canonical"]'),
-        ogType: $('meta[property="og:type"]'), ogTitle: $('meta[property="og:title"]'), ogDescription: $('meta[property="og:description"]'), ogUrl: $('meta[property="og:url"]'),
-        twitterCard: $('meta[name="twitter:card"]'), twitterTitle: $('meta[name="twitter:title"]'), twitterDescription: $('meta[name="twitter:description"]'),
-        googleSiteVerification: $('meta[name="google-site-verification"]'),
+        elsewhereTitle: $('#elsewhereTitle'), elsewhereTrack: $('#elsewhereTrack'),
         header: $('header'), filters: $('#filters'), gridDev: $('#grid-dev'), gridAI: $('#grid-ai'), gridEnt: $('#grid-enterprise'),
         projectsEmpty: $('#projects-empty'), themeToggle: $('#themeToggle'), themeIcon: $('#themeIcon'), themeText: $('#themeText'), brandLogo: $('#brandLogo'),
         langImg: null, streakImg: null, starsTotal: null, constellationHoverOutput: null,
         terminalBody: $('#terminalBody'), terminalInput: $('#terminalInput'), terminalOutput: $('#terminalOutput'),
-        terminalClose: $('#terminalClose'), terminalMaximize: $('#terminalMaximize'), matrixCanvas: $('#matrixCanvas'),
+        terminalClose: $('#terminalClose'), terminalMaximize: $('#terminalMaximize'),
         terminalTitle: $('#terminalTitle'), currentPrompt: $('#currentPrompt'),
-        constellationCanvas: $('#repoConstellationCanvas'), constellationTooltip: $('#constellationTooltip'),
+        constellationCanvas: null,
         readmeModal: $('#readmeModal'), modalTitle: $('#modalTitle'), modalBody: $('#modalBody'), modalClose: $('#modalClose'), modalGitHubLink: $('#modalGitHubLink'),
         paperModal: $('#paperModal'), paperModalBody: $('#paperModalBody'), paperModalClose: $('#paperModalClose'),
         sidebarToggle: $('#sidebarToggle'), sectionSidebar: $('#sectionSidebar'), sidebarClose: $('#sidebarClose'),
@@ -72,10 +70,6 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             this.historyIndex = 0;
             this.draftInput = '';
             this.maxOutputLines = 300;
-            this.matrixActive = false;
-            this.matrixTimeout = null;
-            this.matrixRafId = null;
-            this.matrixResizeHandler = null;
             this.terminal = $('.terminal');
             this.commands = {
                 '--help': () => this.showHelp(),
@@ -86,7 +80,6 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
                 'project': a => this.showProject(a),
                 'links': () => this.showLinks(),
                 'theme': a => this.setTheme(a),
-                'matrix': a => this.setMatrix(a),
                 'clear': () => this.clear(),
                 'history': () => this.showHistory(),
                 'palette': () => this.showPalette(),
@@ -171,7 +164,6 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         }
 
         init() {
-            const SITE = window.SITE;
             els.terminalClose?.setAttribute('aria-pressed', 'false');
             els.terminalMaximize?.setAttribute('aria-pressed', 'false');
             els.terminalClose?.addEventListener('click', () => {
@@ -207,7 +199,6 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         }
 
         exec(cmd) {
-            const SITE = window.SITE;
             const trimmed = cmd.trim();
             if (!trimmed) return;
             this.history.push(trimmed);
@@ -245,20 +236,18 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         }
 
         showHelp() {
-            const SITE = window.SITE;
             this.output(SITE.terminal.messages.commandsTitle, 'help');
             Object.entries(SITE.terminal.commands).forEach(([k, v]) => this.output(`  ${k.padEnd(20)} ${v}`));
             this.output(`  ${'help'.padEnd(20)} Alias for --help`);
         }
 
         showAbout() {
-            const SITE = window.SITE;
             this.output(SITE.hero.title, 'help');
             this.output(`\n${decodeHTML(sanitizeHTML(SITE.hero.paragraph))}`, 'text', true);
         }
 
         showSkills() {
-            const SITE = window.SITE, m = SITE.terminal.messages;
+            const m = SITE.terminal.messages;
             this.output(m.skillsTitle, 'help');
             [['development', m.developmentTitle], ['automation', m.automationTitle], ['systems', m.systemsTitle]].forEach(([k, t]) => {
                 if (!Array.isArray(SITE.skills[k]) || !SITE.skills[k].length) return;
@@ -268,7 +257,6 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         }
 
         showProjects() {
-            const SITE = window.SITE;
             this.output(SITE.terminal.messages.projectsInfo, 'help');
             this.output('\nAvailable repositories:\n');
             SITE.repos.forEach(r => { const p = parseRepoPath(r.url); if (p) this.output(`  ${p.name}\n`) });
@@ -276,7 +264,6 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         }
 
         showProject(args) {
-            const SITE = window.SITE;
             if (!args.length) { this.output(SITE.terminal.messages.projectUsage, 'error'); return }
             const repo = SITE.repos.find(r => { const p = parseRepoPath(r.url); return p && p.name.toLowerCase() === args[0].toLowerCase() });
             if (repo) {
@@ -287,78 +274,30 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         }
 
         showLinks() {
-            const SITE = window.SITE, s = SITE.socials;
+            const s = SITE.socials;
             this.output(SITE.terminal.messages.connectTitle, 'help');
             this.output(`\nGitHub:   ${s.github}\nLinkedIn: ${s.linkedin}\nEmail:    ${s.email.replace('mailto:', '')}`, 'text', true);
         }
 
         setTheme(args) {
-            const SITE = window.SITE, t = args[0]?.toLowerCase();
+            const t = args[0]?.toLowerCase();
             if (['light', 'dark', 'auto'].includes(t)) {
                 setAppTheme(t);
                 this.output(SITE.terminal.messages.themeSet.replace('{theme}', t), 'success');
             } else this.output(SITE.terminal.messages.themeUsage, 'error');
         }
 
-        setMatrix(args) {
-            const SITE = window.SITE, m = args[0]?.toLowerCase();
-            if (m === 'on') { this.activateMatrix(); this.output(SITE.terminal.messages.matrixOn, 'success') }
-            else if (m === 'off') { this.deactivateMatrix(); this.output(SITE.terminal.messages.matrixOff, 'success') }
-            else this.output(SITE.terminal.messages.matrixUsage, 'error');
-        }
-
-        activateMatrix() {
-            const SITE = window.SITE;
-            if (this.matrixActive) return;
-            this.matrixActive = true;
-            const c = els.matrixCanvas, ctx = c.getContext('2d');
-            const resize = () => { c.width = innerWidth; c.height = innerHeight };
-            c.classList.add('active');
-            resize();
-            this.matrixResizeHandler = resize;
-            addEventListener('resize', resize, { passive: true });
-            const chars = SITE.terminal.matrix.characters, size = 14;
-            let drops = Array(Math.floor(c.width / size)).fill(1);
-            const draw = () => {
-                if (!this.matrixActive) return;
-                if (drops.length !== Math.floor(c.width / size)) drops = Array(Math.floor(c.width / size)).fill(1);
-                ctx.fillStyle = 'rgba(0,0,0,0.05)';
-                ctx.fillRect(0, 0, c.width, c.height);
-                ctx.fillStyle = '#818cf8';
-                ctx.font = `${size}px monospace`;
-                drops.forEach((y, i) => {
-                    ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * size, y * size);
-                    if (y * size > c.height && Math.random() > .975) drops[i] = 0;
-                    drops[i]++;
-                });
-                this.matrixRafId = requestAnimationFrame(draw);
-            };
-            draw();
-            this.matrixTimeout = setTimeout(() => this.deactivateMatrix(), SITE.terminal.matrix.duration);
-        }
-
-        deactivateMatrix() {
-            this.matrixActive = false;
-            els.matrixCanvas.classList.remove('active');
-            if (this.matrixRafId) { cancelAnimationFrame(this.matrixRafId); this.matrixRafId = null }
-            if (this.matrixTimeout) { clearTimeout(this.matrixTimeout); this.matrixTimeout = null }
-            if (this.matrixResizeHandler) {
-                removeEventListener('resize', this.matrixResizeHandler);
-                this.matrixResizeHandler = null;
-            }
-        }
-
         clear() { els.terminalOutput.innerHTML = '' }
 
         showHistory() {
-            const SITE = window.SITE, h = this.history.slice(-20);
+            const h = this.history.slice(-20);
             this.output(SITE.terminal.messages.historyTitle, 'help');
             this.output('\n');
             h.forEach((c, i) => this.output(`  ${(this.history.length - h.length + i + 1).toString().padStart(3)}  ${c}\n`));
         }
 
         showPalette() {
-            const SITE = window.SITE, vars = ['--bg-primary', '--bg-secondary', '--text-primary', '--text-secondary', '--accent', '--accent-hover', '--border', '--shadow-glow'];
+            const vars = ['--bg-primary', '--bg-secondary', '--text-primary', '--text-secondary', '--accent', '--accent-hover', '--border', '--shadow-glow'];
             this.output(SITE.terminal.messages.paletteTitle, 'help');
             this.output('\n');
             const style = getComputedStyle(document.documentElement);
@@ -366,7 +305,6 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         }
 
         showWhoami() {
-            const SITE = window.SITE;
             const rawArt = String(SITE.terminal.asciiArt || '').replace(/\r/g, '');
             const lines = rawArt.split('\n');
             while (lines.length && !lines[0].trim()) lines.shift();
@@ -378,9 +316,6 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             }, Infinity);
             const art = minIndent === Infinity ? '' : lines.map(line => line.slice(minIndent)).join('\n');
             this.output(art, 'ascii');
-            this.output('\n');
-            this.output(SITE.terminal.whoami[Math.floor(Math.random() * SITE.terminal.whoami.length)], 'help');
-            this.output(`\n${SITE.terminal.messages.taglinePrefix} ${SITE.tagline}`, 'text', true);
         }
     }
 
@@ -389,8 +324,6 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         enterprise: 'Enterprise Systems / Cloud',
         dev: 'Programming / Development'
     };
-    const ENABLE_CONSTELLATION = true;
-
     class RepoConstellation {
         constructor(canvas, tooltipEl, onSelectRepo) {
             this.canvas = canvas;
@@ -405,7 +338,6 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             this.width = 0;
             this.height = 0;
             this.lastTooltip = '';
-            this.defaultTooltip = '';
             this.tooltipBaseFontPx = 0;
             this.tooltipMinFontPx = 7;
             this.reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -449,7 +381,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             }
             this.refreshPalette();
             this.resize();
-            this.setTooltip(this.defaultTooltip);
+            this.setTooltip('');
             this.drawBackground();
         }
 
@@ -560,7 +492,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
                 };
             });
             this.links = this.buildLinks();
-            this.setTooltip(this.defaultTooltip);
+            this.setTooltip('');
             this.stop();
             this.render(performance.now());
             this.ensureFrame();
@@ -608,7 +540,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         onPointerLeave() {
             this.pointer.inside = false;
             this.hoveredNode = null;
-            this.setTooltip(this.defaultTooltip);
+            this.setTooltip('');
             this.render(performance.now());
         }
 
@@ -616,7 +548,6 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             if (typeof this.onSelectRepo !== 'function') return;
             const targetNode = this.hoveredNode;
             if (!targetNode) return;
-            this.hoveredNode = targetNode;
             this.onSelectRepo(targetNode.repo);
         }
 
@@ -736,7 +667,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
                 const hoveredRepo = this.hoveredNode.repo;
                 this.setTooltip(`${hoveredRepo.name} | ${this.hoveredNode.language} | ${REPO_GROUP_LABELS[this.hoveredNode.group] || this.hoveredNode.group} | ${formatNumber(this.hoveredNode.stars)} stars | Pushed ${formatRepoLastUpdated(hoveredRepo)}`);
             } else {
-                this.setTooltip(this.defaultTooltip);
+                this.setTooltip('');
             }
         }
 
@@ -759,22 +690,32 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
     }
 
     const injectJSONLD = () => {
-        const s = window.SITE;
+        const s = SITE;
         const profile = s.profile || {};
-        const data = {
-            "@context": "https://schema.org",
+        const siteUrl = s.url || location.href;
+        const person = {
             "@type": "Person",
+            "@id": `${siteUrl}#person`,
             name: s.name,
-            url: s.url || location.href,
-            email: s.socials.email,
+            alternateName: profile.githubUsername,
+            url: siteUrl,
+            email: String(s.socials.email || '').replace(/^mailto:/i, ''),
+            description: s.hero.paragraph,
             sameAs: [s.socials.github, s.socials.linkedin],
             knowsAbout: [...s.skills.development, ...s.skills.automation, ...s.skills.systems]
                 .flatMap(x => x.split(/\s*,\s*/))
                 .filter((v, i, a) => a.indexOf(v) === i)
                 .slice(0, 15)
         };
-        if (profile.affiliation) data.affiliation = { "@type": "CollegeOrUniversity", name: profile.affiliation };
-        if (profile.jobTitle) data.jobTitle = profile.jobTitle;
+        if (profile.affiliation) person.affiliation = { "@type": "CollegeOrUniversity", name: profile.affiliation };
+        if (profile.jobTitle) person.jobTitle = profile.jobTitle;
+        const data = {
+            "@context": "https://schema.org",
+            "@type": "ProfilePage",
+            "@id": `${siteUrl}#profile`,
+            url: siteUrl,
+            mainEntity: person
+        };
         if (els.jsonld) { els.jsonld.type = 'application/ld+json'; els.jsonld.textContent = JSON.stringify(data) }
     };
 
@@ -848,26 +789,6 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         }
     };
 
-    const applyPageMeta = () => {
-        const s = window.SITE;
-        const seo = s.seo;
-        if (!seo) return;
-        const title = seo.title || s.name || document.title;
-        const description = seo.description || '';
-        const canonicalUrl = s.url || '';
-        document.title = title;
-        els.metaDescription?.setAttribute('content', description);
-        els.canonical?.setAttribute('href', canonicalUrl);
-        if (seo.ogType) els.ogType?.setAttribute('content', seo.ogType);
-        els.ogTitle?.setAttribute('content', seo.ogTitle || title);
-        els.ogDescription?.setAttribute('content', seo.ogDescription || description);
-        els.ogUrl?.setAttribute('content', seo.ogUrl || canonicalUrl);
-        if (seo.twitterCard) els.twitterCard?.setAttribute('content', seo.twitterCard);
-        els.twitterTitle?.setAttribute('content', seo.twitterTitle || seo.ogTitle || title);
-        els.twitterDescription?.setAttribute('content', seo.twitterDescription || seo.ogDescription || description);
-        els.googleSiteVerification?.setAttribute('content', seo.googleSiteVerification || '');
-    };
-
     const getGitHubUsername = site => {
         const explicit = site.profile?.githubUsername?.trim();
         if (explicit) return explicit;
@@ -913,31 +834,25 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             `https://api.github.com/repos/${owner}/${name}`,
             { Accept: 'application/vnd.github+json' },
             d => ({
-                full_name: d.full_name,
                 html_url: d.html_url,
                 description: d.description || formatRepoName(name),
                 language: d.language || 'Other',
                 stargazers_count: d.stargazers_count || 0,
                 pushed_at: d.pushed_at || null,
-                updated_at: d.updated_at || null,
                 default_branch: d.default_branch || '',
-                name,
-                error: false
+                name
             }),
             CACHE_TTL_MS
         );
         if (repo) return repo;
         return {
-            full_name: `${owner}/${name}`,
             html_url: `https://github.com/${owner}/${name}`,
             description: formatRepoName(name),
             language: 'Other',
             stargazers_count: 0,
             pushed_at: null,
-            updated_at: null,
             default_branch: '',
-            name,
-            error: true
+            name
         };
     };
     const animateNumber = (el, from, to, duration = 850) => {
@@ -1001,7 +916,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         const parts = m?.issued?.['date-parts']?.[0] || m?.published?.['date-parts']?.[0] || m?.created?.['date-parts']?.[0];
         return Array.isArray(parts) && parts[0] ? String(parts[0]) : '';
     };
-    const getCrossrefMailto = () => String(window.SITE?.socials?.email || '')
+    const getCrossrefMailto = () => String(SITE?.socials?.email || '')
         .replace(/^mailto:/i, '')
         .trim();
     const fetchPaperByDoi = async doi => {
@@ -1134,7 +1049,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         document.documentElement.classList.toggle('theme-dark', isDark);
         updateThemeButton(isDark);
         updateGitHubStats(isDark);
-        if (ENABLE_CONSTELLATION && repoConstellation) {
+        if (repoConstellation) {
             try {
                 repoConstellation.refreshPalette();
             } catch {
@@ -1142,14 +1057,14 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             }
         }
     };
-    const persistTheme = theme => localStorage.setItem('theme', theme);
+    const persistTheme = theme => cacheStorage?.setItem('theme', theme);
     const setAppTheme = (theme, persist = true) => {
-        if (theme === 'auto') { localStorage.removeItem('theme'); applyTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); return }
+        if (theme === 'auto') { cacheStorage?.removeItem('theme'); applyTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); return }
         if (persist) persistTheme(theme);
         applyTheme(theme);
     };
     const initTheme = () => {
-        const saved = localStorage.getItem('theme');
+        const saved = cacheStorage?.getItem('theme');
         setAppTheme(saved || 'dark', false);
         els.themeToggle?.addEventListener('click', () => {
             const theme = document.documentElement.classList.contains('theme-dark') ? 'light' : 'dark';
@@ -1182,11 +1097,6 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         let rafId = 0;
 
         const apply = value => root.style.setProperty('--bg-texture-pan-x', `${value.toFixed(3)}%`);
-        const stop = () => {
-            if (!rafId) return;
-            cancelAnimationFrame(rafId);
-            rafId = 0;
-        };
         const tick = () => {
             rafId = 0;
             const delta = targetPercent - renderedPercent;
@@ -1204,7 +1114,6 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         addEventListener('scroll', updateTarget, { passive: true });
         addEventListener('resize', updateTarget, { passive: true });
         addEventListener('orientationchange', updateTarget, { passive: true });
-        stop();
         targetPercent = 0;
         renderedPercent = 0;
         apply(0);
@@ -1218,94 +1127,28 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         let visible = false;
         let needsPaint = true;
         let rafId = 0;
-        let lastMoveAt = 0;
-        const idleWindowMs = 120;
         const cursorScale = 0.5;
-        let hotspotX = 15;
-        let hotspotY = 15;
-        const detectCursorHotspot = image => {
-            try {
-                const w = image.naturalWidth || 0;
-                const h = image.naturalHeight || 0;
-                if (!w || !h) return null;
-                const canvas = document.createElement('canvas');
-                canvas.width = w;
-                canvas.height = h;
-                const ctx = canvas.getContext('2d', { willReadFrequently: true });
-                if (!ctx) return null;
-                ctx.drawImage(image, 0, 0, w, h);
-                const data = ctx.getImageData(0, 0, w, h).data;
-                let maxAlpha = 0;
-                for (let i = 3; i < data.length; i += 4) {
-                    if (data[i] > maxAlpha) maxAlpha = data[i];
-                }
-                if (!maxAlpha) return null;
-                const alphaThreshold = Math.max(1, Math.floor(maxAlpha * 0.8));
-                let minSum = Infinity;
-                let sampleCount = 0;
-                let sumX = 0;
-                let sumY = 0;
-                for (let py = 0; py < h; py++) {
-                    for (let px = 0; px < w; px++) {
-                        const alpha = data[((py * w) + px) * 4 + 3];
-                        if (alpha < alphaThreshold) continue;
-                        const sum = px + py;
-                        if (sum < minSum) {
-                            minSum = sum;
-                            sampleCount = 1;
-                            sumX = px;
-                            sumY = py;
-                        } else if (sum === minSum) {
-                            sampleCount++;
-                            sumX += px;
-                            sumY += py;
-                        }
-                    }
-                }
-                if (!sampleCount) return null;
-                return {
-                    x: (sumX / sampleCount) * cursorScale,
-                    y: (sumY / sampleCount) * cursorScale
-                };
-            } catch {
-                return null;
-            }
-        };
+        const hotspotX = 2.75;
+        const hotspotY = 2.75;
 
         cursor.id = 'cursor-overlay';
         cursor.alt = '';
         cursor.setAttribute('aria-hidden', 'true');
         cursor.draggable = false;
-        cursor.src = './cursor.png';
-        cursor.onerror = () => {
-            if (!cursor.dataset.fallbackUsed) {
-                cursor.dataset.fallbackUsed = '1';
-                cursor.src = './Cursor.png';
-            }
-        };
-        cursor.onload = () => {
-            const w = cursor.naturalWidth || 60;
-            const h = cursor.naturalHeight || 60;
-            const measured = detectCursorHotspot(cursor);
-            hotspotX = measured?.x ?? (w * cursorScale) / 2;
-            hotspotY = measured?.y ?? (h * cursorScale) / 2;
-            needsPaint = true;
-            schedulePaint();
-        };
+        cursor.src = './Cursor.png';
 
         const schedulePaint = () => {
             if (rafId) return;
             rafId = requestAnimationFrame(paint);
         };
 
-        const paint = now => {
+        const paint = () => {
             rafId = 0;
             if (needsPaint) {
                 cursor.style.transform = `translate3d(${x - hotspotX}px, ${y - hotspotY}px, 0) scale(${cursorScale})`;
                 cursor.style.opacity = visible ? '1' : '0';
                 needsPaint = false;
             }
-            if (visible && (now - lastMoveAt) < idleWindowMs) schedulePaint();
         };
 
         const onMove = event => {
@@ -1313,7 +1156,6 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             y = event.clientY;
             visible = true;
             needsPaint = true;
-            lastMoveAt = performance.now();
             schedulePaint();
         };
 
@@ -1337,7 +1179,9 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             <h4>GitHub Activity</h4>
             <div class="github-stats">
                 <img id="githubStatsImg" src="${langSrc}" alt="${firstName}'s GitHub Language Stats" loading="lazy">
-                <div id="constellationHost" aria-hidden="true"></div>
+                <div class="constellation-shell">
+                    <canvas id="repoConstellationCanvas" class="constellation-canvas" aria-label="Interactive map of featured repositories"></canvas>
+                </div>
                 <img id="githubStreakImg" src="${streakSrc}" alt="${firstName}'s GitHub Streak Stats" loading="lazy">
             </div>
             <div class="github-stars-total">
@@ -1479,7 +1323,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         return card;
     };
     const renderPublishedWork = papers => {
-        const cfg = window.SITE.publishedWork || {};
+        const cfg = SITE.publishedWork || {};
         if (els.publishedTitle) els.publishedTitle.textContent = cfg.sectionTitle || 'Published Work';
         if (!els.publishedGrid) return;
         els.publishedGrid.innerHTML = '';
@@ -1497,10 +1341,96 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         requestAnimationFrame(animateCards);
     };
     const loadPublishedWork = async () => {
-        const items = Array.isArray(window.SITE?.publishedWork?.items) ? window.SITE.publishedWork.items : [];
+        const items = Array.isArray(SITE?.publishedWork?.items) ? SITE.publishedWork.items : [];
         if (!items.length) { renderPublishedWork([]); return }
         const papers = (await Promise.all(items.map(buildPublishedEntry))).filter(Boolean);
         renderPublishedWork(papers);
+    };
+
+    const prettifyHost = url => {
+        try {
+            return new URL(url).hostname.replace(/^www\./, '').split('.')[0]
+                .replace(/[-_]/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+        } catch {
+            return 'Elsewhere';
+        }
+    };
+    const prettifyPath = url => {
+        try {
+            const path = decodeURIComponent(new URL(url).pathname).replace(/\/$/, '');
+            const segment = path.split('/').filter(Boolean).pop() || '';
+            return segment.replace(/[-_]/g, ' ').replace(/\b\w/g, char => char.toUpperCase()) || prettifyHost(url);
+        } catch {
+            return prettifyHost(url);
+        }
+    };
+    const getElsewhereTitle = entry => {
+        const title = String(entry.title || '').trim();
+        const site = String(entry.siteName || '').trim();
+        if (!title || title.toLowerCase() === site.toLowerCase() || /making sure you('|’)re not a bot/i.test(title)) return prettifyPath(entry.url);
+        return title;
+    };
+    const getElsewhereSiteName = entry => String(entry.siteName || prettifyHost(entry.url))
+        .split(/\s[|–—-]\s/)[0]
+        .trim();
+    const buildElsewhereCard = entry => {
+        const card = document.createElement('a');
+        card.className = 'elsewhere-card';
+        card.href = entry.url;
+        card.target = '_blank';
+        card.rel = 'noopener';
+        const siteName = getElsewhereSiteName(entry);
+        const articleTitle = getElsewhereTitle(entry);
+        card.setAttribute('aria-label', `Open ${articleTitle} on ${siteName}`);
+
+        const image = document.createElement('img');
+        image.className = 'elsewhere-card-image';
+        image.src = entry.image || entry.icon || '';
+        image.alt = '';
+        image.loading = 'lazy';
+        image.addEventListener('error', () => {
+            if (entry.icon && !image.dataset.iconFallback) {
+                image.dataset.iconFallback = 'true';
+                image.src = entry.icon;
+                return;
+            }
+            image.hidden = true;
+            card.classList.add('elsewhere-card-no-image');
+        });
+
+        const copy = document.createElement('div');
+        copy.className = 'elsewhere-card-copy';
+        const site = document.createElement('p');
+        site.className = 'elsewhere-card-site';
+        site.textContent = siteName;
+        const title = document.createElement('h4');
+        title.textContent = articleTitle;
+        copy.append(site, title);
+        if (image.src) card.append(image);
+        card.append(copy);
+        return card;
+    };
+    const renderElsewhere = entries => {
+        const cfg = SITE.elsewhere || {};
+        if (els.elsewhereTitle) els.elsewhereTitle.textContent = cfg.sectionTitle || 'Elsewhere';
+        if (!els.elsewhereTrack || !entries.length) return;
+        els.elsewhereTrack.innerHTML = '';
+        const cards = entries.map(buildElsewhereCard);
+        const duplicateCards = entries.map(buildElsewhereCard);
+        els.elsewhereTrack.append(...cards, ...duplicateCards);
+    };
+    const loadElsewhere = async () => {
+        const urls = Array.isArray(SITE?.elsewhere?.items) ? SITE.elsewhere.items : [];
+        if (!urls.length) return;
+        try {
+            const response = await fetch('./assets/data/elsewhere.json', { cache: 'no-cache' });
+            if (!response.ok) throw new Error(String(response.status));
+            const storedEntries = await response.json();
+            const byUrl = new Map(storedEntries.map(entry => [entry.url, entry]));
+            renderElsewhere(urls.map(url => byUrl.get(url) || { url, siteName: prettifyHost(url), title: new URL(url).pathname.replace(/^\//, '') || url }));
+        } catch {
+            renderElsewhere(urls.map(url => ({ url, siteName: prettifyHost(url), title: new URL(url).pathname.replace(/^\//, '') || url })));
+        }
     };
 
     const sorters = {
@@ -1513,7 +1443,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
     const animateCards = () => $$('.card').forEach(c => { c.classList.remove('animate-in'); observer.observe(c) });
 
     const renderProjects = state => {
-        const SITE = window.SITE, groups = { dev: [], ai: [], enterprise: [] };
+        const groups = { dev: [], ai: [], enterprise: [] };
         for (const r of state.repos) if (state.filter === 'All' || r.language === state.filter) groups[r.__group].push(r);
         Object.keys(groups).forEach(k => groups[k].sort(sorters[state.sort]));
         const map = { ai: els.gridAI, enterprise: els.gridEnt, dev: els.gridDev };
@@ -1526,13 +1456,12 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
     };
 
     const loadRepos = async state => {
-        const SITE = window.SITE;
         const results = (await Promise.all(SITE.repos.map(async item => { const p = parseRepoPath(item.url); if (!p) return null; const d = await fetchRepo(p.owner, p.name); d.__group = item.group; return d }))).filter(Boolean);
         results.forEach(d => { if (d.language) state.languages.add(d.language) });
         state.repos = results;
         setFeaturedStarsTotal(results);
         renderProjects(state);
-        if (ENABLE_CONSTELLATION && repoConstellation) {
+        if (repoConstellation) {
             try {
                 repoConstellation.setRepos(results);
             } catch {
@@ -1562,8 +1491,6 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
 
     const init = () => {
         initScrollStartAtTop();
-        const SITE = window.SITE;
-        applyPageMeta();
         const githubUsername = getGitHubUsername(SITE);
         GH_LANG_SOURCES = buildGitHubLangSources(githubUsername);
         GH_STREAK_SOURCES = buildGitHubStreakSources(githubUsername);
@@ -1572,20 +1499,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         els.skillsGrid.innerHTML = '';
         const statsCol = buildGitHubActivityCol(SITE.name.split(' ')[0], GH_LANG_SOURCES.light[0] || '', GH_STREAK_SOURCES.light[0] || '');
         els.skillsGrid.appendChild(statsCol); els.langImg = $('#githubStatsImg'); els.streakImg = $('#githubStreakImg'); els.starsTotal = $('#githubStarsTotal'); els.constellationHoverOutput = $('#constellationHoverOutput');
-        const constellationSection = $('#constellation');
-        const constellationShell = constellationSection?.querySelector('.constellation-shell');
-        const constellationHost = $('#constellationHost', statsCol);
-        if (constellationHost && constellationShell) {
-            constellationHost.replaceWith(constellationShell);
-            constellationSection.hidden = true;
-            constellationSection.setAttribute('aria-hidden', 'true');
-        }
         els.constellationCanvas = $('#repoConstellationCanvas');
-        els.constellationTooltip = $('#constellationTooltip');
-        if (els.constellationTooltip) {
-            els.constellationTooltip.hidden = true;
-            els.constellationTooltip.setAttribute('aria-hidden', 'true');
-        }
         const skillSections = [
             [SITE.terminal.messages.developmentTitle, SITE.skills.development],
             [SITE.terminal.messages.automationTitle, SITE.skills.automation],
@@ -1601,18 +1515,14 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         initTextureParallax();
         initCursorOverlay();
         initTheme(); initHeaderScroll();
-        if (ENABLE_CONSTELLATION) {
-            try {
-                repoConstellation = new RepoConstellation(
-                    els.constellationCanvas,
-                    els.constellationHoverOutput,
-                    repo => focusRepoCard(repo)
-                );
-            } catch {
-                repoConstellation = null;
-            }
-        } else if (els.constellationTooltip) {
-            els.constellationTooltip.textContent = 'Constellation unavailable right now.';
+        try {
+            repoConstellation = new RepoConstellation(
+                els.constellationCanvas,
+                els.constellationHoverOutput,
+                repo => focusRepoCard(repo)
+            );
+        } catch {
+            repoConstellation = null;
         }
         els.sort?.addEventListener('change', e => { state.sort = e.target.value; renderProjects(state) });
         injectJSONLD(); initModal();
@@ -1620,6 +1530,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         if (els.currentPrompt) els.currentPrompt.textContent = SITE.terminal.prompt;
         new Terminal();
         loadPublishedWork().catch(() => renderPublishedWork([]));
+        loadElsewhere();
         loadRepos(state).catch(() => {
             els.projectsEmpty.hidden = false;
             setStarsTotal(NaN, false);

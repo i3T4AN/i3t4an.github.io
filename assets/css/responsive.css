@@ -42,10 +42,15 @@
     }
 }
 
+@media(max-width:1024px) {
+    .elsewhere-card {
+        flex-basis: calc((100cqi - 2.4rem) / 3)
+    }
+}
+
 @media(max-width:768px) {
     :root {
-        --sidebar-width-relative: min(76vw, 17rem);
-        --sidebar-content-offset: calc(var(--sidebar-width-relative) + .65rem)
+        --sidebar-width-relative: min(76vw, 17rem)
     }
 
     .hero h2 {
@@ -58,6 +63,10 @@
 
     #publishedGrid {
         grid-template-columns: 1fr
+    }
+
+    .elsewhere-card {
+        flex-basis: calc((100cqi - 1.6rem) / 2)
     }
 
     .controls {
@@ -210,6 +219,10 @@
 }
 
 @media(max-width:480px) {
+    .elsewhere-card {
+        flex-basis: calc(100cqi - .8rem)
+    }
+
     .terminal {
         height: 350px;
         font-size: .75rem

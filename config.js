@@ -14,7 +14,7 @@ window.SITE = {
     },
     socials: {
         github: "https://github.com/i3T4AN",
-        linkedin: "https://www.linkedin.com/in/ethan-blair-99a3b72a2",
+        linkedin: "https://www.linkedin.com/in/ethan-e-blair/",
         email: "mailto:i3t4an8lair@gmail.com"
     },
     skills: {
@@ -107,7 +107,6 @@ window.SITE = {
             "Cross-platform System Reporting",
             "LDAP",
             "Q-SYS Level 0 & Level 1",
-            "LanSchool",
             "Intune Fundamentals"
         ]
     },
@@ -159,12 +158,41 @@ window.SITE = {
             { doi: "10.5281/zenodo.18830835" }
         ]
     },
+    elsewhere: {
+        sectionTitle: "Elsewhere",
+        items: [
+            "https://www.unco.edu/news/articles/from-arizona-to-africa-unc-students-score-transformative-summer-internships/",
+            "https://www.newswise.com/articles/from-arizona-to-africa-unc-students-score-transformative-summer-internships",
+            "https://wefitec.com/interning-at-wefi-ethan-blair/",
+            "https://wefitec.com/creating-a-legacy-of-learning-at-wefi/",
+            "https://trendshift.io/repositories/107470",
+            "https://enterprisedna.co/resources/ai-pulse/ai-pulse-2026-08-08-kadath-a-day-old-repo-lets-agent-populations-breed-mutate-an/",
+            "https://enterprisedna.co/resources/ai-pulse/ai-pulse-2026-08-09-the-claude-code-plugin-ecosystem-keeps-producing-fast-moving/",
+            "https://www.yougeshareac.com/tools/kadath-evolutionary-multi-agent-runtime",
+            "https://skywork.ai/skypage/en/ai-security-kali-linux/1981566739232649216",
+            "https://www.pulsemcp.com/servers/i3t4an-kali-linux",
+            "https://playbooks.com/mcp/i3t4an-kali-linux",
+            "https://mcpmarket.com/server/kali-linux",
+            "https://glama.ai/mcp/servers/i3T4AN/evillimiter-mcp-server",
+            "https://mcpmarket.com/server/evillimiter",
+            "https://mcpxhub.io/mcps/category/hardware/page/5/",
+            "https://glama.ai/mcp/servers/i3T4AN/Archivist-MCP",
+            "https://mcpmarket.com/server/archivist",
+            "https://www.mcpgee.com/servers/archivist-mcp",
+            "https://mcpscoreboard.com/?page=517&sort=-score",
+            "https://mcpmarket.com/server/vector-knowledge-base",
+            "https://www.mcp-gallery.jp/mcp/github/i3t4an/vector-knowledge-base",
+            "https://mcpmarket.com/server/claude-gemini-bridge",
+            "https://awesome.ecosyste.ms/projects/github.com%2Ftr4m0ryp%2Ftr4mpass"
+        ]
+    },
     navigation: {
         title: "Sections",
         ariaLabel: "Homepage section links",
         items: [
             { label: "Technical Skills", href: "#skills" },
             { label: "Published Work", href: "#published" },
+            { label: "Elsewhere", href: "#elsewhere" },
             { label: "Terminal", href: "#terminal" },
             {
                 label: "Featured Projects",
@@ -264,58 +292,6 @@ window.SITE = {
           {#{{[][{:.......................................:>*++)><<{%#}[[[]](<<>^^=+][^+=-............(#<}}(({%@{{##%%%@@@*#(*%@%##{##{{]([{                                                                                                                                                                                                                                                                                           
                                                                                                                                                                 
 `,
-        whoami: [
-            "I automate repetitive tasks so I can focus on creating new repetitive tasks.",
-            "Enterprise IT: where \"quick fix\" means \"new policy plus three scripts.\"",
-            "I write PowerShell so I don't have to remote in ever again.",
-            "I build cross-platform tools and disappoint all operating systems equally.",
-            "My favorite cloud pattern is \"works on-prem too.\"",
-            "I convert manual SOPs into scripts and panic into logs.",
-            "I make boring tasks disappear, then get assigned exciting outages.",
-            "I treat production like a petting zoo: look carefully, touch nothing.",
-            "I build admin tooling for people who are one ticket away from a career change.",
-            "My scripts are idempotent; my sleep schedule is not.",
-            "I turn \"just click through it\" into \"run this once.\"",
-            "I speak fluent regex and moderate shell sarcasm.",
-            "I write automation that survives Mondays.",
-            "I fix legacy systems with modern tools and ancient patience.",
-            "If it needs 14 clicks, it needs one command.",
-            "I keep enterprise workflows stable and my test environments unstable.",
-            "I do root-cause analysis and occasionally root-cause archaeology.",
-            "I build AI agents with guardrails because confidence is not accuracy.",
-            "I wire MCP servers to real workflows so demos can become jobs.",
-            "My bots escalate less than people do.",
-            "I trust automation, then verify like a paranoid auditor.",
-            "I parse logs for a living and mixed signals for free.",
-            "I turn tribal knowledge into scripts before the expert goes on PTO.",
-            "I optimize for fewer midnight pages and fewer \"per my last email\" threads.",
-            "I like systems design the way others like horror films.",
-            "I build tooling that makes incidents shorter and postmortems longer.",
-            "I automate onboarding so nobody has to remember the secret checkbox.",
-            "I ship practical code: no buzzwords, just fewer tickets.",
-            "I've debugged enough policy conflicts to qualify as conflict resolution.",
-            "I use AI to speed up work, not to generate new work.",
-            "My CLI tools are friendlier than most enterprise portals.",
-            "I write documentation like backups: best before disaster.",
-            "I replace manual workflows with scripts and vague ownership with timestamps.",
-            "I make dashboards for managers and scripts for reality.",
-            "I design solutions that are boring in production and exciting in commits.",
-            "I build resilient automations and emotionally fragile prototypes.",
-            "I standardize the chaos, then version it.",
-            "I do DevOps for environments that still fax each other spiritually.",
-            "I make complex systems simpler, then explain why they're still complex.",
-            "My definition of \"done\" includes rollback instructions and coffee.",
-            "I migrated from TempleOS to Hannah Montana Linux because Terry dropped Threadripper support.",
-            "I run Chaos Monkey in prod, but only on Fridays for spiritual growth.",
-            "I set `chmod 777` once in 2019 and I still hear security whispering my name.",
-            "I containerized the printer driver and now the printer is somehow in Kubernetes.",
-            "I replaced standups with `tail -f` and team morale improved by 3%.",
-            "I asked Copilot for a hotfix and it generated a legally binding prophecy.",
-            "I built an AI agent to answer tickets and it now requests PTO.",
-            "I enabled verbose logging and accidentally invented a new religion.",
-            "I treat merge conflicts as couples therapy between branches.",
-            "I wrote one AppleScript and now macOS asks me for emotional consent before deploying."
-        ],
         commands: {
             '--help': 'Show list of all commands with one-line summaries',
             'about': 'Print hero title and paragraph',
@@ -324,11 +300,10 @@ window.SITE = {
             'project': 'Show details for single project',
             'links': 'Print GitHub, LinkedIn, and email links',
             'theme': 'Toggle theme',
-            'matrix': 'Enable/disable code-rain effect',
             'clear': 'Clear the terminal screen',
             'history': 'List last 20 commands',
             'palette': 'Show current CSS variables',
-            'whoami': 'Return one-liner and tagline'
+            'whoami': 'Print ASCII portrait'
         },
         messages: {
             commandNotFound: "Command not found: {cmd}. Type '--help' for available commands.",
@@ -339,23 +314,15 @@ window.SITE = {
             projectsBrowse: 'Use the visual interface above to browse projects, or type "project <name>" for details.',
             themeUsage: 'Usage: theme <light|dark|auto>',
             themeSet: 'Theme set to: {theme}',
-            matrixUsage: 'Usage: matrix <on|off>',
-            matrixOn: 'Matrix effect activated for 100 seconds',
-            matrixOff: 'Matrix effect deactivated',
             skillsTitle: 'Technical Skills:',
             connectTitle: 'Connect with me:',
             commandsTitle: 'Available commands:',
             historyTitle: 'Last 20 commands:',
             paletteTitle: 'CSS Variables:',
-            taglinePrefix: 'Tagline:',
             noProjectsFound: 'No projects match the current filter.',
             developmentTitle: 'Programming & Development',
             automationTitle: 'Automation, AI & Enterprise Tools',
             systemsTitle: 'Cloud, Systems & Tools'
-        },
-        matrix: {
-            characters: "013456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
-            duration: 100000
         }
     }
 };

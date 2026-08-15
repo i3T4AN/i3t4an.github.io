@@ -137,8 +137,8 @@ section {
 }
 #skills,
 #published,
+#elsewhere,
 #terminal,
-#constellation,
 #projects,
 #projects-ai,
 #projects-enterprise,
@@ -233,12 +233,6 @@ section h3 {
 #skills .col:not(.primary-col) ul::-webkit-scrollbar {
     display: none
 }
-.constellation-intro {
-    margin: -1.5rem auto 1.4rem;
-    max-width: 760px;
-    text-align: center;
-    color: var(--text-secondary)
-}
 .constellation-shell {
     position: relative;
     width: min(100%, 380px);
@@ -264,22 +258,6 @@ section h3 {
     height: 100%;
     position: relative;
     z-index: 2
-}
-.constellation-tooltip {
-    position: absolute;
-    left: 1rem;
-    bottom: 1rem;
-    z-index: 3;
-    max-width: min(620px, calc(100% - 2rem));
-    border-radius: .75rem;
-    border: 1px solid var(--border);
-    background: var(--controls-bg);
-    backdrop-filter: blur(10px);
-    color: var(--text-primary);
-    font-size: .9rem;
-    font-weight: 500;
-    line-height: 1.35;
-    padding: .5rem .75rem
 }
 .github-stats {
     display: grid;
@@ -312,9 +290,6 @@ section h3 {
 }
 .github-stats .constellation-canvas {
     height: 100%
-}
-.github-stats .constellation-tooltip {
-    display: none
 }
 .primary-col:hover .github-stats img {
     transform: scale(1.02)
@@ -402,7 +377,6 @@ section h3 {
     border-radius: var(--neo-btn-radius);
     font-size: .875rem;
     font-weight: 600;
-    cursor: pointer;
     color: inherit
 }
 .chip .chip-label {
@@ -428,7 +402,6 @@ section h3 {
     color: var(--sort-text);
     font-size: .875rem;
     font-weight: 500;
-    cursor: pointer;
     transition: var(--transition);
     flex: 0 0 auto;
     margin-left: auto
@@ -474,6 +447,98 @@ section h3 {
 #publishedGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr))
 }
+.elsewhere-intro {
+    max-width: 620px;
+    margin: -1.9rem auto 1.7rem;
+    color: var(--text-secondary);
+    text-align: center
+}
+.elsewhere-viewport {
+    overflow: hidden;
+    container-type: inline-size;
+    border: 1px solid var(--border);
+    border-radius: 1.25rem;
+    padding: .8rem 0;
+    background: rgba(255, 255, 255, .02)
+}
+.elsewhere-track {
+    display: flex;
+    width: max-content;
+    gap: .8rem;
+    animation: elsewhere-scroll 72s linear infinite;
+    will-change: transform
+}
+.elsewhere-viewport:hover .elsewhere-track,
+.elsewhere-viewport:focus .elsewhere-track,
+.elsewhere-viewport:focus-within .elsewhere-track {
+    animation-play-state: paused
+}
+@keyframes elsewhere-scroll {
+    to { transform: translateX(calc(-50% - .4rem)) }
+}
+.elsewhere-card {
+    display: flex;
+    flex: 0 0 calc((100cqi - 4.8rem) / 6);
+    min-height: 148px;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: .85rem;
+    color: var(--text-primary);
+    text-decoration: none;
+    background: var(--stats-panel-bg);
+    transition: transform var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast) var(--ease-standard)
+}
+.elsewhere-card:first-child { margin-left: .8rem }
+.elsewhere-card-image {
+    width: 100%;
+    height: 62px;
+    object-fit: cover;
+    object-position: center;
+    background: linear-gradient(135deg, rgba(0, 212, 255, .18), rgba(168, 85, 247, .18))
+}
+.elsewhere-card-no-image::before {
+    content: '';
+    display: block;
+    height: 5px;
+    background: var(--gradient-primary)
+}
+.elsewhere-card-copy {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    padding: .75rem .85rem
+}
+.elsewhere-card-site {
+    margin: 0 0 .35rem;
+    color: var(--accent);
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase
+}
+.elsewhere-card h4 {
+    display: -webkit-box;
+    overflow: hidden;
+    margin: 0;
+    color: var(--text-primary);
+    font-size: .84rem;
+    font-weight: 650;
+    line-height: 1.35;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3
+}
+.elsewhere-card:hover,
+.elsewhere-card:focus-visible {
+    transform: translateY(-3px);
+    border-color: var(--accent);
+    box-shadow: 0 0 18px rgba(0, 212, 255, .2);
+    outline: none
+}
+@media (prefers-reduced-motion: reduce) {
+    .elsewhere-track { animation: none }
+}
 .card {
     background: linear-gradient(var(--bg-primary), var(--bg-primary)) padding-box, linear-gradient(135deg, rgba(0, 212, 255, .55), rgba(168, 85, 247, .55)) border-box;
     backdrop-filter: blur(10px);
@@ -492,9 +557,6 @@ section h3 {
     text-align: center;
     align-items: center;
     box-shadow: 0 0 0 1px rgba(255, 255, 255, .02) inset, 0 0 16px rgba(0, 212, 255, .12), 0 0 24px rgba(168, 85, 247, .1)
-}
-.card::before {
-    content: none
 }
 .card:hover {
     transform: translateY(-8px);
@@ -554,7 +616,6 @@ section h3 {
     transform: translateX(3px)
 }
 .paper-card {
-    cursor: pointer;
     background: linear-gradient(var(--stats-panel-bg), var(--stats-panel-bg)) padding-box, linear-gradient(135deg, rgba(0, 212, 255, .55), rgba(168, 85, 247, .55)) border-box
 }
 .paper-card:hover {

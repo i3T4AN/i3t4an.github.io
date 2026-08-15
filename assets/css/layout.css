@@ -5,15 +5,11 @@ header {
     right: 0;
     z-index: 1000;
     background: #fff;
-    background-image: none;
-    backdrop-filter: none;
     border-bottom: 1px solid var(--border);
     transition: var(--transition), left var(--duration-standard) var(--ease-standard), width var(--duration-standard) var(--ease-standard)
 }
 .theme-dark header {
-    background: #000;
-    background-image: none;
-    backdrop-filter: none
+    background: #000
 }
 header.scrolled {
     box-shadow: var(--shadow-sm)
@@ -61,7 +57,6 @@ header.scrolled {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
     transition: var(--transition-fast);
     box-shadow: 0 0 12px rgba(0, 212, 255, .2), 0 0 20px rgba(168, 85, 247, .15)
 }
@@ -124,7 +119,6 @@ body.sidebar-open .sidebar-toggle {
     border: 1px solid var(--border);
     background: var(--controls-bg);
     color: var(--text-primary);
-    cursor: pointer;
     font-size: 1.5rem;
     line-height: 1;
     transition: var(--transition-fast), transform .28s cubic-bezier(.2, .8, .2, 1)
@@ -251,7 +245,6 @@ body.sidebar-open .section-sidebar {
     color: var(--text-primary);
     transition: var(--transition);
     overflow: hidden;
-    cursor: pointer
 }
 .btn::before,
 .nav-btn::before,

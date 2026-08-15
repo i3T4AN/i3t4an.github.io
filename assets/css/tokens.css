@@ -29,7 +29,6 @@
     --shadow: 0 10px 25px -8px #151c3f3b, 0 8px 10px -8px #151c3f2c;
     --shadow-lg: 0 20px 40px -20px #10163047;
     --shadow-glow: 0 0 18px rgba(0, 212, 255, .25), 0 0 30px rgba(168, 85, 247, .2);
-    --blur-bg: saturate(180%) blur(20px);
     --ease-standard: cubic-bezier(.4, 0, .2, 1);
     --duration-standard: .3s;
     --duration-fast: .2s;
@@ -52,7 +51,6 @@
     --terminal-output-text: #1e2744;
     --scan-viewport-height: 100vh;
     --sidebar-width-relative: clamp(11rem, 21vw, 15rem);
-    --sidebar-content-offset: calc(var(--sidebar-width-relative) + .85rem);
     --neon-cyan-95: rgba(0, 212, 255, .95);
     --neon-violet-95: rgba(168, 85, 247, .95);
     --neon-cyan-100: rgba(0, 212, 255, 1);
