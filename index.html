@@ -4,9 +4,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ethan Blair — Portfolio</title>
+  <!-- Static SEO: update this block when rebranding the template. -->
+  <title>Ethan Blair | Desktop Engineer, Automation &amp; Applied AI</title>
   <meta name="google-site-verification" content="google47f0585bbbc7d4af" />
-  <meta name="description" content="Desktop Engineer focused on enterprise systems, automation, applied AI, and software development." />
+  <meta name="description" content="Ethan Blair is a Desktop Engineer at the University of Northern Colorado building enterprise automation, applied AI, MCP tooling, and open-source software." />
+  <meta name="author" content="Ethan Blair" />
   <link rel="canonical" href="https://i3t4an.github.io/" />
   <link rel="icon" href="./assets/icons/favicon.ico" sizes="any" />
 
@@ -14,43 +16,95 @@
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0a0a0a" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Ethan Blair — Portfolio" />
-  <meta property="og:description" content="Desktop Engineer focused on enterprise systems, automation, applied AI, and software development." />
+  <meta property="og:site_name" content="i3T4AN" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Ethan Blair | Desktop Engineer, Automation &amp; Applied AI" />
+  <meta property="og:description" content="Ethan Blair is a Desktop Engineer at the University of Northern Colorado building enterprise automation, applied AI, MCP tooling, and open-source software." />
   <meta property="og:url" content="https://i3t4an.github.io/" />
   <meta property="og:image" content="https://i3t4an.github.io/assets/images/branding/social-preview.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="i3T4AN — Ethan Blair: Enterprise Systems, Automation, Applied AI" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Ethan Blair — Portfolio" />
-  <meta name="twitter:description" content="Desktop Engineer focused on enterprise systems, automation, applied AI, and software development." />
+  <meta name="twitter:title" content="Ethan Blair | Desktop Engineer, Automation &amp; Applied AI" />
+  <meta name="twitter:description" content="Ethan Blair is a Desktop Engineer at the University of Northern Colorado building enterprise automation, applied AI, MCP tooling, and open-source software." />
   <meta name="twitter:image" content="https://i3t4an.github.io/assets/images/branding/social-preview.png" />
   <meta name="twitter:image:alt" content="i3T4AN — Ethan Blair: Enterprise Systems, Automation, Applied AI" />
 
   <script id="jsonld" type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "ProfilePage",
-      "@id": "https://i3t4an.github.io/#profile",
-      "url": "https://i3t4an.github.io/",
-      "mainEntity": {
-        "@type": "Person",
-        "@id": "https://i3t4an.github.io/#person",
-        "name": "Ethan Blair",
-        "alternateName": "i3T4AN",
-        "url": "https://i3t4an.github.io/",
-        "email": "i3t4an8lair@gmail.com",
-        "description": "Desktop Engineer focused on enterprise systems, automation, applied AI, and software development.",
-        "jobTitle": "Desktop Engineer",
-        "affiliation": {
-          "@type": "CollegeOrUniversity",
-          "name": "University of Northern Colorado"
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://i3t4an.github.io/#website",
+          "url": "https://i3t4an.github.io/",
+          "name": "i3T4AN",
+          "alternateName": "Ethan Blair",
+          "inLanguage": "en-US"
         },
-        "sameAs": [
-          "https://github.com/i3T4AN",
-          "https://www.linkedin.com/in/ethan-e-blair/"
-        ]
-      }
+        {
+          "@type": "ProfilePage",
+          "@id": "https://i3t4an.github.io/#profile",
+          "url": "https://i3t4an.github.io/",
+          "name": "Ethan Blair | Desktop Engineer, Automation & Applied AI",
+          "description": "Ethan Blair is a Desktop Engineer at the University of Northern Colorado building enterprise automation, applied AI, MCP tooling, and open-source software.",
+          "inLanguage": "en-US",
+          "isPartOf": { "@id": "https://i3t4an.github.io/#website" },
+          "primaryImageOfPage": { "@id": "https://i3t4an.github.io/#profile-image" },
+          "mainEntity": { "@id": "https://i3t4an.github.io/#person" }
+        },
+        {
+          "@type": "ImageObject",
+          "@id": "https://i3t4an.github.io/#profile-image",
+          "url": "https://i3t4an.github.io/assets/images/branding/social-preview.png",
+          "contentUrl": "https://i3t4an.github.io/assets/images/branding/social-preview.png",
+          "width": 1200,
+          "height": 630,
+          "caption": "i3T4AN — Ethan Blair: Enterprise Systems, Automation, Applied AI"
+        },
+        {
+          "@type": "CollegeOrUniversity",
+          "@id": "https://www.unco.edu/#organization",
+          "name": "University of Northern Colorado",
+          "url": "https://www.unco.edu/"
+        },
+        {
+          "@type": "Person",
+          "@id": "https://i3t4an.github.io/#person",
+          "name": "Ethan Blair",
+          "givenName": "Ethan",
+          "familyName": "Blair",
+          "alternateName": "i3T4AN",
+          "url": "https://i3t4an.github.io/",
+          "image": { "@id": "https://i3t4an.github.io/#profile-image" },
+          "email": "i3t4an8lair@gmail.com",
+          "description": "Desktop Engineer building practical enterprise automation, applied AI systems, MCP tooling, and open-source software.",
+          "jobTitle": "Desktop Engineer",
+          "worksFor": { "@id": "https://www.unco.edu/#organization" },
+          "alumniOf": { "@id": "https://www.unco.edu/#organization" },
+          "knowsAbout": [
+            "Enterprise systems",
+            "Automation",
+            "Applied artificial intelligence",
+            "Model Context Protocol",
+            "Software development",
+            "Microsoft Intune",
+            "Microsoft Configuration Manager",
+            "PowerShell",
+            "Python",
+            "Microsoft Graph"
+          ],
+          "sameAs": [
+            "https://github.com/i3T4AN",
+            "https://www.linkedin.com/in/ethan-e-blair/"
+          ]
+        }
+      ]
     }
   </script>
+  <!-- End static SEO. -->
   <script src="config.js"></script>
   <link rel="stylesheet" href="styles.css?v=20260815-mobile-carousel-3">
 </head>
@@ -79,13 +133,13 @@
           <img id="brandLogo" class="brand-mark-logo" src="./assets/images/branding/i3T4AN_Logo_Black.png" alt="i3T4AN logo" loading="eager" decoding="async">
         </a>
         <div class="brand">
-          <h1 id="brandName"></h1>
-          <p id="brandTag"></p>
+          <h1 id="brandName">Ethan Blair</h1>
+          <p id="brandTag">Enterprise Systems • Automation • Applied AI</p>
         </div>
       </div>
       <div class="nav-links">
         <div class="social-buttons">
-          <a id="linkGithub" class="nav-btn social-btn neo-btn" href="#" target="_blank" rel="noopener me">
+          <a id="linkGithub" class="nav-btn social-btn neo-btn" href="https://github.com/i3T4AN" target="_blank" rel="noopener me">
             <span class="nav-btn-label neo-btn-label">
               <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true">
                 <path fill="currentColor"
@@ -94,7 +148,7 @@
               GitHub
             </span>
           </a>
-          <a id="linkLinkedIn" class="nav-btn social-btn neo-btn" href="#" target="_blank" rel="noopener me">
+          <a id="linkLinkedIn" class="nav-btn social-btn neo-btn" href="https://www.linkedin.com/in/ethan-e-blair/" target="_blank" rel="noopener me">
             <span class="nav-btn-label neo-btn-label">
               <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true">
                 <path fill="currentColor"
@@ -103,7 +157,7 @@
               LinkedIn
             </span>
           </a>
-          <a id="linkEmail" class="nav-btn social-btn neo-btn" href="#">
+          <a id="linkEmail" class="nav-btn social-btn neo-btn" href="mailto:i3t4an8lair@gmail.com">
             <span class="nav-btn-label neo-btn-label">
               <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true">
                 <path fill="currentColor"
@@ -134,8 +188,8 @@
   <main id="main" class="landing-page">
     <section class="hero">
       <div class="container">
-        <h2 id="heroTitle"></h2>
-        <p id="heroParagraph"></p>
+        <h2 id="heroTitle" data-text="Building Practical Automation for Enterprise Systems.">Building Practical Automation for Enterprise Systems.</h2>
+        <p id="heroParagraph">I’m Ethan Blair, a University of Northern Colorado graduate in Computer Information Systems and a Desktop Engineer supporting the technology behind UNC’s new College of Osteopathic Medicine. I build automation, applied AI, and software solutions that reduce manual work, improve reliability, and help enterprise systems operate more efficiently at scale.</p>
       </div>
     </section>
 
@@ -244,7 +298,7 @@
     </div>
   </div>
 
-  <script type="module" src="assets/js/app.js?v=20260815-mobile-carousel-3"></script>
+  <script type="module" src="assets/js/app.js?v=20260815-seo"></script>
 </body>
 
 </html>

@@ -6,7 +6,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
     const els = {
         brandName: $('#brandName'), footerName: $('#footerName'), brandTag: $('#brandTag'), heroTitle: $('#heroTitle'), heroParagraph: $('#heroParagraph'),
         linkGithub: $('#linkGithub'), linkLinkedIn: $('#linkLinkedIn'), linkEmail: $('#linkEmail'),
-        skillsGrid: $('#skillsGrid'), year: $('#year'), jsonld: $('#jsonld'), sort: $('#sort'),
+        skillsGrid: $('#skillsGrid'), year: $('#year'), sort: $('#sort'),
         publishedTitle: $('#publishedTitle'), publishedGrid: $('#publishedGrid'), publishedEmpty: $('#published-empty'),
         elsewhereTitle: $('#elsewhereTitle'), elsewhereTrack: $('#elsewhereTrack'),
         header: $('header'), filters: $('#filters'), gridDev: $('#grid-dev'), gridAI: $('#grid-ai'), gridEnt: $('#grid-enterprise'),
@@ -688,36 +688,6 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             this.rafId = null;
         }
     }
-
-    const injectJSONLD = () => {
-        const s = SITE;
-        const profile = s.profile || {};
-        const siteUrl = s.url || location.href;
-        const person = {
-            "@type": "Person",
-            "@id": `${siteUrl}#person`,
-            name: s.name,
-            alternateName: profile.githubUsername,
-            url: siteUrl,
-            email: String(s.socials.email || '').replace(/^mailto:/i, ''),
-            description: s.hero.paragraph,
-            sameAs: [s.socials.github, s.socials.linkedin],
-            knowsAbout: [...s.skills.development, ...s.skills.automation, ...s.skills.systems]
-                .flatMap(x => x.split(/\s*,\s*/))
-                .filter((v, i, a) => a.indexOf(v) === i)
-                .slice(0, 15)
-        };
-        if (profile.affiliation) person.affiliation = { "@type": "CollegeOrUniversity", name: profile.affiliation };
-        if (profile.jobTitle) person.jobTitle = profile.jobTitle;
-        const data = {
-            "@context": "https://schema.org",
-            "@type": "ProfilePage",
-            "@id": `${siteUrl}#profile`,
-            url: siteUrl,
-            mainEntity: person
-        };
-        if (els.jsonld) { els.jsonld.type = 'application/ld+json'; els.jsonld.textContent = JSON.stringify(data) }
-    };
 
     const parseRepoPath = url => { try { const u = new URL(url); const [owner, name] = u.pathname.slice(1).split('/'); return { owner, name } } catch { return null } };
     const relativeTime = d => {
@@ -1531,7 +1501,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             repoConstellation = null;
         }
         els.sort?.addEventListener('change', e => { state.sort = e.target.value; renderProjects(state) });
-        injectJSONLD(); initModal();
+        initModal();
         if (els.terminalTitle) els.terminalTitle.textContent = SITE.terminal.title;
         if (els.currentPrompt) els.currentPrompt.textContent = SITE.terminal.prompt;
         new Terminal();
