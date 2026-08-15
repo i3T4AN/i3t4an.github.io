@@ -465,13 +465,20 @@ section h3 {
     display: flex;
     width: max-content;
     gap: .8rem;
-    animation: elsewhere-scroll 72s linear infinite;
     will-change: transform
 }
+.elsewhere-track.is-ready {
+    animation: elsewhere-scroll 72s linear infinite
+}
 .elsewhere-viewport:hover .elsewhere-track,
-.elsewhere-viewport:focus .elsewhere-track,
 .elsewhere-viewport:focus-within .elsewhere-track {
     animation-play-state: paused
+}
+@media (hover: none), (pointer: coarse) {
+    .elsewhere-viewport:hover .elsewhere-track,
+    .elsewhere-viewport:focus-within .elsewhere-track {
+        animation-play-state: running
+    }
 }
 @keyframes elsewhere-scroll {
     to { transform: translateX(calc(-50% - .4rem)) }
@@ -537,7 +544,7 @@ section h3 {
     outline: none
 }
 @media (prefers-reduced-motion: reduce) {
-    .elsewhere-track { animation: none }
+    .elsewhere-track.is-ready { animation: none }
 }
 .card {
     background: linear-gradient(var(--bg-primary), var(--bg-primary)) padding-box, linear-gradient(135deg, rgba(0, 212, 255, .55), rgba(168, 85, 247, .55)) border-box;

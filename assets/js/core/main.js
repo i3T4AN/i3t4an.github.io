@@ -1414,10 +1414,16 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         const cfg = SITE.elsewhere || {};
         if (els.elsewhereTitle) els.elsewhereTitle.textContent = cfg.sectionTitle || 'Elsewhere';
         if (!els.elsewhereTrack || !entries.length) return;
+        els.elsewhereTrack.classList.remove('is-ready');
         els.elsewhereTrack.innerHTML = '';
         const cards = entries.map(buildElsewhereCard);
         const duplicateCards = entries.map(buildElsewhereCard);
+        duplicateCards.forEach(card => {
+            card.setAttribute('aria-hidden', 'true');
+            card.tabIndex = -1;
+        });
         els.elsewhereTrack.append(...cards, ...duplicateCards);
+        requestAnimationFrame(() => els.elsewhereTrack.classList.add('is-ready'));
     };
     const loadElsewhere = async () => {
         const urls = Array.isArray(SITE?.elsewhere?.items) ? SITE.elsewhere.items : [];
