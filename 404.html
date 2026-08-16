@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>Page Not Found | Ethan Blair</title>
+  <link rel="icon" href="/assets/icons/favicon.ico" sizes="any" />
+  <meta name="theme-color" content="#000000" />
+  <link rel="stylesheet" href="/styles.css?v=20260815-mobile-carousel-3" />
+  <link rel="stylesheet" href="/assets/css/error.css" />
+</head>
+
+<body class="theme-dark error-page">
+  <div class="error-backdrop" aria-hidden="true">
+    <div class="error-stream-line" style="--stream-duration: 31s; --stream-delay: -7s"></div>
+    <div class="error-stream-line" style="--stream-duration: 44s; --stream-delay: -29s"></div>
+    <div class="error-stream-line" style="--stream-duration: 26s; --stream-delay: -18s"></div>
+    <div class="error-stream-line" style="--stream-duration: 39s; --stream-delay: -3s"></div>
+    <div class="error-stream-line" style="--stream-duration: 52s; --stream-delay: -41s"></div>
+    <div class="error-stream-line" style="--stream-duration: 29s; --stream-delay: -13s"></div>
+    <div class="error-stream-line" style="--stream-duration: 47s; --stream-delay: -34s"></div>
+    <div class="error-stream-line" style="--stream-duration: 24s; --stream-delay: -9s"></div>
+    <div class="error-stream-line" style="--stream-duration: 36s; --stream-delay: -22s"></div>
+    <div class="error-stream-line" style="--stream-duration: 55s; --stream-delay: -48s"></div>
+    <div class="error-stream-line" style="--stream-duration: 33s; --stream-delay: -16s"></div>
+    <div class="error-stream-line" style="--stream-duration: 42s; --stream-delay: -37s"></div>
+  </div>
+
+  <main class="error-main">
+    <a class="error-brand" href="/" aria-label="Return to Ethan Blair's portfolio">
+      <img src="/assets/images/branding/i3T4AN_Logo_White.png" alt="i3T4AN" />
+    </a>
+
+    <div class="error-stage">
+      <section class="error-terminal" aria-labelledby="error-title">
+        <div class="error-terminal-header" aria-hidden="true">
+          <span class="error-controls">
+            <span class="error-control error-control-close"></span>
+            <span class="error-control error-control-minimize"></span>
+            <span class="error-control error-control-maximize"></span>
+          </span>
+          <span>404.html</span>
+          <span class="error-header-spacer"></span>
+        </div>
+
+        <div class="error-terminal-body">
+          <p class="error-status">HTTP 404</p>
+          <div class="error-code" aria-hidden="true">404</div>
+          <h1 id="error-title">Page not found.</h1>
+          <p>The requested address does not exist.</p>
+          <a class="neo-btn error-home" href="/"><span class="neo-btn-label">Return home</span></a>
+        </div>
+      </section>
+
+      <aside class="error-assistant" aria-label="Clippy says: Hey buddy, I think you're lost. Try returning home.">
+        <p class="error-assistant-bubble">Hey buddy, I think you're lost. Try returning home.</p>
+        <span class="error-clippy" role="img" aria-label="Clippy"></span>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+    (() => {
+      const lines = document.querySelectorAll('.error-stream-line');
+
+      const makeCopy = () => {
+        const copy = document.createElement('span');
+        copy.className = 'error-stream-copy';
+
+        for (let index = 0; index < 8; index += 1) {
+          const phrase = document.createElement('span');
+          phrase.className = 'error-stream-phrase';
+          phrase.append('NOT ALL THOSE WHO WANDER ARE LOST  //  ');
+
+          const warning = document.createElement('strong');
+          warning.className = 'error-stream-warning';
+          warning.textContent = 'BUT YOU ARE';
+          phrase.append(warning, '  //');
+          copy.append(phrase);
+        }
+
+        return copy;
+      };
+
+      lines.forEach(line => line.append(makeCopy(), makeCopy()));
+    })();
+  </script>
+</body>
+
+</html>

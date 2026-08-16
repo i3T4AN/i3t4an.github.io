@@ -28,6 +28,13 @@
     "icon": "https://wefitec.com/wp-content/uploads/2024/12/cropped-wefi-logo-32x32.jpg"
   },
   {
+    "url": "https://www.businesswire.com/news/home/20250807518793/en/WeFi-Technology-Group-The-Why-and-How-of-a-Top-Internship",
+    "title": "WeFi Technology Group: The Why and How of a Top Internship",
+    "siteName": "Business Wire",
+    "image": "",
+    "icon": "https://www.businesswire.com/favicon.ico"
+  },
+  {
     "url": "https://trendshift.io/repositories/107470",
     "title": "i3T4AN/KADATH — GitHub trending stats & insights",
     "siteName": "Trendshift",
@@ -54,6 +61,27 @@
     "siteName": "YouGE Lab",
     "image": "https://www.yougeshareac.com/uploads/covers/cover_e3fb2a2ecb2c.png",
     "icon": "https://www.yougeshareac.com/favicon.ico"
+  },
+  {
+    "url": "https://aniketkarneai.com/blog/2026-08-11-kadath-evolutionary-multi-agent-runtime",
+    "title": "KADATH: The Multi-Agent Runtime That Treats Agent Design Like Evolutionary Search",
+    "siteName": "aniketkarneai.com",
+    "image": "https://aniketkarneai.com/og-image.png",
+    "icon": "https://aniketkarneai.com/favicon.svg"
+  },
+  {
+    "url": "https://pullrepo.com/report/todays-ai-frameworks-sdks-fastest-growing-projects-august-09-2026",
+    "title": "Today's AI Frameworks & SDKs: Fastest-Growing Projects — August 09, 2026",
+    "siteName": "PullRepo",
+    "image": "",
+    "icon": "https://pullrepo.com/favicon.ico"
+  },
+  {
+    "url": "https://buttondown.com/italian-ai-breakfast/archive/u2615-ai-breakfast-venerdi-1482026-6935/",
+    "title": "☕ AI Breakfast — Venerdì 14/8/2026",
+    "siteName": "Italian AI Breakfast",
+    "image": "https://static-assets.buttondown.com/images/icons/icon-square%40400.png",
+    "icon": "https://static-assets.buttondown.com/images/icons/icon%4072.png"
   },
   {
     "url": "https://skywork.ai/skypage/en/ai-security-kali-linux/1981566739232649216",
@@ -96,6 +124,20 @@
     "siteName": "Mcpmarket",
     "image": "",
     "icon": "https://mcpmarket.com/favicon.ico"
+  },
+  {
+    "url": "https://m8ven.ai/mcp/i3t4an-evillimiter-mcp-server-12usuk",
+    "title": "EvilLimiter MCP Server — MCP Trust Score",
+    "siteName": "M8ven",
+    "image": "",
+    "icon": "https://m8ven.ai/favicon-512.png"
+  },
+  {
+    "url": "https://www.mcphello.com/tool/i3t4an-evillimiter-mcp-server",
+    "title": "evillimiter-mcp-server — MCP工具详情",
+    "siteName": "MCPHello",
+    "image": "https://mcphello.com/og-image.png",
+    "icon": "https://mcphello.com/favicon.ico"
   },
   {
     "url": "https://mcpxhub.io/mcps/category/hardware/page/5/",
