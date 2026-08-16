@@ -486,7 +486,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
                     speed: 0.4 + Math.random() * 0.85,
                     phase: Math.random() * Math.PI * 2,
                     wobble: 4 + Math.random() * 8,
-                    radius: 5 + ((starValue / maxStars) * 10),
+                    radius: 4 + ((Math.log1p(starValue) / Math.log1p(maxStars)) * 16),
                     x: this.width / 2,
                     y: this.height / 2
                 };
