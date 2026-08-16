@@ -192,25 +192,6 @@ window.SITE = {
             "https://awesome.ecosyste.ms/projects/github.com%2Ftr4m0ryp%2Ftr4mpass"
         ]
     },
-    navigation: {
-        title: "Sections",
-        ariaLabel: "Homepage section links",
-        items: [
-            { label: "Technical Skills", href: "#skills" },
-            { label: "Published Work", href: "#published" },
-            { label: "Elsewhere", href: "#elsewhere" },
-            { label: "Terminal", href: "#terminal" },
-            {
-                label: "Featured Projects",
-                href: "#projects",
-                children: [
-                    { label: "Automation & AI", href: "#projects-ai" },
-                    { label: "Enterprise Systems / Cloud", href: "#projects-enterprise" },
-                    { label: "Programming / Development", href: "#projects-dev" }
-                ]
-            }
-        ]
-    },
     terminal: {
         welcomeMessage: "Welcome to Ethan's interactive terminal. Type '--help' to see available commands.",
         prompt: "visitor@i3t4an.github.io:~$ ",

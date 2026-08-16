@@ -1,8 +1,7 @@
 main {
     margin-top: 4.5rem;
     position: relative;
-    z-index: 1;
-    transition: margin-left var(--duration-standard) var(--ease-standard), width var(--duration-standard) var(--ease-standard)
+    z-index: 1
 }
 .landing-page {
     position: relative;

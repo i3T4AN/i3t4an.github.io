@@ -3,8 +3,7 @@ footer {
     text-align: center;
     color: var(--text-muted);
     border-top: 1px solid var(--border);
-    background: var(--bg-secondary);
-    transition: margin-left var(--duration-standard) var(--ease-standard), width var(--duration-standard) var(--ease-standard)
+    background: var(--bg-secondary)
 }
 .skip-link {
     position: absolute;

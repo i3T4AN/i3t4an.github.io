@@ -50,7 +50,6 @@
     --terminal-title-text: #445077;
     --terminal-output-text: #1e2744;
     --scan-viewport-height: 100vh;
-    --sidebar-width-relative: clamp(11rem, 21vw, 15rem);
     --neon-cyan-95: rgba(0, 212, 255, .95);
     --neon-violet-95: rgba(168, 85, 247, .95);
     --neon-cyan-100: rgba(0, 212, 255, 1);

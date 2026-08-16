@@ -1,5 +1,4 @@
 import { convertMarkdownToHTML, sanitizeHTML } from '../utils/markdown.js';
-import { initSidebar } from '../ui/sidebar.js';
 'use strict';
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
     const SITE = window.SITE;
@@ -17,9 +16,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         terminalTitle: $('#terminalTitle'), currentPrompt: $('#currentPrompt'),
         constellationCanvas: null,
         readmeModal: $('#readmeModal'), modalTitle: $('#modalTitle'), modalBody: $('#modalBody'), modalClose: $('#modalClose'), modalGitHubLink: $('#modalGitHubLink'),
-        paperModal: $('#paperModal'), paperModalBody: $('#paperModalBody'), paperModalClose: $('#paperModalClose'),
-        sidebarToggle: $('#sidebarToggle'), sectionSidebar: $('#sectionSidebar'), sidebarClose: $('#sidebarClose'),
-        sidebarNav: $('#sidebarNav'), sectionSidebarTitle: $('#sectionSidebarTitle')
+        paperModal: $('#paperModal'), paperModalBody: $('#paperModalBody'), paperModalClose: $('#paperModalClose')
     };
     let paperBlobUrl = '';
     const clearPaperBlobUrl = () => { if (paperBlobUrl) { URL.revokeObjectURL(paperBlobUrl); paperBlobUrl = '' } };
@@ -474,6 +471,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             const maxStars = Math.max(...list.map(r => Number(r?.stargazers_count) || 0), 1);
             this.nodes = list.map((repo, index) => {
                 const starValue = Number(repo?.stargazers_count) || 0;
+                const starScale = Math.log1p(starValue) / Math.log1p(maxStars);
                 const radial = Math.sqrt((index + 1) / (list.length + 1));
                 return {
                     id: index,
@@ -486,7 +484,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
                     speed: 0.4 + Math.random() * 0.85,
                     phase: Math.random() * Math.PI * 2,
                     wobble: 4 + Math.random() * 8,
-                    radius: 4 + ((Math.log1p(starValue) / Math.log1p(maxStars)) * 16),
+                    radius: 2.25 + (Math.pow(starScale, 1.55) * 17.75),
                     x: this.width / 2,
                     y: this.height / 2
                 };
@@ -625,6 +623,48 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             return distance <= nearest.radius + 10 ? nearest : null;
         }
 
+        constrainNode(node) {
+            const margin = node.radius + 6;
+            node.x = Math.min(this.width - margin, Math.max(margin, node.x));
+            node.y = Math.min(this.height - margin, Math.max(margin, node.y));
+        }
+
+        separateOverlappingNodes(iterations = 3, padding = 3.5) {
+            for (let pass = 0; pass < iterations; pass++) {
+                for (let i = 0; i < this.nodes.length; i++) {
+                    const a = this.nodes[i];
+                    for (let j = i + 1; j < this.nodes.length; j++) {
+                        const b = this.nodes[j];
+                        let dx = b.x - a.x;
+                        let dy = b.y - a.y;
+                        let distance = Math.hypot(dx, dy);
+                        const minimumDistance = a.radius + b.radius + padding;
+                        if (distance >= minimumDistance) continue;
+                        if (distance < 0.001) {
+                            const angle = ((a.id + 1) * (b.id + 1) * 2.399963229728653) % (Math.PI * 2);
+                            dx = Math.cos(angle);
+                            dy = Math.sin(angle);
+                            distance = 1;
+                        }
+                        const nx = dx / distance;
+                        const ny = dy / distance;
+                        const separation = minimumDistance - distance;
+                        const massA = Math.max(1, a.radius * a.radius);
+                        const massB = Math.max(1, b.radius * b.radius);
+                        const totalMass = massA + massB;
+                        const moveA = separation * (massB / totalMass);
+                        const moveB = separation * (massA / totalMass);
+                        a.x -= nx * moveA;
+                        a.y -= ny * moveA;
+                        b.x += nx * moveB;
+                        b.y += ny * moveB;
+                        this.constrainNode(a);
+                        this.constrainNode(b);
+                    }
+                }
+            }
+        }
+
         render(now = performance.now()) {
             if (!this.nodes.length) return;
             const t = now / 1000;
@@ -636,9 +676,11 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
                 const baseAngle = node.angle + (t * 0.07);
                 let x = centerX + (Math.cos(baseAngle) * node.radial * orbitScale) + (Math.cos((t * node.speed) + node.phase) * node.wobble);
                 let y = centerY + (Math.sin(baseAngle) * node.radial * orbitScale) + (Math.sin((t * node.speed) + node.phase) * node.wobble);
-                node.x = Math.min(this.width - node.radius - 6, Math.max(node.radius + 6, x));
-                node.y = Math.min(this.height - node.radius - 6, Math.max(node.radius + 6, y));
+                node.x = x;
+                node.y = y;
+                this.constrainNode(node);
             });
+            this.separateOverlappingNodes();
             this.hoveredNode = this.findHoveredNode();
             this.links.forEach(([a, b]) => {
                 const emphasized = this.hoveredNode && (a === this.hoveredNode || b === this.hoveredNode);
@@ -1486,7 +1528,6 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             els.skillsGrid.appendChild(buildSkillCol(title, items));
         });
         els.year.textContent = new Date().getFullYear();
-        initSidebar(els, SITE);
         initViewportScanHeight();
         initTextureParallax();
         initCursorOverlay();
