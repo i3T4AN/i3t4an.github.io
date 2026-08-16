@@ -20,34 +20,6 @@ main {
     z-index: 20;
     pointer-events: none
 }
-.landing-page::after {
-    content: '';
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100px;
-    background: linear-gradient(to bottom, transparent, rgba(0, 212, 255, .2) 50%, transparent);
-    z-index: 30;
-    pointer-events: none;
-    transform: translateY(calc(var(--scan-viewport-height, 100vh) + 100px));
-    will-change: transform;
-    animation: scanBar 6s linear infinite
-}
-@keyframes scanBar {
-    0% {
-        transform: translateY(calc(var(--scan-viewport-height, 100vh) + 100px))
-    }
-    100% {
-        transform: translateY(-100px)
-    }
-}
-@media (prefers-reduced-motion: reduce) {
-    .landing-page::after {
-        animation: none
-    }
-}
 .hero {
     padding: 6rem 0 4rem;
     position: relative;
@@ -393,25 +365,6 @@ section h3 {
     box-shadow: 0 0 14px rgba(0, 212, 255, .38), 0 0 28px rgba(168, 85, 247, .34);
     background: var(--chip-active-bg)
 }
-.sort {
-    padding: .625rem 1.25rem;
-    border-radius: .75rem;
-    border: 1.5px solid transparent;
-    background: linear-gradient(var(--sort-bg), var(--sort-bg)) padding-box, linear-gradient(135deg, var(--neon-cyan-95), var(--neon-violet-95)) border-box;
-    color: var(--sort-text);
-    font-size: .875rem;
-    font-weight: 500;
-    transition: var(--transition);
-    flex: 0 0 auto;
-    margin-left: auto
-}
-.sort:hover {
-    box-shadow: 0 0 14px rgba(0, 212, 255, .28), 0 0 24px rgba(168, 85, 247, .24)
-}
-.sort option {
-    background: var(--sort-bg);
-    color: var(--sort-text)
-}
 .group {
     margin-bottom: 4rem
 }
@@ -442,6 +395,20 @@ section h3 {
     display: grid;
     gap: 1.5rem;
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr))
+}
+.projects-toggle {
+    display: flex;
+    margin: 1.5rem auto 0;
+    font-family: inherit;
+    font-size: .85rem;
+    font-weight: 700
+}
+.projects-toggle[hidden] {
+    display: none
+}
+.projects-toggle .neo-btn-label {
+    min-width: 9.5rem;
+    padding: .55rem 1.35rem
 }
 #publishedGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr))

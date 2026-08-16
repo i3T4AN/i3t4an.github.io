@@ -5,10 +5,10 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
     const els = {
         brandName: $('#brandName'), footerName: $('#footerName'), brandTag: $('#brandTag'), heroTitle: $('#heroTitle'), heroParagraph: $('#heroParagraph'),
         linkGithub: $('#linkGithub'), linkLinkedIn: $('#linkLinkedIn'), linkEmail: $('#linkEmail'),
-        skillsGrid: $('#skillsGrid'), year: $('#year'), sort: $('#sort'),
+        skillsGrid: $('#skillsGrid'), year: $('#year'),
         publishedTitle: $('#publishedTitle'), publishedGrid: $('#publishedGrid'), publishedEmpty: $('#published-empty'),
         elsewhereTitle: $('#elsewhereTitle'), elsewhereTrack: $('#elsewhereTrack'),
-        header: $('header'), filters: $('#filters'), gridDev: $('#grid-dev'), gridAI: $('#grid-ai'), gridEnt: $('#grid-enterprise'),
+        header: $('header'), filters: $('#filters'), gridDev: $('#grid-dev'), gridAI: $('#grid-ai'), gridEnt: $('#grid-enterprise'), projectToggles: $$('[data-projects-toggle]'),
         projectsEmpty: $('#projects-empty'), themeToggle: $('#themeToggle'), themeIcon: $('#themeIcon'), themeText: $('#themeText'), brandLogo: $('#brandLogo'),
         langImg: null, streakImg: null, starsTotal: null, constellationHoverOutput: null,
         terminalBody: $('#terminalBody'), terminalInput: $('#terminalInput'), terminalOutput: $('#terminalOutput'),
@@ -321,6 +321,10 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         enterprise: 'Enterprise Systems / Cloud',
         dev: 'Programming / Development'
     };
+    const COLLISION_NEIGHBOR_OFFSETS = new Int8Array([
+        0, 0, -1, 0, 1, 0, 0, -1, 0, 1,
+        -1, -1, 1, -1, -1, 1, 1, 1
+    ]);
     class RepoConstellation {
         constructor(canvas, tooltipEl, onSelectRepo) {
             this.canvas = canvas;
@@ -337,6 +341,13 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             this.lastTooltip = '';
             this.tooltipBaseFontPx = 0;
             this.tooltipMinFontPx = 7;
+            this.collisionPadding = 3;
+            this.collisionMaxChecks = 8;
+            this.collisionCellSize = 16;
+            this.collisionColumns = 1;
+            this.collisionRows = 1;
+            this.collisionHeads = new Int32Array(1);
+            this.collisionNext = new Int32Array(0);
             this.reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
             this.pageVisible = !document.hidden;
             this.inViewport = true;
@@ -454,6 +465,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             this.canvas.width = Math.floor(this.width * dpr);
             this.canvas.height = Math.floor(this.height * dpr);
             this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            this.configureCollisionGrid();
         }
 
         setRepos(repos) {
@@ -463,6 +475,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             if (!list.length) {
                 this.nodes = [];
                 this.links = [];
+                this.configureCollisionGrid();
                 this.setTooltip('No repositories available.');
                 this.stop();
                 this.drawBackground();
@@ -489,6 +502,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
                     y: this.height / 2
                 };
             });
+            this.configureCollisionGrid();
             this.links = this.buildLinks();
             this.setTooltip('');
             this.stop();
@@ -629,39 +643,61 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             node.y = Math.min(this.height - margin, Math.max(margin, node.y));
         }
 
-        separateOverlappingNodes(iterations = 3, padding = 3.5) {
-            for (let pass = 0; pass < iterations; pass++) {
-                for (let i = 0; i < this.nodes.length; i++) {
-                    const a = this.nodes[i];
-                    for (let j = i + 1; j < this.nodes.length; j++) {
-                        const b = this.nodes[j];
-                        let dx = b.x - a.x;
-                        let dy = b.y - a.y;
-                        let distance = Math.hypot(dx, dy);
-                        const minimumDistance = a.radius + b.radius + padding;
-                        if (distance >= minimumDistance) continue;
-                        if (distance < 0.001) {
-                            const angle = ((a.id + 1) * (b.id + 1) * 2.399963229728653) % (Math.PI * 2);
-                            dx = Math.cos(angle);
-                            dy = Math.sin(angle);
-                            distance = 1;
+        configureCollisionGrid() {
+            const maxRadius = this.nodes.reduce((largest, node) => Math.max(largest, node.radius), 0);
+            this.collisionCellSize = Math.max(16, Math.ceil((maxRadius * 2) + this.collisionPadding));
+            this.collisionColumns = Math.max(1, Math.ceil(this.width / this.collisionCellSize));
+            this.collisionRows = Math.max(1, Math.ceil(this.height / this.collisionCellSize));
+            const cellCount = this.collisionColumns * this.collisionRows;
+            if (this.collisionHeads.length !== cellCount) this.collisionHeads = new Int32Array(cellCount);
+            if (this.collisionNext.length !== this.nodes.length) this.collisionNext = new Int32Array(this.nodes.length);
+        }
+
+        separateNearbyNodes() {
+            if (this.nodes.length < 2) return;
+            const { collisionCellSize: cellSize, collisionColumns: columns, collisionRows: rows } = this;
+            this.collisionHeads.fill(-1);
+            for (let index = 0; index < this.nodes.length; index++) {
+                const node = this.nodes[index];
+                const originCellX = Math.min(columns - 1, Math.max(0, Math.floor(node.x / cellSize)));
+                const originCellY = Math.min(rows - 1, Math.max(0, Math.floor(node.y / cellSize)));
+                let checks = 0;
+                for (let offsetIndex = 0; offsetIndex < COLLISION_NEIGHBOR_OFFSETS.length && checks < this.collisionMaxChecks; offsetIndex += 2) {
+                    const cellX = originCellX + COLLISION_NEIGHBOR_OFFSETS[offsetIndex];
+                    const cellY = originCellY + COLLISION_NEIGHBOR_OFFSETS[offsetIndex + 1];
+                    if (cellX < 0 || cellX >= columns || cellY < 0 || cellY >= rows) continue;
+                    let candidateIndex = this.collisionHeads[(cellY * columns) + cellX];
+                    while (candidateIndex !== -1 && checks < this.collisionMaxChecks) {
+                        checks++;
+                        const other = this.nodes[candidateIndex];
+                        let dx = node.x - other.x;
+                        let dy = node.y - other.y;
+                        const minimumDistance = node.radius + other.radius + this.collisionPadding;
+                        const distanceSquared = (dx * dx) + (dy * dy);
+                        if (distanceSquared < minimumDistance * minimumDistance) {
+                            let distance = 0;
+                            if (distanceSquared > 0.0001) {
+                                distance = Math.sqrt(distanceSquared);
+                                dx /= distance;
+                                dy /= distance;
+                            } else {
+                                const angle = ((node.id + 1) * (other.id + 1) * 2.399963229728653) % (Math.PI * 2);
+                                dx = Math.cos(angle);
+                                dy = Math.sin(angle);
+                            }
+                            const separation = minimumDistance - distance;
+                            node.x += dx * separation;
+                            node.y += dy * separation;
+                            this.constrainNode(node);
                         }
-                        const nx = dx / distance;
-                        const ny = dy / distance;
-                        const separation = minimumDistance - distance;
-                        const massA = Math.max(1, a.radius * a.radius);
-                        const massB = Math.max(1, b.radius * b.radius);
-                        const totalMass = massA + massB;
-                        const moveA = separation * (massB / totalMass);
-                        const moveB = separation * (massA / totalMass);
-                        a.x -= nx * moveA;
-                        a.y -= ny * moveA;
-                        b.x += nx * moveB;
-                        b.y += ny * moveB;
-                        this.constrainNode(a);
-                        this.constrainNode(b);
+                        candidateIndex = this.collisionNext[candidateIndex];
                     }
                 }
+                const finalCellX = Math.min(columns - 1, Math.max(0, Math.floor(node.x / cellSize)));
+                const finalCellY = Math.min(rows - 1, Math.max(0, Math.floor(node.y / cellSize)));
+                const cellIndex = (finalCellY * columns) + finalCellX;
+                this.collisionNext[index] = this.collisionHeads[cellIndex];
+                this.collisionHeads[cellIndex] = index;
             }
         }
 
@@ -674,13 +710,13 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             this.drawBackground();
             this.nodes.forEach(node => {
                 const baseAngle = node.angle + (t * 0.07);
-                let x = centerX + (Math.cos(baseAngle) * node.radial * orbitScale) + (Math.cos((t * node.speed) + node.phase) * node.wobble);
-                let y = centerY + (Math.sin(baseAngle) * node.radial * orbitScale) + (Math.sin((t * node.speed) + node.phase) * node.wobble);
+                const x = centerX + (Math.cos(baseAngle) * node.radial * orbitScale) + (Math.cos((t * node.speed) + node.phase) * node.wobble);
+                const y = centerY + (Math.sin(baseAngle) * node.radial * orbitScale) + (Math.sin((t * node.speed) + node.phase) * node.wobble);
                 node.x = x;
                 node.y = y;
                 this.constrainNode(node);
             });
-            this.separateOverlappingNodes();
+            this.separateNearbyNodes();
             this.hoveredNode = this.findHoveredNode();
             this.links.forEach(([a, b]) => {
                 const emphasized = this.hoveredNode && (a === this.hoveredNode || b === this.hoveredNode);
@@ -1083,14 +1119,6 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             setAppTheme(theme);
         });
     };
-    const initViewportScanHeight = () => {
-        const setScanViewportHeight = () => {
-            document.documentElement.style.setProperty('--scan-viewport-height', `${window.innerHeight}px`);
-        };
-        setScanViewportHeight();
-        addEventListener('resize', setScanViewportHeight, { passive: true });
-        addEventListener('orientationchange', setScanViewportHeight, { passive: true });
-    };
     const initScrollStartAtTop = () => {
         if (location.hash) return;
         const navEntries = performance.getEntriesByType?.('navigation') || [];
@@ -1451,24 +1479,37 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         }
     };
 
-    const sorters = {
-        updated: (a, b) => getRepoUpdatedTimestamp(b) - getRepoUpdatedTimestamp(a),
-        stars: (a, b) => b.stargazers_count - a.stargazers_count,
-        name: (a, b) => a.name.localeCompare(b.name)
+    const compareRepoStars = (a, b) => {
+        const starDifference = (Number(b?.stargazers_count) || 0) - (Number(a?.stargazers_count) || 0);
+        if (starDifference) return starDifference;
+        const updateDifference = getRepoUpdatedTimestamp(b) - getRepoUpdatedTimestamp(a);
+        if (updateDifference) return updateDifference;
+        return String(a?.name || '').localeCompare(String(b?.name || ''));
     };
-    const updateFilterChips = state => { els.filters.innerHTML = ''; const langs = ['All', ...Array.from(state.languages).filter(l => l !== 'All').sort()], frag = document.createDocumentFragment(); langs.forEach(lang => { const chip = document.createElement('button'); chip.className = 'chip neo-btn'; chip.type = 'button'; chip.setAttribute('aria-pressed', String(state.filter === lang)); chip.innerHTML = `<span class="chip-label neo-btn-label">${lang}</span>`; chip.addEventListener('click', () => { state.filter = lang; renderProjects(state) }); frag.appendChild(chip) }); els.filters.appendChild(frag) };
+    const updateFilterChips = state => { els.filters.innerHTML = ''; const langs = ['All', ...Array.from(state.languages).filter(l => l !== 'All').sort()], frag = document.createDocumentFragment(); langs.forEach(lang => { const chip = document.createElement('button'); chip.className = 'chip neo-btn'; chip.type = 'button'; chip.setAttribute('aria-pressed', String(state.filter === lang)); chip.innerHTML = `<span class="chip-label neo-btn-label">${lang}</span>`; chip.addEventListener('click', () => { state.filter = lang; state.expandedGroups.clear(); renderProjects(state) }); frag.appendChild(chip) }); els.filters.appendChild(frag) };
     const observer = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('animate-in'); observer.unobserve(e.target) } }), { threshold: .1, rootMargin: '50px' });
     const animateCards = () => $$('.card').forEach(c => { c.classList.remove('animate-in'); observer.observe(c) });
 
     const renderProjects = state => {
         const groups = { dev: [], ai: [], enterprise: [] };
         for (const r of state.repos) if (state.filter === 'All' || r.language === state.filter) groups[r.__group].push(r);
-        Object.keys(groups).forEach(k => groups[k].sort(sorters[state.sort]));
+        Object.keys(groups).forEach(k => groups[k].sort(compareRepoStars));
         const map = { ai: els.gridAI, enterprise: els.gridEnt, dev: els.gridDev };
         for (const [k, grid] of Object.entries(map)) {
             grid.innerHTML = ''; const list = groups[k];
+            const toggle = els.projectToggles.find(button => button.dataset.projectsToggle === k);
+            const expanded = state.expandedGroups.has(k);
+            if (toggle) {
+                const hiddenCount = Math.max(0, list.length - 3);
+                toggle.hidden = hiddenCount === 0;
+                toggle.setAttribute('aria-expanded', String(expanded));
+                toggle.setAttribute('aria-label', `${expanded ? 'Show fewer' : 'Show more'} ${REPO_GROUP_LABELS[k] || k} repositories`);
+                const label = $('.neo-btn-label', toggle);
+                if (label) label.textContent = expanded ? 'Show less' : `Show more (${hiddenCount})`;
+            }
             if (!list.length) { grid.innerHTML = `<div class="empty">${SITE.terminal.messages.noProjectsFound}</div>`; continue }
-            const frag = document.createDocumentFragment(); list.forEach(p => frag.appendChild(buildCard(p))); grid.appendChild(frag);
+            const visibleRepos = expanded ? list : list.slice(0, 3);
+            const frag = document.createDocumentFragment(); visibleRepos.forEach(p => frag.appendChild(buildCard(p))); grid.appendChild(frag);
         }
         updateFilterChips(state); requestAnimationFrame(animateCards);
     };
@@ -1488,7 +1529,7 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         }
     };
 
-    const state = { repos: [], filter: 'All', sort: 'updated', languages: new Set(['All']) };
+    const state = { repos: [], filter: 'All', expandedGroups: new Set(), languages: new Set(['All']) };
     const focusRepoCard = repo => {
         const targetUrl = String(repo?.html_url || '').toLowerCase();
         const targetName = String(repo?.name || '').toLowerCase();
@@ -1497,8 +1538,15 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             state.filter = 'All';
             renderProjects(state);
         }
-        const cards = $$('#projects .card');
-        const targetCard = cards.find(card => card.dataset.repoUrl === targetUrl || card.dataset.repoName === targetName);
+        let cards = $$('#projects .card');
+        let targetCard = cards.find(card => card.dataset.repoUrl === targetUrl || card.dataset.repoName === targetName);
+        const targetGroup = String(repo?.__group || '');
+        if (!targetCard && targetGroup && !state.expandedGroups.has(targetGroup)) {
+            state.expandedGroups.add(targetGroup);
+            renderProjects(state);
+            cards = $$('#projects .card');
+            targetCard = cards.find(card => card.dataset.repoUrl === targetUrl || card.dataset.repoName === targetName);
+        }
         if (!targetCard) {
             document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
             return;
@@ -1528,7 +1576,6 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
             els.skillsGrid.appendChild(buildSkillCol(title, items));
         });
         els.year.textContent = new Date().getFullYear();
-        initViewportScanHeight();
         initTextureParallax();
         initCursorOverlay();
         initTheme(); initHeaderScroll();
@@ -1541,7 +1588,13 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Arr
         } catch {
             repoConstellation = null;
         }
-        els.sort?.addEventListener('change', e => { state.sort = e.target.value; renderProjects(state) });
+        els.projectToggles.forEach(button => button.addEventListener('click', () => {
+            const group = button.dataset.projectsToggle;
+            if (!group) return;
+            if (state.expandedGroups.has(group)) state.expandedGroups.delete(group);
+            else state.expandedGroups.add(group);
+            renderProjects(state);
+        }));
         initModal();
         if (els.terminalTitle) els.terminalTitle.textContent = SITE.terminal.title;
         if (els.currentPrompt) els.currentPrompt.textContent = SITE.terminal.prompt;

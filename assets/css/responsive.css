@@ -8,7 +8,7 @@
     .col,
     .card,
     .chip,
-    .sort,
+    .projects-toggle,
     .theme-toggle,
     .terminal-control,
     .modal-content {
@@ -21,7 +21,7 @@
     .col:hover,
     .card:hover,
     .chip:hover,
-    .sort:hover,
+    .projects-toggle:hover,
     .theme-toggle:hover,
     .terminal-control:hover,
     .modal-close:hover {
@@ -88,14 +88,6 @@
     .chip .chip-label {
         padding: .38rem .85rem;
         min-width: 56px
-    }
-
-    .sort {
-        padding: .42rem .68rem;
-        border-radius: .65rem;
-        font-size: .72rem;
-        min-width: 0;
-        width: clamp(6.9rem, 32vw, 7.9rem)
     }
 
     .github-stats {
@@ -262,9 +254,4 @@
         min-width: 52px
     }
 
-    .sort {
-        padding: .36rem .6rem;
-        font-size: .68rem;
-        width: clamp(6.4rem, 38vw, 7.2rem)
-    }
 }

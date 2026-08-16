@@ -106,7 +106,7 @@
   </script>
   <!-- End static SEO. -->
   <script src="config.js"></script>
-  <link rel="stylesheet" href="styles.css?v=20260815-mobile-carousel-3">
+  <link rel="stylesheet" href="styles.css?v=20260816-project-expansion">
 </head>
 
 <body>
@@ -225,23 +225,30 @@
           <h3>Featured Projects</h3>
           <div class="controls">
             <div class="filters" id="filters"></div>
-            <select id="sort" class="sort">
-              <option value="updated">Last Updated</option>
-              <option value="stars">Stars</option>
-              <option value="name">Name</option>
-            </select>
           </div>
           <div id="projects-ai" class="group">
             <h4>Automation & AI</h4>
             <div id="grid-ai" class="grid"></div>
+            <button class="projects-toggle neo-btn" type="button" data-projects-toggle="ai"
+              aria-controls="grid-ai" aria-expanded="false" hidden>
+              <span class="neo-btn-label">Show more</span>
+            </button>
           </div>
           <div id="projects-enterprise" class="group">
             <h4>Enterprise Systems / Cloud</h4>
             <div id="grid-enterprise" class="grid"></div>
+            <button class="projects-toggle neo-btn" type="button" data-projects-toggle="enterprise"
+              aria-controls="grid-enterprise" aria-expanded="false" hidden>
+              <span class="neo-btn-label">Show more</span>
+            </button>
           </div>
           <div id="projects-dev" class="group">
             <h4>Programming / Development</h4>
             <div id="grid-dev" class="grid"></div>
+            <button class="projects-toggle neo-btn" type="button" data-projects-toggle="dev"
+              aria-controls="grid-dev" aria-expanded="false" hidden>
+              <span class="neo-btn-label">Show more</span>
+            </button>
           </div>
           <div id="projects-empty" class="empty" hidden>Unable to load projects. Please check back later.</div>
         </div>
@@ -276,7 +283,7 @@
     </div>
   </div>
 
-  <script type="module" src="assets/js/app.js?v=20260816-constellation-spacing"></script>
+  <script type="module" src="assets/js/app.js?v=20260816-bounded-collision"></script>
 </body>
 
 </html>
