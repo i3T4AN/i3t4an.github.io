@@ -128,6 +128,7 @@ window.SITE = {
         { group: 'ai', url: 'https://github.com/i3T4AN/Semantic-skill-space' },
         { group: 'ai', url: 'https://github.com/i3T4AN/Archivist-MCP' },
         { group: 'ai', url: 'https://github.com/i3T4AN/KADATH' },
+        { group: 'enterprise', url: 'https://github.com/i3T4AN/binary-archaeologist' },
         { group: 'enterprise', url: 'https://github.com/i3T4AN/intune-kiosk-template-builder' },
         { group: 'enterprise', url: 'https://github.com/i3T4AN/applescript-device-rename' },
         { group: 'enterprise', url: 'https://github.com/i3T4AN/SCCM-font-install-no-restart' },
