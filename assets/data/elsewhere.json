@@ -84,6 +84,55 @@
     "icon": "https://static-assets.buttondown.com/images/icons/icon%4072.png"
   },
   {
+    "url": "https://gittimes.com/editions/2026-08-14/",
+    "title": "KADATH Evolves Agent Populations to Solve Goals Through Competitive Selection — The Git Times",
+    "siteName": "The Git Times",
+    "image": "",
+    "icon": "https://gittimes.com/favicon.ico"
+  },
+  {
+    "url": "https://note.com/lazy_engineer/n/n7997bc73063e",
+    "title": "今日のAI注目リポジトリ TOP6【AI Dev Radar 2026-08-10】｜楽したいAI自動化エンジニア",
+    "siteName": "note（ノート）",
+    "image": "https://assets.st-note.com/production/uploads/images/302031348/rectangle_large_type_2_9ad5078aefde23b4c422ee16b7f72327.png?fit=bounds&quality=85&width=1280",
+    "icon": "https://assets.st-note.com/poc-image/manual/note-common-images/production/svg/production.ico"
+  },
+  {
+    "url": "https://virtualuncle.com/fresh-commits-01/",
+    "title": "Fresh Commits 01: AI Agent Repos Growing Fastest",
+    "siteName": "Virtual Uncle",
+    "image": "https://virtualuncle.com/wp-content/uploads/2026/08/fresh_commits-scaled.jpg",
+    "icon": "https://virtualuncle.com/wp-content/uploads/2020/11/cropped-favicon-1-32x32.jpg"
+  },
+  {
+    "url": "https://zenn.dev/ament3/articles/ai-digest-2026-08-09-1443",
+    "title": "海外トレンド厳選！Uber発の超高速マージキュー、スマホ自動操作AI、進化型マルチエージェント3選",
+    "siteName": "Zenn",
+    "image": "https://res.cloudinary.com/zenn/image/upload/s--cU_q0maD--/c_fit%2Cg_north_west%2Cl_text:notosansjp-medium.otf_55:%25E6%25B5%25B7%25E5%25A4%2596%25E3%2583%2588%25E3%2583%25AC%25E3%2583%25B3%25E3%2583%2589%25E5%258E%25B3%25E9%2581%25B8%25EF%25BC%2581Uber%25E7%2599%25BA%25E3%2581%25AE%25E8%25B6%2585%25E9%25AB%2598%25E9%2580%259F%25E3%2583%259E%25E3%2583%25BC%25E3%2582%25B8%25E3%2582%25AD%25E3%2583%25A5%25E3%2583%25BC%25E3%2580%2581%25E3%2582%25B9%25E3%2583%259E%25E3%2583%259B%25E8%2587%25AA%25E5%258B%2595%25E6%2593%258D%25E4%25BD%259CAI%25E3%2580%2581%25E9%2580%25B2%25E5%258C%2596%25E5%259E%258B%25E3%2583%259E%25E3%2583%25AB%25E3%2583%2581%25E3%2582%25A8%25E3%2583%25BC%25E3%2582%25B8%25E3%2582%25A7%25E3%2583%25B3%25E3%2583%25883%25E9%2581%25B8%2Cw_1010%2Cx_90%2Cy_100/g_south_west%2Cl_text:notosansjp-medium.otf_37:%25E7%2594%25B0%25E4%25B8%25AD%25E6%25A0%25B9%25E5%25B0%258F%25E4%25BB%258B%2Cx_203%2Cy_121/g_south_west%2Ch_90%2Cl_fetch:aHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jS2ZJTlVWMXNGNFFjSFpoSkNrbTBOMGJENEo3Y2dMNHZMMjRvdjJIam01akRnNXlLeHU9czI1MC1j%2Cr_max%2Cw_90%2Cx_87%2Cy_95/v1627283836/default/og-base-w1200-v2.png?_a=BACMTiAE",
+    "icon": "https://static.zenn.studio/images/logo-transparent.png"
+  },
+  {
+    "url": "https://rocketdevs.com/blog/ai-coding-agent-audit-trail",
+    "title": "Your AI coding agent audit trail already exists. Meta built it for crash recovery, not for review.",
+    "siteName": "RocketDevs",
+    "image": "https://rocketdevs-assets.s3.us-west-2.amazonaws.com/blog-engine/2026-08-09/ai-coding-agent-audit-trail-cover.jpg",
+    "icon": "https://rocketdevs.com/favicon.ico"
+  },
+  {
+    "url": "https://music.amazon.com/podcasts/2bbe827a-7e29-429e-9565-95d7865a62c6/episodes/c9c7697d-f573-4dd0-8b74-54a1ce5c477e/the-ktlyst-labs-podcast-the-ktlyst-labs-podcast-for-august-9-2026",
+    "title": "The KTLYST Labs Podcast for August 9, 2026",
+    "siteName": "Amazon Music",
+    "image": "",
+    "icon": "https://m.media-amazon.com/images/G/01/music/logo/1.0/smile_256x256.png"
+  },
+  {
+    "url": "https://aitooldrop.net/tool.php?id=1776&lang=en",
+    "title": "KADATH: Evolving Autonomous AI Agents Through Darwinian Selection — AIToolDrop",
+    "siteName": "AIToolDrop",
+    "image": "https://aitooldrop.net/assets/img/og-default.jpg",
+    "icon": "https://aitooldrop.net/favicon.ico"
+  },
+  {
     "url": "https://skywork.ai/skypage/en/ai-security-kali-linux/1981566739232649216",
     "title": "Unlocking AI-Powered Security: A Deep Dive into Ethan Blair",
     "siteName": "Skypage",
